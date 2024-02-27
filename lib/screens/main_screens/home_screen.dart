@@ -1,6 +1,5 @@
 import 'package:blood_token_app/models/blood_card_model.dart';
 import 'package:blood_token_app/screens/main_screens/details_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
