@@ -1,6 +1,6 @@
 import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/screens/credientals/login_screen.dart';
-import 'package:blood_token_app/widgets/custom_text_field.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart' as toast;
 
@@ -21,7 +21,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       setState(() {
         _isLoading = true;
       });
-      // await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       toast.Fluttertoast.showToast(
           msg: 'Password reset email sent successfully.');
 
@@ -66,10 +66,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         // AppUtils.buildLogo(100),
 
                         ///fields
-                        CustomTextField(
-                          textEditingController: emailController,
-                          prefixIcon: Icons.email_outlined,
-                          hintText: 'Enter Email',
+                        TextFormField(
+                          controller: emailController,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.email_outlined),
+                            hintText: 'Enter Email',
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your email';
