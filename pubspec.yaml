@@ -44,6 +44,7 @@ dependencies:
   firebase_core: ^2.25.4
   flutter_svg: ^2.0.10+1
   flutter_launcher_icons: ^0.13.1
+  google_maps_flutter: ^2.5.3
 
 dev_dependencies:
   flutter_test:
