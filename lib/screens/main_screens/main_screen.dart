@@ -1,0 +1,140 @@
+import 'package:blood_token_app/models/ui_models/blood_card_model.dart';
+import 'package:blood_token_app/screens/main_screens/details_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+
+class MainScreen extends StatelessWidget {
+  const MainScreen({Key? key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Blood Token'),
+      ),
+      body: Container(
+        height: size.height,
+        width: size.width,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                child: Center(
+                  child: Card(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        SvgPicture.asset(
+                          "assets/logos/032-blood_bag.svg",
+                          height: size.height * 0.18,
+                        ),
+                        Text(
+                          "Donate Blood,\n Save Lives",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: size.height * 0.030,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              ///Text
+              ListTile(
+                title: Text('Current Requests', style: TextStyle(fontSize: 22)),
+                trailing: Text('See all'),
+              ),
+
+              ///Here We will make cards
+              Column(
+                  children: bloodCardModel.map((e) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 10,
+                  ),
+                  child: Card(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    elevation: 10,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    )),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          textColor: Colors.black,
+                          title: Text("Patient Name"),
+                          subtitle: Text(e.patientName!),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Needed by"),
+                              Text(e.date!),
+                            ],
+                          ),
+                        ),
+                        ListTile(
+                          textColor: Colors.black,
+                          title: Text("Location"),
+                          subtitle: Text(e.location!),
+                          trailing: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("Blood type"),
+                              Text(e.bloodType!),
+                            ],
+                          ),
+                        ),
+                        MaterialButton(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(20),
+                            bottomRight: Radius.circular(20),
+                          )),
+                          height: size.height * 0.060,
+                          minWidth: size.width,
+                          color: Colors.red,
+                          onPressed: () {
+                            ///Getting Values to next screen
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (_) {
+                              return DetailsScreen(
+                                isSubmitted: e.isSubmitted,
+                                patientName: e.patientName,
+                                date: e.date,
+                                location: e.location,
+                                bloodType: e.bloodType,
+                                submittedBy: e.submittedBy,
+                              );
+                            }));
+                          },
+                          child: Text(
+                            "Details",
+                            style: TextStyle(
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }).toList()),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,5 +1,5 @@
 import 'package:blood_token_app/constants/db_collections.dart';
-import 'package:blood_token_app/models/user_model.dart';
+import 'package:blood_token_app/models/services_model/user_model.dart';
 import 'package:blood_token_app/screens/credientals/login_screen.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
 import 'package:flutter/material.dart';

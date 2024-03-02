@@ -3,6 +3,24 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 class SVGIcons extends StatelessWidget {
   const SVGIcons({Key? key}) : super(key: key);
+
+  Widget _buildSvgWithDivider(String assetName, int index) {
+    return Column(
+      children: [
+        SvgPicture.asset("assets/$assetName"),
+        const Divider(
+          thickness: 1,
+          color: Colors.black,
+        ),
+        Text("Index: $index"),
+        const Divider(
+          thickness: 1,
+          color: Colors.black,
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,23 +76,6 @@ class SVGIcons extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildSvgWithDivider(String assetName, int index) {
-    return Column(
-      children: [
-        SvgPicture.asset("assets/$assetName"),
-        const Divider(
-          thickness: 1,
-          color: Colors.black,
-        ),
-        Text("Index: $index"),
-        const Divider(
-          thickness: 1,
-          color: Colors.black,
-        ),
-      ],
     );
   }
 }

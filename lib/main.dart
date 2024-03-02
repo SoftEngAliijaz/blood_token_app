@@ -1,8 +1,8 @@
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/user_landing_screen/user_landing_screen.dart' as user;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,19 +24,20 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.firaSansTextTheme(Theme.of(context).textTheme),
         appBarTheme: const AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.black,
-            systemNavigationBarColor: Colors.black,
-            systemStatusBarContrastEnforced: true,
-            systemNavigationBarDividerColor: Colors.red,
-            statusBarIconBrightness: Brightness.light,
-            systemNavigationBarIconBrightness: Brightness.light,
-          ),
+              // statusBarColor: Colors.black,
+              // systemNavigationBarColor: Colors.black,
+              // systemStatusBarContrastEnforced: true,
+              // systemNavigationBarDividerColor: Colors.red,
+              // statusBarIconBrightness: Brightness.light,
+              // systemNavigationBarIconBrightness: Brightness.light,
+              ),
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
         ),
         scaffoldBackgroundColor: Colors.white,
+        useMaterial3: true,
       ),
-      home: const user.UserLandingScreen(),
+      home: const HomeScreen(),
     );
   }
 }

@@ -53,7 +53,6 @@ class CustomTextFormField extends StatelessWidget {
 }
 
 ///Title Progress Indicator
-
 Widget titleProgressIndicator(BuildContext context, String? title) {
   final Size size = MediaQuery.of(context).size;
   return Column(

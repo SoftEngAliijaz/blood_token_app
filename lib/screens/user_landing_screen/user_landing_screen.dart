@@ -1,4 +1,4 @@
-import 'package:blood_token_app/screens/main_screens/home_screen.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:blood_token_app/constants/constants.dart';

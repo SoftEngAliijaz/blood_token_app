@@ -1,7 +1,9 @@
+import 'package:blood_token_app/constants/db_collections.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/home_screen.dart';
 import 'package:blood_token_app/screens/credientals/signup_screen.dart';
-import 'package:blood_token_app/screens/main_screens/home_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -12,10 +14,10 @@ class LogInScreen extends StatefulWidget {
 
 class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _isObscurePassword = true;
   bool _isLoading = false;
+  bool _isObscurePassword = true;
+  final TextEditingController _passwordController = TextEditingController();
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
@@ -24,18 +26,44 @@ class _LogInScreenState extends State<LogInScreen> {
       });
 
       try {
+        // Sign in with Firebase Authentication
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
 
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-          return HomeScreen();
-        }));
+        // Check if the user exists in Firestore
+        final userDoc = await FirebaseFirestore.instance
+            .collection(DatabaseCollection.usersCollections)
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .get();
+
+        if (userDoc.exists) {
+          // User exists in Firestore, navigate to HomeScreen
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
+            return HomeScreen();
+          }));
+        } else {
+          // User doesn't exist in Firestore, display a message to create an account
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  "User not found in Firestore. Please create an account."),
+            ),
+          );
+        }
       } on FirebaseAuthException catch (e) {
+        // Handle Firebase Authentication errors
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Error: ${e.message}"),
+          ),
+        );
+      } on FirebaseException catch (e) {
+        // Handle Firestore errors
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Firestore Error: ${e.message}"),
           ),
         );
       } finally {

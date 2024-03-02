@@ -28,29 +28,29 @@ class _DetailsScreenState extends State<DetailsScreen> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Blood Request Details'),
+        title: const Text('Blood Request Details'),
       ),
       body: Column(
         children: [
           ListTile(
-            title: Text("Submitted By"),
+            title: const Text("Submitted By"),
             subtitle: widget.isSubmitted == true
                 ? Text("${widget.submittedBy} On ${widget.date}")
-                : Text("Not Submitted"),
+                : const Text("Not Submitted"),
           ),
           ListTile(
-            title: Text("Patient Name"),
+            title: const Text("Patient Name"),
             subtitle: Text(widget.patientName!),
           ),
           ListTile(
-            title: Text("Location"),
+            title: const Text("Location"),
             subtitle: Text(widget.location!),
           ),
-          ListTile(
+          const ListTile(
             title: Text("Blood Type"),
             subtitle: Text("A+"),
           ),
-          Divider(
+          const Divider(
             thickness: 1,
           ),
           Row(
@@ -58,11 +58,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
             children: [
               TextButton.icon(
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.directions_outlined,
                   color: Colors.red,
                 ),
-                label: Text(
+                label: const Text(
                   "Get Directions",
                   style: TextStyle(
                     color: Colors.red,
@@ -71,11 +71,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
               ),
               TextButton.icon(
                 onPressed: () {},
-                icon: Icon(
+                icon: const Icon(
                   Icons.share_outlined,
                   color: Colors.red,
                 ),
-                label: Text(
+                label: const Text(
                   "Share",
                   style: TextStyle(
                     color: Colors.red,
@@ -84,17 +84,17 @@ class _DetailsScreenState extends State<DetailsScreen> {
               ),
             ],
           ),
-          Divider(
+          const Divider(
             thickness: 1,
           ),
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: MaterialButton(
-              shape: StadiumBorder(),
+              shape: const StadiumBorder(),
               height: size.height * 0.060,
               minWidth: size.width * 0.80,
               color: Colors.red,
-              child: Text(
+              child: const Text(
                 "Contact",
                 style: TextStyle(
                   color: Colors.white,
@@ -106,11 +106,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: MaterialButton(
-              shape: StadiumBorder(),
+              shape: const StadiumBorder(),
               height: size.height * 0.060,
               minWidth: size.width * 0.80,
               color: Colors.green,
-              child: Text(
+              child: const Text(
                 "Mark as Fulfilled",
                 style: TextStyle(
                   color: Colors.white,
