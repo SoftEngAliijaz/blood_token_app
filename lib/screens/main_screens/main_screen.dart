@@ -69,25 +69,37 @@ class MainScreen extends StatelessWidget {
                             children: [
                               ListTile(
                                 textColor: Colors.black,
-                                title: Text("Name"),
-                                subtitle: Text(value.requesterName),
+                                title: Text(
+                                  "Requester Name",
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                subtitle: Text(
+                                  "${value.requesterName}",
+                                  textAlign: TextAlign.left,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                                 trailing: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text("Urgency Level"),
-                                    Text(value.urgencyLevel),
+                                    Text(
+                                      "${value.urgencyLevel}",
+                                      textAlign: TextAlign.left,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
                                   ],
                                 ),
                               ),
                               ListTile(
                                 textColor: Colors.black,
                                 title: Text("Location"),
-                                subtitle: Text(value.location),
+                                subtitle: Text("${value.location}"),
                                 trailing: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Text("Blood Type"),
-                                    Text(value.bloodType),
+                                    Text("${value.bloodType}"),
                                   ],
                                 ),
                               ),

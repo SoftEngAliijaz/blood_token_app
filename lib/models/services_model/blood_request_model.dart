@@ -1,13 +1,15 @@
 import 'dart:convert';
 
 class BloodRequestModel {
-  final String requesterName;
-  final String bloodType;
-  final String quantityNeeded;
-  final String urgencyLevel;
-  final String location;
-  final String contactNumber;
-  final String timestamp;
+  final String? requesterName;
+  final String? bloodType;
+  final String? quantityNeeded;
+  final String? urgencyLevel;
+  final String? location;
+  final String? contactNumber;
+  final String? customLocation;
+  final String? patientName;
+  final DateTime? timestamp;
 
   BloodRequestModel({
     required this.requesterName,
@@ -16,6 +18,8 @@ class BloodRequestModel {
     required this.urgencyLevel,
     required this.location,
     required this.contactNumber,
+    required this.customLocation,
+    required this.patientName,
     required this.timestamp,
   });
 
@@ -26,7 +30,9 @@ class BloodRequestModel {
     String? urgencyLevel,
     String? location,
     String? contactNumber,
-    String? timestamp,
+    String? customLocation,
+    String? patientName,
+    DateTime? timestamp,
   }) =>
       BloodRequestModel(
         requesterName: requesterName ?? this.requesterName,
@@ -35,6 +41,8 @@ class BloodRequestModel {
         urgencyLevel: urgencyLevel ?? this.urgencyLevel,
         location: location ?? this.location,
         contactNumber: contactNumber ?? this.contactNumber,
+        customLocation: customLocation ?? this.customLocation,
+        patientName: patientName ?? this.patientName,
         timestamp: timestamp ?? this.timestamp,
       );
 
@@ -45,13 +53,15 @@ class BloodRequestModel {
 
   factory BloodRequestModel.fromJson(Map<String, dynamic> json) =>
       BloodRequestModel(
-        requesterName: json["requesterName"] ?? '',
-        bloodType: json["bloodType"] ?? '',
-        quantityNeeded: json["quantityNeeded"] ?? '',
-        urgencyLevel: json["urgencyLevel"] ?? '',
-        location: json["location"] ?? '',
-        contactNumber: json["contactNumber"] ?? '',
-        timestamp: json["timestamp"] ?? '',
+        requesterName: json["requesterName"],
+        bloodType: json["bloodType"],
+        quantityNeeded: json["quantityNeeded"],
+        urgencyLevel: json["urgencyLevel"],
+        location: json["location"],
+        contactNumber: json["contactNumber"],
+        customLocation: json["customLocation"],
+        patientName: json["patientName"],
+        timestamp: DateTime.parse(json["timestamp"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -61,6 +71,8 @@ class BloodRequestModel {
         "urgencyLevel": urgencyLevel,
         "location": location,
         "contactNumber": contactNumber,
-        "timestamp": timestamp,
+        "customLocation": customLocation,
+        "patientName": patientName,
+        "timestamp": timestamp!.toIso8601String(),
       };
 }

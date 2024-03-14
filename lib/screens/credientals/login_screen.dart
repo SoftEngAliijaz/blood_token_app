@@ -1,4 +1,3 @@
-import 'package:blood_token_app/constants/db_collections.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/home_screen.dart';
 import 'package:blood_token_app/screens/credientals/signup_screen.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
@@ -35,7 +34,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
         // Check if the user exists in Firestore
         final userDoc = await FirebaseFirestore.instance
-            .collection(DatabaseCollection.usersCollections)
+            .collection('users')
             .doc(FirebaseAuth.instance.currentUser!.uid)
             .get();
 

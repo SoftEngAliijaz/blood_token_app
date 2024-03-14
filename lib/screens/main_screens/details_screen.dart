@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:share_plus/share_plus.dart';
 
 class DetailsScreen extends StatefulWidget {
   final bool? isSubmitted;
@@ -49,84 +49,25 @@ class _DetailsScreenState extends State<DetailsScreen> {
               Column(
                 children: _buildListTiles(),
               ),
-              Divider(
-                thickness: 1,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.directions_outlined,
+
+              ///share button to share data
+              Divider(thickness: 1),
+              Center(
+                child: TextButton.icon(
+                  onPressed: _shareBloodRequestDetails,
+                  icon: Icon(
+                    Icons.share_outlined,
+                    color: Colors.red,
+                  ),
+                  label: Text(
+                    "Share Details",
+                    style: TextStyle(
                       color: Colors.red,
                     ),
-                    label: Text(
-                      "Get Directions",
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
                   ),
-                  TextButton.icon(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.share_outlined,
-                      color: Colors.red,
-                    ),
-                    label: Text(
-                      "Share",
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-              Divider(
-                thickness: 1,
-              ),
-              Row(
-                children: [
-                  ///direct calling
-                  Expanded(
-                    child: MaterialButton(
-                      shape: StadiumBorder(),
-                      height: size.height * 0.060,
-                      minWidth: size.width * 0.80,
-                      color: Colors.red,
-                      child: Text(
-                        "Direct Call",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: () {
-                        FlutterPhoneDirectCaller.callNumber(
-                            "+92${widget.contactNumber}");
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    child: MaterialButton(
-                      shape: StadiumBorder(),
-                      height: size.height * 0.060,
-                      minWidth: size.width * 0.80,
-                      color: Colors.green,
-                      child: Text(
-                        "Mark as Fulfilled",
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                      ),
-                      onPressed: () {
-                        Fluttertoast.showToast(
-                            msg: 'This feature is not added yet');
-                      },
-                    ),
-                  ),
-                ],
-              ),
+              Divider(thickness: 1),
             ],
           ),
         ),
@@ -136,28 +77,76 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
   List<Widget> _buildListTiles() {
     return [
-      _buildListTile("Requester Name", "${widget.requesterName}"),
-      _buildListTile("Urgency Level", "${widget.urgencyLevel}"),
-      _buildListTile("Quantity Needed", "${widget.quantityNeeded}"),
-      _buildListTile("Blood Type", "${widget.bloodType}"),
-      _buildListTile("Patient Name", "${widget.patientName}"),
-      _buildListTile("Location", "${widget.location}"),
-      _buildListTile("Contact Number", "${widget.contactNumber}"),
+      _buildListTile(Icons.person_outline, "Requester Name",
+          "${widget.requesterName}", null),
+      _buildListTile(Icons.emergency_outlined, "Urgency Level",
+          "${widget.urgencyLevel}", null),
+      _buildListTile(Icons.production_quantity_limits_outlined,
+          "Quantity Needed", "${widget.quantityNeeded}", null),
       _buildListTile(
+          Icons.bloodtype_outlined, "Blood Type", "${widget.bloodType}", null),
+      _buildListTile(Icons.person_2_outlined, "Patient Name",
+          "${widget.patientName}", null),
+      _buildListTile(
+        Icons.location_city_outlined,
+        "Location",
+        "${widget.location}",
+        IconButton(
+          onPressed: () async {},
+          icon: const Icon(Icons.arrow_forward_ios_outlined),
+        ),
+      ),
+      _buildListTile(
+        Icons.phone_android_outlined,
+        "Contact Number",
+        "${widget.contactNumber}",
+
+        ///direct caller
+        IconButton(
+          onPressed: () {
+            FlutterPhoneDirectCaller.callNumber("+92${widget.contactNumber}");
+          },
+          icon: const Icon(Icons.call_outlined),
+        ),
+      ),
+      _buildListTile(
+          Icons.done_all_outlined,
           "Submitted By",
           widget.isSubmitted == true
               ? "${widget.submittedBy} On ${widget.date}"
-              : "Not Submitted"),
+              : "Not Submitted",
+          null),
     ];
   }
 
   Widget _buildListTile(
+    IconData leadingIcon,
     String title,
     String subtitle,
+    Widget? trailingWidget, // Change to accept nullable Widget
   ) {
     return ListTile(
-      title: Text("${title}"),
-      subtitle: Text("${subtitle}"),
+      leading: Icon(leadingIcon),
+      title: Text(title),
+      subtitle: Text(subtitle),
+      trailing: trailingWidget, // Use the provided trailing widget directly
     );
+  }
+
+  void _openMaps() async {}
+
+  void _shareBloodRequestDetails() {
+    String message = "🩸 **Blood Request Details** 🩸\n\n"
+        "• **Requester Name:** ${widget.requesterName}\n\n"
+        "• **Urgency Level:** ${widget.urgencyLevel}\n\n"
+        "• **Quantity Needed:** ${widget.quantityNeeded}\n\n"
+        "• **Blood Type:** ${widget.bloodType}\n\n"
+        "• **Patient Name:** ${widget.patientName ?? 'N/A'}\n\n"
+        "• **Location:** ${widget.location}\n\n"
+        "• **Contact Number:** ${widget.contactNumber}\n\n"
+        "• **Submitted By:** ${widget.isSubmitted == true ? "${widget.submittedBy} On ${widget.date}" : "Not Submitted"}\n\n"
+        "Share this blood request with others to help save a life! 💉";
+
+    Share.share(message);
   }
 }

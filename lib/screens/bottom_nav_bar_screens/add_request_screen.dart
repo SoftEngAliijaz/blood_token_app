@@ -25,6 +25,8 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _contactNumberController =
       TextEditingController();
+  final TextEditingController _patientNameController = TextEditingController();
+  final TextEditingController _customLocation = TextEditingController();
 
   LatLng _initialCameraPosition = LatLng(0.0, 0.0);
   GoogleMapController? _mapController;
@@ -66,6 +68,17 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                         labelText: 'Requester Name',
                       ),
                       CustomTextFormField(
+                        controller: _patientNameController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter patient name';
+                          }
+                          return null;
+                        },
+                        prefixIcon: Icons.person_outlined,
+                        labelText: 'Patient Name',
+                      ),
+                      CustomTextFormField(
                         controller: _bloodTypeController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -97,6 +110,17 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                         },
                         prefixIcon: Icons.warning_amber_outlined,
                         labelText: 'Urgency Level',
+                      ),
+                      CustomTextFormField(
+                        controller: _customLocation,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter Custom location';
+                          }
+                          return null;
+                        },
+                        prefixIcon: Icons.location_city_outlined,
+                        labelText: 'Custom Location',
                       ),
                       CustomTextFormField(
                         controller: _locationController,
@@ -264,12 +288,14 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
     if (_formKey.currentState!.validate()) {
       BloodRequestModel bloodRequestObject = BloodRequestModel(
         requesterName: _requesterNameController.text,
+        patientName: _patientNameController.text,
         bloodType: _bloodTypeController.text,
         quantityNeeded: _quantityNeededController.text,
         urgencyLevel: _urgencyLevelController.text,
         location: _locationController.text,
         contactNumber: _contactNumberController.text,
-        timestamp: DateTime.now().toString(),
+        timestamp: DateTime.now(),
+        customLocation: _customLocation.text,
       );
 
       try {

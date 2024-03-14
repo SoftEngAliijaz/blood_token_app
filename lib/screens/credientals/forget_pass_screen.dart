@@ -82,6 +82,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         _isLoading
                             ? AppUtils.customProgressIndicator()
                             : ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          Colors.red),
+                                ),
                                 child: Text(_isLoading == true
                                     ? 'Sending Request...'
                                     : 'Send Request'),
