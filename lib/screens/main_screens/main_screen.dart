@@ -172,7 +172,6 @@ class MainScreen extends StatelessWidget {
                     urgencyLevel: value.urgencyLevel,
                     location: value.location,
                     contactNumber: value.contactNumber,
-                    isSubmitted: false,
                     patientName: value.patientName,
                     date: value.formattedTimestamp(),
                     customLocation: value.customLocation,

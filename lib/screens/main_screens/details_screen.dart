@@ -3,7 +3,6 @@ import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:share_plus/share_plus.dart';
 
 class DetailsScreen extends StatefulWidget {
-  final bool? isSubmitted;
   final String? patientName;
   final String? date;
   final String? location;
@@ -16,7 +15,6 @@ class DetailsScreen extends StatefulWidget {
 
   const DetailsScreen({
     Key? key,
-    required this.isSubmitted,
     required this.patientName,
     required this.date,
     required this.location,
