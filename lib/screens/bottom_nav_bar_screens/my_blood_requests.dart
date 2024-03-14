@@ -1,82 +1,69 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MyBloodRequestsScreen extends StatelessWidget {
-  MyBloodRequestsScreen({Key? key}) : super(key: key);
-
-  // Sample blood request data
-  final List<Map<String, String>> myBloodRequests = [
-    {
-      'requesterName': 'John Doe',
-      'bloodType': 'O+',
-      'quantityNeeded': '2 units',
-      'urgencyLevel': 'High',
-      'location': '123 Main St, City',
-      'contactNumber': '123-456-7890',
-      'submittedBy': 'Jane Smith',
-      'date': '2024-03-15',
-    },
-  ];
+  const MyBloodRequestsScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser == null) {
+      // Handle the case where there is no logged-in user
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('My Blood Requests'),
+        ),
+        body: Center(
+          child: Text('No user logged in'),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text('My Blood Requests'),
       ),
-      body: ListView.builder(
-        itemCount: myBloodRequests.length,
-        itemBuilder: (BuildContext context, int index) {
-          final bloodRequest = myBloodRequests[index];
-          return Card(
-            child: ExpansionTile(
-              children: [
-                _buildBloodRequestDetail(
-                    'Blood Type', bloodRequest['bloodType']),
-                _buildBloodRequestDetail(
-                    'Quantity Needed', bloodRequest['quantityNeeded']),
-                _buildBloodRequestDetail(
-                    'Urgency Level', bloodRequest['urgencyLevel']),
-                _buildBloodRequestDetail('Location', bloodRequest['location']),
-                _buildBloodRequestDetail(
-                    'Contact Number', bloodRequest['contactNumber']),
-                _buildBloodRequestDetail(
-                    'Submitted By',
-                    bloodRequest['submittedBy'] != null
-                        ? "${bloodRequest['submittedBy']} On ${bloodRequest['date']}"
-                        : 'Not Submitted'),
-              ],
-              leading: IconButton(
-                onPressed: () {
-                  // Handle edit button pressed
-                },
-                icon: const Icon(Icons.edit_outlined),
-              ),
-              title: Text(bloodRequest['requesterName'] ?? 'Unknown'),
-              trailing: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.delete,
-                  color: Colors.red,
+      body: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection('blood_requests')
+            .where('uid', isEqualTo: currentUser.uid)
+            .snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          }
+          final List<DocumentSnapshot> documents = snapshot.data!.docs;
+          return ListView.builder(
+            itemCount: documents.length,
+            itemBuilder: (BuildContext context, int index) {
+              final bloodRequest =
+                  documents[index].data() as Map<String, dynamic>;
+              return Card(
+                child: ListTile(
+                  leading: IconButton(
+                    onPressed: () {},
+                    icon: const Icon(Icons.edit_attributes_outlined),
+                  ),
+                  title: Text(bloodRequest['requesterName'] ?? 'Unknown'),
+                  subtitle: Text(bloodRequest['bloodType'] ?? 'Unknown'),
+                  onTap: () {
+                    // Handle onTap event
+                  },
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.red),
+                    onPressed: () {
+                      // Handle delete button press
+                    },
+                  ),
                 ),
-              ),
-            ),
+              );
+            },
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildBloodRequestDetail(String title, String? value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Row(
-        children: [
-          Text(
-            title + ': ',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          Text(value ?? 'N/A'),
-        ],
       ),
     );
   }

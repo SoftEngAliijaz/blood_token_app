@@ -1,6 +1,7 @@
 import 'package:blood_token_app/models/services_model/blood_request_model.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -170,15 +171,10 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.red),
                         ),
-                        child: _isLoading
-                            ? Text(
-                                'Submitting...',
-                                style: TextStyle(color: Colors.white),
-                              )
-                            : const Text(
-                                'Submit',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                        child: Text(
+                          _isLoading ? 'Submit' : 'Submitting...',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ]),
               ),
@@ -292,6 +288,10 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        _isLoading = true; // Start loading
+      });
+
       BloodRequestModel bloodRequestObject = BloodRequestModel(
         requesterName: _requesterNameController.text,
         patientName: _patientNameController.text,
@@ -305,13 +305,19 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
       );
 
       try {
+        final id = FirebaseAuth.instance.currentUser!.uid;
         await FirebaseFirestore.instance
             .collection('blood_requests')
-            .add(bloodRequestObject.toJson());
+            .doc(id)
+            .set(bloodRequestObject.toJson());
         Fluttertoast.showToast(msg: 'Blood request submitted successfully');
         _resetForm();
       } catch (e) {
         Fluttertoast.showToast(msg: 'Failed to submit blood request');
+      } finally {
+        setState(() {
+          _isLoading = false; // Stop loading regardless of success or failure
+        });
       }
     }
   }
@@ -324,6 +330,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
     _urgencyLevelController.clear();
     _locationController.clear();
     _contactNumberController.clear();
+    _customLocation.clear();
     setState(() {
       _markers.clear();
     });

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:intl/intl.dart';
 
 class BloodRequestModel {
@@ -53,8 +52,9 @@ class BloodRequestModel {
 
   String toRawJson() => json.encode(toJson());
 
-  factory BloodRequestModel.fromJson(Map<String, dynamic> json) =>
-      BloodRequestModel(
+  factory BloodRequestModel.fromJson(Map<String, dynamic> json) {
+    try {
+      return BloodRequestModel(
         requesterName: json["requesterName"],
         bloodType: json["bloodType"],
         quantityNeeded: json["quantityNeeded"],
@@ -65,6 +65,21 @@ class BloodRequestModel {
         patientName: json["patientName"],
         timestamp: DateTime.parse(json["timestamp"]),
       );
+    } catch (e) {
+      print("Error parsing BloodRequestModel from JSON: $e");
+      return BloodRequestModel(
+        requesterName: null,
+        bloodType: null,
+        quantityNeeded: null,
+        urgencyLevel: null,
+        location: null,
+        contactNumber: null,
+        customLocation: null,
+        patientName: null,
+        timestamp: null,
+      );
+    }
+  }
 
   Map<String, dynamic> toJson() => {
         "requesterName": requesterName,
