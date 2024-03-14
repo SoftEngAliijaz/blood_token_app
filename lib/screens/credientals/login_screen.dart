@@ -195,7 +195,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                     }));
                                   },
                                   child: Text(
-                                    "Sing Up",
+                                    "Sign Up",
                                   ),
                                 ),
                               ],

@@ -1,7 +1,6 @@
 import 'package:blood_token_app/models/services_model/blood_request_model.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -172,7 +171,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                               MaterialStateProperty.all<Color>(Colors.red),
                         ),
                         child: Text(
-                          _isLoading ? 'Submit' : 'Submitting...',
+                          _isLoading == false ? 'Submit' : 'Submitting...',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -305,11 +304,9 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
       );
 
       try {
-        final id = FirebaseAuth.instance.currentUser!.uid;
         await FirebaseFirestore.instance
             .collection('blood_requests')
-            .doc(id)
-            .set(bloodRequestObject.toJson());
+            .add(bloodRequestObject.toJson());
         Fluttertoast.showToast(msg: 'Blood request submitted successfully');
         _resetForm();
       } catch (e) {
