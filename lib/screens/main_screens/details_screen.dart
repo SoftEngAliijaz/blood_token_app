@@ -8,11 +8,11 @@ class DetailsScreen extends StatefulWidget {
   final String? date;
   final String? location;
   final String? bloodType;
-  final String? submittedBy;
   final String? quantityNeeded;
   final String? urgencyLevel;
   final String? contactNumber;
   final String? requesterName;
+  final String? customLocation;
 
   const DetailsScreen({
     Key? key,
@@ -21,11 +21,11 @@ class DetailsScreen extends StatefulWidget {
     required this.date,
     required this.location,
     required this.bloodType,
-    required this.submittedBy,
     required this.quantityNeeded,
     required this.urgencyLevel,
     required this.contactNumber,
     required this.requesterName,
+    required this.customLocation,
   }) : super(key: key);
 
   @override
@@ -78,15 +78,20 @@ class _DetailsScreenState extends State<DetailsScreen> {
   List<Widget> _buildListTiles() {
     return [
       _buildListTile(Icons.person_outline, "Requester Name",
-          "${widget.requesterName}", null),
+          "${widget.requesterName}", Text('${widget.date}')),
       _buildListTile(Icons.emergency_outlined, "Urgency Level",
-          "${widget.urgencyLevel}", null),
-      _buildListTile(Icons.production_quantity_limits_outlined,
-          "Quantity Needed", "${widget.quantityNeeded}", null),
+          "${widget.urgencyLevel}", Text('${widget.date}')),
       _buildListTile(
-          Icons.bloodtype_outlined, "Blood Type", "${widget.bloodType}", null),
+          Icons.production_quantity_limits_outlined,
+          "Quantity Needed",
+          "${widget.quantityNeeded}",
+          Text('${widget.date}')),
+      _buildListTile(Icons.bloodtype_outlined, "Blood Type",
+          "${widget.bloodType}", Text('${widget.date}')),
       _buildListTile(Icons.person_2_outlined, "Patient Name",
-          "${widget.patientName}", null),
+          "${widget.patientName}", Text('${widget.date}')),
+      _buildListTile(Icons.location_city_outlined, "Custom Location",
+          "${widget.customLocation}", Text('${widget.date}')),
       _buildListTile(
         Icons.location_city_outlined,
         "Location",
@@ -109,13 +114,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
           icon: const Icon(Icons.call_outlined),
         ),
       ),
-      _buildListTile(
-          Icons.done_all_outlined,
-          "Submitted By",
-          widget.isSubmitted == true
-              ? "${widget.submittedBy} On ${widget.date}"
-              : "Not Submitted",
-          null),
     ];
   }
 
@@ -123,7 +121,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
     IconData leadingIcon,
     String title,
     String subtitle,
-    Widget? trailingWidget, // Change to accept nullable Widget
+    Widget?
+        trailingWidget, // Change to accept Text('${widget.date}')able Widget
   ) {
     return ListTile(
       leading: Icon(leadingIcon),
@@ -133,19 +132,37 @@ class _DetailsScreenState extends State<DetailsScreen> {
     );
   }
 
-  void _openMaps() async {}
-
   void _shareBloodRequestDetails() {
-    String message = "🩸 **Blood Request Details** 🩸\n\n"
-        "• **Requester Name:** ${widget.requesterName}\n\n"
-        "• **Urgency Level:** ${widget.urgencyLevel}\n\n"
-        "• **Quantity Needed:** ${widget.quantityNeeded}\n\n"
-        "• **Blood Type:** ${widget.bloodType}\n\n"
-        "• **Patient Name:** ${widget.patientName ?? 'N/A'}\n\n"
-        "• **Location:** ${widget.location}\n\n"
-        "• **Contact Number:** ${widget.contactNumber}\n\n"
-        "• **Submitted By:** ${widget.isSubmitted == true ? "${widget.submittedBy} On ${widget.date}" : "Not Submitted"}\n\n"
-        "Share this blood request with others to help save a life! 💉";
+    String message = "🩸 **Blood Request Details** 🩸\n\n";
+
+    // Add only selected details to the message
+    if (widget.requesterName != null) {
+      message += "• *Requester Name:* ${widget.requesterName}\n\n";
+    }
+    if (widget.urgencyLevel != null) {
+      message += "• *Urgency Level:* ${widget.urgencyLevel}\n\n";
+    }
+    if (widget.quantityNeeded != null) {
+      message += "• *Quantity Needed:* ${widget.quantityNeeded}\n\n";
+    }
+    if (widget.bloodType != null) {
+      message += "• *Blood Type:* ${widget.bloodType}\n\n";
+    }
+    if (widget.patientName != null) {
+      message += "• *Patient Name:* ${widget.patientName}\n\n";
+    }
+    if (widget.location != null) {
+      message += "• *Location:* ${widget.location}\n\n";
+    }
+    if (widget.contactNumber != null) {
+      message += "• *Contact Number:* ${widget.contactNumber}\n\n";
+    }
+
+    // Add current time
+    String currentTime = DateTime.now().toString();
+    message += "• *Time:* $currentTime\n\n";
+
+    message += "Share this blood request with others to help save a life! 💉";
 
     Share.share(message);
   }

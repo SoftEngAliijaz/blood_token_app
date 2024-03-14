@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:intl/intl.dart';
+
 class BloodRequestModel {
   final String? requesterName;
   final String? bloodType;
@@ -75,4 +77,7 @@ class BloodRequestModel {
         "patientName": patientName,
         "timestamp": timestamp!.toIso8601String(),
       };
+  String formattedTimestamp() {
+    return DateFormat.yMMMMd('en_US').add_jm().format(timestamp!.toLocal());
+  }
 }

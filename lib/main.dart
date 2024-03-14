@@ -22,15 +22,11 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         cardColor: Colors.white,
         textTheme: GoogleFonts.firaSansTextTheme(Theme.of(context).textTheme),
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           systemOverlayStyle: SystemUiOverlayStyle(
-              // statusBarColor: Colors.black,
-              // systemNavigationBarColor: Colors.black,
-              // systemStatusBarContrastEnforced: true,
-              // systemNavigationBarDividerColor: Colors.red,
-              // statusBarIconBrightness: Brightness.light,
-              // systemNavigationBarIconBrightness: Brightness.light,
-              ),
+            statusBarColor: Colors.red,
+            statusBarIconBrightness: Brightness.light,
+          ),
           backgroundColor: Colors.red,
           foregroundColor: Colors.white,
         ),

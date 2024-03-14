@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildScreen() {
     switch (_selectedIndex) {
       case 0:
-        return const MainScreen();
+        return MainScreen();
       case 1:
         return const SearchScreen();
       case 2:
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 3:
         return const ProfileSectionScreen();
       default:
-        return const MainScreen();
+        return MainScreen();
     }
   }
 }

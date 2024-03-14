@@ -31,6 +31,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
   LatLng _initialCameraPosition = LatLng(0.0, 0.0);
   GoogleMapController? _mapController;
   Set<Marker> _markers = {};
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -169,10 +170,15 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                           backgroundColor:
                               MaterialStateProperty.all<Color>(Colors.red),
                         ),
-                        child: Text(
-                          'Submit',
-                          style: TextStyle(color: Colors.white),
-                        ),
+                        child: _isLoading
+                            ? Text(
+                                'Submitting...',
+                                style: TextStyle(color: Colors.white),
+                              )
+                            : const Text(
+                                'Submit',
+                                style: TextStyle(color: Colors.white),
+                              ),
                       ),
                     ]),
               ),

@@ -220,9 +220,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter your phone number';
-                                  } else if (!RegExp(r'^\+92[0-9]{10}$')
-                                      .hasMatch(value)) {
-                                    return 'Please enter a valid Pakistani phone number';
+                                  } else if (value.length != 10) {
+                                    return 'Please enter a valid phone number with 11 digits';
                                   }
                                   return null;
                                 },
