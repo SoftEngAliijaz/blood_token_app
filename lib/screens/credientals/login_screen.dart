@@ -1,6 +1,7 @@
 import 'package:blood_token_app/constants/db_collections.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/home_screen.dart';
 import 'package:blood_token_app/screens/credientals/signup_screen.dart';
+import 'package:blood_token_app/widgets/custom_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -94,6 +95,8 @@ class _LogInScreenState extends State<LogInScreen> {
                     CircleAvatar(
                       radius: 100,
                       backgroundColor: Colors.red,
+                      backgroundImage:
+                          AssetImage("assets/images/blood_token_logo_00.png"),
                     ),
 
                     Form(
@@ -117,7 +120,7 @@ class _LogInScreenState extends State<LogInScreen> {
                             SizedBox(height: 10),
 
                             ///Fields
-                            TextFormField(
+                            CustomTextFormField(
                               controller: _emailController,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.emailAddress,
@@ -129,12 +132,10 @@ class _LogInScreenState extends State<LogInScreen> {
                                 }
                                 return null;
                               },
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.email_outlined),
-                                labelText: 'Email',
-                              ),
+                              prefixIcon: Icons.email_outlined,
+                              labelText: 'Email',
                             ),
-                            TextFormField(
+                            CustomTextFormField(
                               controller: _passwordController,
                               textInputAction: TextInputAction.next,
                               keyboardType: TextInputType.visiblePassword,
@@ -145,20 +146,18 @@ class _LogInScreenState extends State<LogInScreen> {
                                 }
                                 return null;
                               },
-                              decoration: InputDecoration(
-                                prefixIcon: Icon(Icons.password),
-                                labelText: 'Password',
-                                suffixIcon: IconButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      _isObscurePassword = !_isObscurePassword;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    _isObscurePassword
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                  ),
+                              prefixIcon: Icons.password,
+                              labelText: 'Password',
+                              suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscurePassword = !_isObscurePassword;
+                                  });
+                                },
+                                icon: Icon(
+                                  _isObscurePassword
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                 ),
                               ),
                             ),
@@ -174,8 +173,14 @@ class _LogInScreenState extends State<LogInScreen> {
                               ),
                               onPressed: _isLoading ? null : _login,
                               child: _isLoading
-                                  ? const CircularProgressIndicator()
-                                  : const Text('Log In'),
+                                  ? Text(
+                                      'Logging in...',
+                                      style: TextStyle(color: Colors.white),
+                                    )
+                                  : const Text(
+                                      'Log In',
+                                      style: TextStyle(color: Colors.white),
+                                    ),
                             ),
 
                             ///route selection

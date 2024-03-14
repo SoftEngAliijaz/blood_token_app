@@ -1,4 +1,7 @@
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/my_blood_requests.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/user/user_profile_screen.dart';
+import 'package:blood_token_app/screens/credientals/login_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfileSectionScreen extends StatelessWidget {
@@ -44,13 +47,23 @@ class ProfileSectionScreen extends StatelessWidget {
               },
             ),
 
-            _tileCard(Icons.request_page_outlined, 'My Requests', () {}),
+            _tileCard(Icons.request_page_outlined, 'My Requests', () {
+              Navigator.push(context, MaterialPageRoute(builder: (_) {
+                return MyBloodRequestsScreen();
+              }));
+            }),
 
             _tileCard(Icons.share_outlined, 'Share App', () {}),
 
             _tileCard(Icons.rate_review_outlined, 'Rate Our App', () {}),
 
-            _tileCard(Icons.logout_outlined, 'SignOut', () {}),
+            _tileCard(Icons.logout_outlined, 'SignOut', () {
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (_) {
+                return LogInScreen();
+              }));
+            }),
           ],
         ),
       ),

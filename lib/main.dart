@@ -1,4 +1,4 @@
-import 'package:blood_token_app/screens/bottom_nav_bar_screens/home_screen.dart';
+import 'package:blood_token_app/screens/user_landing_screen/user_landing_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const UserLandingScreen(),
     );
   }
 }

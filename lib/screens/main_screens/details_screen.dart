@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class DetailsScreen extends StatefulWidget {
   final bool? isSubmitted;
@@ -7,15 +9,23 @@ class DetailsScreen extends StatefulWidget {
   final String? location;
   final String? bloodType;
   final String? submittedBy;
+  final String? quantityNeeded;
+  final String? urgencyLevel;
+  final String? contactNumber;
+  final String? requesterName;
 
   const DetailsScreen({
     Key? key,
-    this.isSubmitted,
-    this.patientName,
-    this.date,
-    this.location,
-    this.bloodType,
-    this.submittedBy,
+    required this.isSubmitted,
+    required this.patientName,
+    required this.date,
+    required this.location,
+    required this.bloodType,
+    required this.submittedBy,
+    required this.quantityNeeded,
+    required this.urgencyLevel,
+    required this.contactNumber,
+    required this.requesterName,
   }) : super(key: key);
 
   @override
@@ -28,99 +38,126 @@ class _DetailsScreenState extends State<DetailsScreen> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Blood Request Details'),
+        title: Text('${widget.requesterName} Details'),
       ),
-      body: Column(
-        children: [
-          ListTile(
-            title: const Text("Submitted By"),
-            subtitle: widget.isSubmitted == true
-                ? Text("${widget.submittedBy} On ${widget.date}")
-                : const Text("Not Submitted"),
-          ),
-          ListTile(
-            title: const Text("Patient Name"),
-            subtitle: Text(widget.patientName!),
-          ),
-          ListTile(
-            title: const Text("Location"),
-            subtitle: Text(widget.location!),
-          ),
-          const ListTile(
-            title: Text("Blood Type"),
-            subtitle: Text("A+"),
-          ),
-          const Divider(
-            thickness: 1,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: Container(
+        height: size.height,
+        width: size.width,
+        child: SingleChildScrollView(
+          child: Column(
             children: [
-              TextButton.icon(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.directions_outlined,
-                  color: Colors.red,
-                ),
-                label: const Text(
-                  "Get Directions",
-                  style: TextStyle(
-                    color: Colors.red,
-                  ),
-                ),
+              Column(
+                children: _buildListTiles(),
               ),
-              TextButton.icon(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.share_outlined,
-                  color: Colors.red,
-                ),
-                label: const Text(
-                  "Share",
-                  style: TextStyle(
-                    color: Colors.red,
+              Divider(
+                thickness: 1,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton.icon(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.directions_outlined,
+                      color: Colors.red,
+                    ),
+                    label: Text(
+                      "Get Directions",
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
                   ),
-                ),
+                  TextButton.icon(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.share_outlined,
+                      color: Colors.red,
+                    ),
+                    label: Text(
+                      "Share",
+                      style: TextStyle(
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Divider(
+                thickness: 1,
+              ),
+              Row(
+                children: [
+                  ///direct calling
+                  Expanded(
+                    child: MaterialButton(
+                      shape: StadiumBorder(),
+                      height: size.height * 0.060,
+                      minWidth: size.width * 0.80,
+                      color: Colors.red,
+                      child: Text(
+                        "Direct Call",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () {
+                        FlutterPhoneDirectCaller.callNumber(
+                            "+92${widget.contactNumber}");
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    child: MaterialButton(
+                      shape: StadiumBorder(),
+                      height: size.height * 0.060,
+                      minWidth: size.width * 0.80,
+                      color: Colors.green,
+                      child: Text(
+                        "Mark as Fulfilled",
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      onPressed: () {
+                        Fluttertoast.showToast(
+                            msg: 'This feature is not added yet');
+                      },
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          const Divider(
-            thickness: 1,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: MaterialButton(
-              shape: const StadiumBorder(),
-              height: size.height * 0.060,
-              minWidth: size.width * 0.80,
-              color: Colors.red,
-              child: const Text(
-                "Contact",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {},
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: MaterialButton(
-              shape: const StadiumBorder(),
-              height: size.height * 0.060,
-              minWidth: size.width * 0.80,
-              color: Colors.green,
-              child: const Text(
-                "Mark as Fulfilled",
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {},
-            ),
-          ),
-        ],
+        ),
       ),
+    );
+  }
+
+  List<Widget> _buildListTiles() {
+    return [
+      _buildListTile("Requester Name", "${widget.requesterName}"),
+      _buildListTile("Urgency Level", "${widget.urgencyLevel}"),
+      _buildListTile("Quantity Needed", "${widget.quantityNeeded}"),
+      _buildListTile("Blood Type", "${widget.bloodType}"),
+      _buildListTile("Patient Name", "${widget.patientName}"),
+      _buildListTile("Location", "${widget.location}"),
+      _buildListTile("Contact Number", "${widget.contactNumber}"),
+      _buildListTile(
+          "Submitted By",
+          widget.isSubmitted == true
+              ? "${widget.submittedBy} On ${widget.date}"
+              : "Not Submitted"),
+    ];
+  }
+
+  Widget _buildListTile(
+    String title,
+    String subtitle,
+  ) {
+    return ListTile(
+      title: Text("${title}"),
+      subtitle: Text("${subtitle}"),
     );
   }
 }

@@ -80,6 +80,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 AppUtils.profileCard(
                     Icons.numbers_outlined, "Age", user['age'].toString()),
 
+                AppUtils.profileCard(Icons.bloodtype_outlined, "Blood Group",
+                    user['bloodGroup'].toString()),
+
                 AppUtils.profileCard(Icons.person_outline, "Phone",
                     "+92${user['phoneNumber']}".toString()),
 

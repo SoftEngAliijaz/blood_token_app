@@ -1,14 +1,14 @@
+import 'dart:io';
 import 'package:blood_token_app/constants/db_collections.dart';
 import 'package:blood_token_app/models/services_model/user_model.dart';
 import 'package:blood_token_app/screens/credientals/login_screen.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -39,59 +39,59 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       if (_passwordController.text != _rePasswordController.text) {
         Fluttertoast.showToast(msg: 'Password and RePassword are not Matched!');
-      }
+      } else {
+        try {
+          UserCredential userCredential =
+              await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: _emailController.text,
+            password: _passwordController.text,
+          );
 
-      try {
-        UserCredential userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
+          String? photoUrl;
+          if (_image != null) {
+            photoUrl = await _uploadImage();
+          }
 
-        String? photoUrl;
-        if (_image != null) {
-          photoUrl = await _uploadImage();
+          // Create a UserModel instance
+          UserModel userModel = UserModel(
+            uid: userCredential.user!.uid,
+            email: _emailController.text,
+            displayName: _nameController.text,
+            // Assign value from blood group controller
+            bloodGroup: _bloodGroupController.text,
+            // Convert text to int
+            phoneNumber: int.parse(_phoneNumberController.text),
+            // Assign value from age controller
+            age: _ageController.text,
+            photoUrl: photoUrl,
+          );
+
+          // Convert the UserModel instance to a map and save it to Firestore
+          await FirebaseFirestore.instance
+              .collection(DatabaseCollection.usersCollections)
+              .doc(userCredential.user!.uid)
+              .set(userModel.toJson());
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Sign-up successful!"),
+            ),
+          );
+
+          Navigator.push(context, MaterialPageRoute(builder: (_) {
+            return LogInScreen();
+          }));
+        } on FirebaseAuthException catch (e) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("Error: ${e.message}"),
+            ),
+          );
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
         }
-
-        // Create a UserModel instance
-        UserModel userModel = UserModel(
-          uid: userCredential.user!.uid,
-          email: _emailController.text,
-          displayName: _nameController.text,
-          // Assign value from blood group controller
-          bloodGroup: _bloodGroupController.text,
-          // Convert text to int
-          phoneNumber: int.parse(_phoneNumberController.text),
-          // Assign value from age controller
-          age: _ageController.text,
-          photoUrl: photoUrl,
-        );
-
-        // Convert the UserModel instance to a map and save it to Firestore
-        await FirebaseFirestore.instance
-            .collection(DatabaseCollection.usersCollections)
-            .doc(userCredential.user!.uid)
-            .set(userModel.toJson());
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("Sign-up successful!"),
-          ),
-        );
-
-        Navigator.push(context, MaterialPageRoute(builder: (_) {
-          return LogInScreen();
-        }));
-      } on FirebaseAuthException catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Error: ${e.message}"),
-          ),
-        );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
       }
     }
   }
@@ -160,10 +160,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       ? Colors.red
                                       : Colors.blueGrey,
                                   child: _image == null
-                                      ? Icon(
-                                          Icons.camera_alt,
-                                          color: Colors.white,
-                                        )
+                                      ? Center(
+                                          child: Icon(Icons.camera_alt_outlined,
+                                              color: Colors.white))
                                       : null,
                                   backgroundImage: _image != null
                                       ? FileImage(_image!)
@@ -222,14 +221,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 validator: (value) {
                                   if (value!.isEmpty) {
                                     return 'Please enter your phone number';
-                                  } else if (RegExp(r'^\+923[0-9]{10}$')
+                                  } else if (!RegExp(r'^\+92[0-9]{10}$')
                                       .hasMatch(value)) {
                                     return 'Please enter a valid Pakistani phone number';
                                   }
                                   return null;
                                 },
                                 prefixIcon: Icons.phone_android_outlined,
-                                prefixText: '+923',
+                                prefixText: '+92',
                                 labelText: 'Phone Number',
                               ),
 
@@ -317,8 +316,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       MaterialStateProperty.all<Color>(
                                           Colors.red),
                                 ),
-                                onPressed:
-                                    _isLoading ? null : _signUpCredentials,
+                                onPressed: _isLoading
+                                    ? null
+                                    : () {
+                                        // Check if an image is selected before proceeding with sign-up
+                                        if (_image == null) {
+                                          Fluttertoast.showToast(
+                                              msg: 'Please Select Image');
+                                        } else {
+                                          _signUpCredentials();
+                                        }
+                                      },
                                 child: _isLoading
                                     ? const Text('Signing Up...')
                                     : const Text(
