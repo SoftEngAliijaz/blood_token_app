@@ -1,29 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailsScreen extends StatefulWidget {
-  final String? patientName;
+  final String? requesterName;
   final String? date;
   final String? location;
   final String? bloodType;
   final String? quantityNeeded;
   final String? urgencyLevel;
   final String? contactNumber;
-  final String? requesterName;
+  final String? patientName;
   final String? customLocation;
+  final double latitude; // Add latitude parameter
+  final double longitude; // Add longitude parameter
 
   const DetailsScreen({
     Key? key,
-    required this.patientName,
+    required this.requesterName,
     required this.date,
     required this.location,
     required this.bloodType,
     required this.quantityNeeded,
     required this.urgencyLevel,
     required this.contactNumber,
-    required this.requesterName,
+    required this.patientName,
     required this.customLocation,
+    required this.latitude, // Initialize latitude parameter
+    required this.longitude, // Initialize longitude parameter
   }) : super(key: key);
 
   @override
@@ -95,7 +100,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
         "Location",
         "${widget.location}",
         IconButton(
-          onPressed: () async {},
+          onPressed: () {
+            _launchMaps(
+                widget.latitude.toString(), widget.longitude.toString());
+          },
           icon: const Icon(Icons.arrow_forward_ios_outlined),
         ),
       ),
@@ -163,5 +171,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
     message += "Share this blood request with others to help save a life! 💉";
 
     Share.share(message);
+  }
+
+  void _launchMaps(String latitude, String longitude) async {
+    String mapsUrl =
+        "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
+    if (await canLaunch(mapsUrl)) {
+      await launch(mapsUrl);
+    } else {
+      throw 'Could not launch $mapsUrl';
+    }
   }
 }

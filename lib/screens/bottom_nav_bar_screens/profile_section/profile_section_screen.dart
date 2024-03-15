@@ -1,4 +1,9 @@
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/my_blood_requests.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/ui_screens/blood_quotes_screen.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/ui_screens/blood_slogan_screen.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/ui_screens/blood_tips_screen.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/ui_screens/rate_app_screen.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/ui_screens/share_app_screen.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/user/user_profile_screen.dart';
 import 'package:blood_token_app/screens/credientals/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -48,14 +53,25 @@ class ProfileSectionScreen extends StatelessWidget {
             ),
 
             _tileCard(Icons.request_page_outlined, 'My Requests', () {
-              Navigator.push(context, MaterialPageRoute(builder: (_) {
-                return MyBloodRequestsScreen();
-              }));
+              navigateTo(context, MyBloodRequestsScreen());
             }),
 
-            _tileCard(Icons.share_outlined, 'Share App', () {}),
+            _tileCard(Icons.tips_and_updates_outlined, 'Blood Tips', () {
+              navigateTo(context, BloodTipsScreen());
+            }),
+            _tileCard(Icons.quora_outlined, 'Blood Quotes', () {
+              navigateTo(context, BloodQuotesScreen());
+            }),
+            _tileCard(Icons.speaker_outlined, 'Slogans', () {
+              navigateTo(context, BloodSloganScreen());
+            }),
+            _tileCard(Icons.share_outlined, 'Share App', () {
+              navigateTo(context, ShareAppScreen());
+            }),
 
-            _tileCard(Icons.rate_review_outlined, 'Rate Our App', () {}),
+            _tileCard(Icons.rate_review_outlined, 'Rate Our App', () {
+              navigateTo(context, RateAppScreen());
+            }),
 
             _tileCard(Icons.logout_outlined, 'SignOut', () {
               FirebaseAuth.instance.signOut();

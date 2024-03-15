@@ -11,6 +11,8 @@ class BloodRequestModel {
   final String? customLocation;
   final String? patientName;
   final DateTime? timestamp;
+  final double? latitude;
+  final double? longitude;
 
   BloodRequestModel({
     required this.requesterName,
@@ -22,6 +24,8 @@ class BloodRequestModel {
     required this.customLocation,
     required this.patientName,
     required this.timestamp,
+    required this.latitude,
+    required this.longitude,
   });
 
   BloodRequestModel copyWith({
@@ -34,6 +38,8 @@ class BloodRequestModel {
     String? customLocation,
     String? patientName,
     DateTime? timestamp,
+    double? latitude,
+    double? longitude,
   }) =>
       BloodRequestModel(
         requesterName: requesterName ?? this.requesterName,
@@ -45,6 +51,8 @@ class BloodRequestModel {
         customLocation: customLocation ?? this.customLocation,
         patientName: patientName ?? this.patientName,
         timestamp: timestamp ?? this.timestamp,
+        latitude: latitude ?? this.latitude,
+        longitude: longitude ?? this.longitude,
       );
 
   factory BloodRequestModel.fromRawJson(String str) =>
@@ -64,6 +72,8 @@ class BloodRequestModel {
         customLocation: json["customLocation"],
         patientName: json["patientName"],
         timestamp: DateTime.parse(json["timestamp"]),
+        latitude: json["latitude"],
+        longitude: json["longitude"],
       );
     } catch (e) {
       print("Error parsing BloodRequestModel from JSON: $e");
@@ -77,6 +87,8 @@ class BloodRequestModel {
         customLocation: null,
         patientName: null,
         timestamp: null,
+        latitude: null,
+        longitude: null,
       );
     }
   }
@@ -91,7 +103,10 @@ class BloodRequestModel {
         "customLocation": customLocation,
         "patientName": patientName,
         "timestamp": timestamp!.toIso8601String(),
+        "latitude": latitude,
+        "longitude": longitude,
       };
+
   String formattedTimestamp() {
     return DateFormat.yMMMMd('en_US').add_jm().format(timestamp!.toLocal());
   }

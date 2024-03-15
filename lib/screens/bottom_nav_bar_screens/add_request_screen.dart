@@ -301,6 +301,8 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
         contactNumber: _contactNumberController.text,
         timestamp: DateTime.now(),
         customLocation: _customLocation.text,
+        latitude: _initialCameraPosition.latitude, // Store latitude value
+        longitude: _initialCameraPosition.longitude, // Store longitude value
       );
 
       try {
