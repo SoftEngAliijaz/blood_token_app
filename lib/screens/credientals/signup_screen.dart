@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -70,6 +71,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
               .collection("users")
               .doc(userCredential.user!.uid)
               .set(userModel.toJson());
+
+          // Save user email to shared preferences for autofill in login screen
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.setString('lastUserEmail', _emailController.text);
 
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -140,8 +145,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(height: 10),
-
-                              ///AppTitle
                               Container(
                                 child: Text(
                                   'Welcome to Blood Token\nPlease SignUp to Your Account',
@@ -150,7 +153,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 ),
                               ),
                               SizedBox(height: 10),
-
                               GestureDetector(
                                 onTap: _getImage,
                                 child: CircleAvatar(
@@ -168,8 +170,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       : null,
                                 ),
                               ),
-
-                              ///Fields
                               CustomTextFormField(
                                 controller: _nameController,
                                 textInputAction: TextInputAction.next,
@@ -183,6 +183,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 prefixIcon: Icons.person_outline,
                                 labelText: 'Name',
                               ),
+
                               CustomTextFormField(
                                 controller: _emailController,
                                 textInputAction: TextInputAction.next,
@@ -306,8 +307,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   ),
                                 ),
                               ),
-
-                              ///button
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:
@@ -335,28 +334,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                               ///route selection
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text("Already have account?"),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: Colors.white.withOpacity(0.2),
-                                          borderRadius:
-                                              BorderRadius.circular(10)),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(5.0),
-                                        child: Text(
-                                          "Sign In",
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Already have account?"),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color:
+                                                Colors.white.withOpacity(0.2),
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Text(
+                                            "Sign In",
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                ],
-                              ),
+                                  ]),
                             ],
                           ),
                         ),

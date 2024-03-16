@@ -4,6 +4,7 @@ import 'package:blood_token_app/widgets/custom_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({Key? key}) : super(key: key);
@@ -90,14 +91,12 @@ class _LogInScreenState extends State<LogInScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ///logo will be here
                     CircleAvatar(
                       radius: 100,
                       backgroundColor: Colors.red,
                       backgroundImage:
                           AssetImage("assets/images/blood_token_logo_00.png"),
                     ),
-
                     Form(
                       key: _formKey,
                       child: Container(
@@ -106,9 +105,6 @@ class _LogInScreenState extends State<LogInScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            SizedBox(height: 10),
-
-                            ///AppTitle
                             Container(
                               child: Text(
                                 'Welcome to Blood Token\nPlease Log In to Your Account',
@@ -116,9 +112,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                 style: TextStyle(fontSize: 20.0),
                               ),
                             ),
-                            SizedBox(height: 10),
-
-                            ///Fields
                             CustomTextFormField(
                               controller: _emailController,
                               textInputAction: TextInputAction.next,
@@ -160,10 +153,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                 ),
                               ),
                             ),
-
-                            SizedBox(height: 10),
-
-                            ///button
                             ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
@@ -181,12 +170,10 @@ class _LogInScreenState extends State<LogInScreen> {
                                       style: TextStyle(color: Colors.white),
                                     ),
                             ),
-
-                            ///route selection
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Don't have account?"),
+                                Text("Don't have an account?"),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.push(context,
@@ -212,5 +199,19 @@ class _LogInScreenState extends State<LogInScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedEmail();
+  }
+
+  void _loadSavedEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedEmail = prefs.getString('lastResetEmail');
+    if (savedEmail != null && savedEmail.isNotEmpty) {
+      _emailController.text = savedEmail;
+    }
   }
 }

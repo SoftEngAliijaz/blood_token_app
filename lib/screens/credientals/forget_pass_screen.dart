@@ -3,6 +3,7 @@ import 'package:blood_token_app/screens/credientals/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart' as toast;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({Key? key}) : super(key: key);
@@ -25,6 +26,10 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       toast.Fluttertoast.showToast(
           msg: 'Password reset email sent successfully.');
 
+      // Save email to shared preferences for autofill in login screen
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('lastResetEmail', email);
+
       Navigator.push(context, MaterialPageRoute(builder: (_) {
         return LogInScreen();
       }));
@@ -40,7 +45,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _isLoading == false
+      body: _isLoading
           ? Center(child: AppUtils.customProgressIndicator())
           : SafeArea(
               child: SizedBox(
@@ -61,11 +66,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-
-                        ///buildLogo
-                        // AppUtils.buildLogo(100),
-
-                        ///fields
+                        // TextFormField for email input
                         TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
@@ -79,24 +80,20 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             return null;
                           },
                         ),
-                        _isLoading
-                            ? AppUtils.customProgressIndicator()
-                            : ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          Colors.red),
-                                ),
-                                child: Text(_isLoading == true
-                                    ? 'Sending Request...'
-                                    : 'Send Request'),
-                                onPressed: () {
-                                  if (_formKey.currentState!.validate()) {
-                                    String email = emailController.text.trim();
-                                    resetPassword(context, email);
-                                  }
-                                },
-                              ),
+                        // ElevatedButton for sending reset request
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all<Color>(Colors.red),
+                          ),
+                          child: Text('Send Request'),
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              String email = emailController.text.trim();
+                              resetPassword(context, email);
+                            }
+                          },
+                        ),
                       ],
                     ),
                   ),
