@@ -251,17 +251,24 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
       Fluttertoast.showToast(msg: 'Location service is disabled');
       _serviceEnabled = await location.requestService();
       if (!_serviceEnabled) {
-        Fluttertoast.showToast(msg: 'Location service is still disabled');
+        Fluttertoast.showToast(msg: 'Failed to enable location service');
+        return; // Exit function if service couldn't be enabled
       }
+      Fluttertoast.showToast(msg: 'Location service is enabled');
+    } else {
+      Fluttertoast.showToast(msg: 'Location service is enabled');
     }
 
     _permissionGranted = await location.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
-      Fluttertoast.showToast(msg: 'Location permission is denied');
       _permissionGranted = await location.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
-        Fluttertoast.showToast(msg: 'Location permission is still denied');
+        Fluttertoast.showToast(msg: 'Location permission denied');
+        return; // Exit function if permission couldn't be granted
       }
+      Fluttertoast.showToast(msg: 'Location permission granted');
+    } else if (_permissionGranted == PermissionStatus.granted) {
+      Fluttertoast.showToast(msg: 'Location permission already granted');
     }
 
     _locationData = await location.getLocation();

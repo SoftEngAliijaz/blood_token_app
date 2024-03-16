@@ -29,15 +29,15 @@ enum ThemeModeOption {
   System,
 }
 
-extension ThemeModeExtension on ThemeMode {
-  ThemeModeOption toThemeModeOption() {
+extension ThemeModeOptionExtension on ThemeModeOption {
+  ThemeMode toThemeMode() {
     switch (this) {
-      case ThemeMode.light:
-        return ThemeModeOption.Light;
-      case ThemeMode.dark:
-        return ThemeModeOption.Dark;
-      case ThemeMode.system:
-        return ThemeModeOption.System;
+      case ThemeModeOption.Light:
+        return ThemeMode.light;
+      case ThemeModeOption.Dark:
+        return ThemeMode.dark;
+      case ThemeModeOption.System:
+        return ThemeMode.system;
     }
   }
 }

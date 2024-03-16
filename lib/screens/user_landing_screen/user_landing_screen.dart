@@ -4,8 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserLandingScreen extends StatelessWidget {
-  const UserLandingScreen(
-      {Key? key, required void Function(ThemeMode mode) drawerChangeTheme})
+  final void Function(ThemeMode) drawerChangeTheme;
+
+  const UserLandingScreen({Key? key, required this.drawerChangeTheme})
       : super(key: key);
 
   @override
@@ -49,7 +50,7 @@ class UserLandingScreen extends StatelessWidget {
       return const HomeScreen();
     } else {
       // Navigate to the login screen if user is logged out
-      return const LogInScreen();
+      return LogInScreen();
     }
   }
 }

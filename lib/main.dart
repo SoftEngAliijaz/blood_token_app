@@ -5,11 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
-  // Ensure that Flutter bindings are initialized
   WidgetsFlutterBinding.ensureInitialized();
-  // Initialize Firebase
   await Firebase.initializeApp();
-  // Run the app
   runApp(MyApp());
 }
 
@@ -21,7 +18,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  ThemeMode _themeMode = ThemeMode.system;
+  late ThemeMode _themeMode =
+      ThemeMode.system; // Initialize with a default value
 
   @override
   void initState() {
@@ -34,20 +32,20 @@ class _MyAppState extends State<MyApp> {
     final themeModeIndex =
         prefs.getInt('themeMode') ?? ThemeModeOption.Light.index;
     setState(() {
-      _themeMode = ThemeModeOption.values[themeModeIndex].toThemeModeOption();
+      _themeMode = ThemeModeOption.values[themeModeIndex].toThemeMode();
     });
   }
 
-  Future<void> _saveThemeMode(ThemeModeOption mode) async {
+  Future<void> _saveThemeMode(ThemeMode mode) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setInt('themeMode', mode.index);
     setState(() {
-      _themeMode = ThemeMode.values();
+      _themeMode = mode;
     });
   }
 
   void _changeTheme(ThemeMode mode) {
-    _saveThemeMode(mode.toThemeModeOption());
+    _saveThemeMode(mode);
   }
 
   @override

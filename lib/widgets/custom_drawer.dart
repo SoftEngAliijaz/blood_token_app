@@ -32,7 +32,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
               onChanged: (ThemeMode? value) {
                 setState(() {
                   _selectedTheme = value!;
-                  widget.onThemeChanged!(value);
+                  if (widget.onThemeChanged != null) {
+                    // Check if onThemeChanged is not null
+                    widget.onThemeChanged!(value); // Call theme change callback
+                  }
                 });
               },
             ),
@@ -45,7 +48,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
               onChanged: (ThemeMode? value) {
                 setState(() {
                   _selectedTheme = value!;
-                  widget.onThemeChanged!(value);
+                  if (widget.onThemeChanged != null) {
+                    // Check if onThemeChanged is not null
+                    widget.onThemeChanged!(value); // Call theme change callback
+                  }
                 });
               },
             ),
