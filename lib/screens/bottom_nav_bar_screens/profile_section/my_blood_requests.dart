@@ -52,17 +52,13 @@ class MyBloodRequestsScreen extends StatelessWidget {
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Blood Type: ${requestData['bloodType'] ?? ''}'),
-                      Text(
-                          'Quantity Needed: ${requestData['quantityNeeded'] ?? ''}'),
-                      Text(
-                          'Urgency Level: ${requestData['urgencyLevel'] ?? ''}'),
-                      Text('Location: ${requestData['location'] ?? ''}'),
-                      Text(
-                          'Contact Number: ${requestData['contactNumber'] ?? ''}'),
-                      Text(
-                          'Custom Location: ${requestData['customLocation'] ?? ''}'),
-                      Text('Patient Name: ${requestData['patientName'] ?? ''}'),
+                      Text('Blood Type: ${requestData['bloodType']}'),
+                      Text('Quantity Needed: ${requestData['quantityNeeded']}'),
+                      Text('Urgency Level: ${requestData['urgencyLevel']}'),
+                      Text('Location: ${requestData['location']}'),
+                      Text('Contact Number: ${requestData['contactNumber']}'),
+                      Text('Custom Location: ${requestData['customLocation']}'),
+                      Text('Patient Name: ${requestData['patientName']}'),
                       Text(
                           'Timestamp: ${requestData['timestamp'] != null ? DateTime.parse(requestData['timestamp'].toString()).toString() : ''}'),
                     ],

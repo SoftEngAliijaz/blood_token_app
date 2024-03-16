@@ -1,7 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
-class RateAppScreen extends StatelessWidget {
+class RateAppScreen extends StatefulWidget {
   const RateAppScreen({Key? key}) : super(key: key);
+
+  @override
+  State<RateAppScreen> createState() => _RateAppScreenState();
+}
+
+class _RateAppScreenState extends State<RateAppScreen> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  double _userRating = 3; // Initial rating value
+
+  Future<void> _logRating(double rating) async {
+    try {
+      final String formattedDateTime =
+          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+
+      // Add rating to Firestore
+      await _firestore.collection('ratings').add({
+        'rating': rating,
+        'timestamp': formattedDateTime,
+      });
+    } catch (e) {
+      print('Error logging rating: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,10 +41,23 @@ class RateAppScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              Icons.star,
-              size: 100,
-              color: Colors.amber,
+            RatingBar.builder(
+              initialRating: _userRating,
+              minRating: 1,
+              maxRating: 5,
+              direction: Axis.horizontal,
+              allowHalfRating: false,
+              itemCount: 5,
+              itemSize: 40,
+              itemBuilder: (context, _) => Icon(
+                Icons.star,
+                color: Colors.red,
+              ),
+              onRatingUpdate: (rating) {
+                setState(() {
+                  _userRating = rating;
+                });
+              },
             ),
             SizedBox(height: 20),
             Text(
@@ -37,10 +76,12 @@ class RateAppScreen extends StatelessWidget {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
+                // Log rating to Firestore
+                _logRating(_userRating);
                 // TODO: Add functionality to navigate to app store for rating
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.amber,
+                primary: Colors.red,
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -48,7 +89,7 @@ class RateAppScreen extends StatelessWidget {
               ),
               child: Text(
                 'Rate Now',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
             SizedBox(height: 20),
@@ -58,7 +99,7 @@ class RateAppScreen extends StatelessWidget {
               },
               child: Text(
                 'Maybe Later',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18, color: Colors.blue),
               ),
             ),
           ],

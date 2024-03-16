@@ -15,10 +15,16 @@ class ShareAppScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Icon(
-              Icons.share,
-              size: 100,
-              color: Colors.blue,
+            CircleAvatar(
+              radius: 100,
+              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              child: Center(
+                child: Icon(
+                  Icons.share,
+                  size: 100,
+                  color: Colors.blue,
+                ),
+              ),
             ),
             SizedBox(height: 20),
             Text(
@@ -40,7 +46,7 @@ class ShareAppScreen extends StatelessWidget {
                 // TODO: Add functionality to share the app
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue,
+                primary: Colors.red,
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -48,7 +54,7 @@ class ShareAppScreen extends StatelessWidget {
               ),
               child: Text(
                 'Share Now',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
             SizedBox(height: 20),
@@ -58,7 +64,7 @@ class ShareAppScreen extends StatelessWidget {
               },
               child: Text(
                 'Maybe Later',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontSize: 18, color: Colors.blue),
               ),
             ),
           ],

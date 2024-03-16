@@ -1,4 +1,4 @@
-import 'package:blood_token_app/screens/bottom_nav_bar_screens/home_screen.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/bottom_screens/home_screen.dart';
 import 'package:blood_token_app/screens/credientals/signup_screen.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -47,8 +47,8 @@ class _LogInScreenState extends State<LogInScreen> {
           // User doesn't exist in Firestore, display a message to create an account
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text(
-                  "User not found in Firestore. Please create an account."),
+              content:
+                  Text("User not found in Database. Please create an account."),
             ),
           );
         }
@@ -101,7 +101,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     Form(
                       key: _formKey,
                       child: Container(
-                        height: size.height * 0.50,
+                        height: size.height * 0.40,
                         width: size.width,
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

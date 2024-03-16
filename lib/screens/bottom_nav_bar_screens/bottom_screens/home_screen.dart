@@ -1,7 +1,7 @@
-import 'package:blood_token_app/screens/bottom_nav_bar_screens/add_request_screen.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/bottom_screens/add_request_screen.dart';
 import 'package:blood_token_app/screens/main_screens/main_screen.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/profile_section_screen.dart';
-import 'package:blood_token_app/screens/bottom_nav_bar_screens/search_screen.dart';
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/bottom_screens/search_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {

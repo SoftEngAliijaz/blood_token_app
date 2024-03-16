@@ -223,6 +223,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
           position: position,
         ),
       );
+      // Update location controller with latitude and longitude
       _locationController.text = "${position.latitude}, ${position.longitude}";
     });
   }
