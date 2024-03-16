@@ -62,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             // Convert text to int
             phoneNumber: int.parse(_phoneNumberController.text),
             // Assign value from age controller
-            age: _ageController.text,
+            age: int.parse(_ageController.text),
             photoUrl: photoUrl,
           );
 
@@ -349,9 +349,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 BorderRadius.circular(10)),
                                         child: Padding(
                                           padding: const EdgeInsets.all(5.0),
-                                          child: Text(
-                                            "Sign In",
-                                          ),
+                                          child: Text("Sign In"),
                                         ),
                                       ),
                                     ),

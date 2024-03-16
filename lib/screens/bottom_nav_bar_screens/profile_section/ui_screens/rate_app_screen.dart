@@ -17,7 +17,7 @@ class _RateAppScreenState extends State<RateAppScreen> {
   Future<void> _logRating(double rating) async {
     try {
       final String formattedDateTime =
-          DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+          DateFormat('yyyy-MM-dd HH:mm:ss', 'en_US').format(DateTime.now());
 
       // Add rating to Firestore
       await _firestore.collection('ratings').add({
@@ -55,6 +55,7 @@ class _RateAppScreenState extends State<RateAppScreen> {
               ),
               onRatingUpdate: (rating) {
                 setState(() {
+                  _showRatingMessage(rating);
                   _userRating = rating;
                 });
               },
@@ -78,7 +79,6 @@ class _RateAppScreenState extends State<RateAppScreen> {
               onPressed: () {
                 // Log rating to Firestore
                 _logRating(_userRating);
-                // TODO: Add functionality to navigate to app store for rating
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.red,
@@ -105,6 +105,44 @@ class _RateAppScreenState extends State<RateAppScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _showRatingMessage(double rating) {
+    String message;
+    if (rating == 5) {
+      message = "Wow! Thank you for your excellent rating!";
+    } else if (rating >= 4) {
+      message = "Thank you for your good rating. We will strive to improve.";
+    } else if (rating > 2 && rating < 4) {
+      message =
+          "Thank you for your rating. We're working on improving your experience.";
+    } else if (rating == 2) {
+      message =
+          "We're sorry you didn't enjoy the app. Please provide feedback on how we can improve.";
+    } else if (rating == 1) {
+      message =
+          "We're sorry to hear that you didn't enjoy the app. Your feedback would be appreciated.";
+    } else {
+      message = "Invalid rating. Please try again.";
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Rating Message'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

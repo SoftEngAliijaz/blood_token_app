@@ -6,7 +6,7 @@ class UserModel {
   final String displayName;
   final String bloodGroup;
   final int phoneNumber;
-  final String age;
+  final int age;
   final dynamic photoUrl;
 
   UserModel({
@@ -25,7 +25,7 @@ class UserModel {
     String? displayName,
     String? bloodGroup,
     int? phoneNumber,
-    String? age,
+    int? age,
     dynamic photoUrl,
   }) =>
       UserModel(

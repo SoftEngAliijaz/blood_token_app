@@ -13,44 +13,42 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  final PageStorageBucket bucket = PageStorageBucket();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      ///body
-      body: Center(child: _buildScreen()),
-
-      ///bottomNavigationBar
+      /*
+        1. By wrapping each screen with a PageStorage widget and providing a unique PageStorageBucket,
+        2. the state of each screen will be stored and maintained when navigating between them
+        3. using the bottom navigation bar.
+      */
+      body: PageStorage(
+        bucket: bucket,
+        child: _buildScreen(_selectedIndex),
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        ///index
         currentIndex: _selectedIndex,
-
-        ///onTap
         onTap: _onItemTapped,
-
-        ///conditions
         unselectedItemColor: Colors.black,
         selectedItemColor: Colors.red,
         showUnselectedLabels: true,
         backgroundColor: Colors.black,
-
         type: BottomNavigationBarType.shifting,
-
-        ///items
-        items: [
-          const BottomNavigationBarItem(
+        items: const [
+          BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             label: 'Home',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.search_outlined),
             label: 'Search',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.add_box_outlined),
             label: 'Add Request',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.person_outline),
             label: 'Profile',
           ),
@@ -59,16 +57,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  ///_onItemTapped
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
-  ///_buildScreen
-  Widget _buildScreen() {
-    switch (_selectedIndex) {
+  Widget _buildScreen(int index) {
+    switch (index) {
       case 0:
         return MainScreen();
       case 1:

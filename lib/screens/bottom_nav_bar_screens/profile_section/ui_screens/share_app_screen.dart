@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ShareAppScreen extends StatelessWidget {
   const ShareAppScreen({Key? key}) : super(key: key);
@@ -43,7 +44,15 @@ class ShareAppScreen extends StatelessWidget {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                // TODO: Add functionality to share the app
+                ///dummy link
+                final String appLink =
+                    'https://your-app-store-link.com/blood-token.playstore';
+
+                ///sharing link and sending link of playstore
+                Share.share(
+                  'Check out this amazing app! $appLink',
+                  subject: 'Check out this app!',
+                );
               },
               style: ElevatedButton.styleFrom(
                 primary: Colors.red,

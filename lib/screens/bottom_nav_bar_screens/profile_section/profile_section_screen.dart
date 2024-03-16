@@ -1,5 +1,4 @@
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/my_blood_requests.dart';
-import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/theme_selection.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/ui_screens/blood_quotes_screen.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/ui_screens/blood_slogan_screen.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/ui_screens/blood_tips_screen.dart';
@@ -10,8 +9,14 @@ import 'package:blood_token_app/screens/credientals/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class ProfileSectionScreen extends StatelessWidget {
+class ProfileSectionScreen extends StatefulWidget {
   const ProfileSectionScreen({Key? key}) : super(key: key);
+
+  @override
+  _ProfileSectionScreenState createState() => _ProfileSectionScreenState();
+}
+
+class _ProfileSectionScreenState extends State<ProfileSectionScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -25,7 +30,6 @@ class ProfileSectionScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              ///logo
               SizedBox(
                 child: Padding(
                   padding: const EdgeInsets.all(5.0),
@@ -44,8 +48,6 @@ class ProfileSectionScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
-              ///tiles
               _tileCard(
                 Icons.person_outline,
                 'My Profile',
@@ -53,11 +55,9 @@ class ProfileSectionScreen extends StatelessWidget {
                   navigateTo(context, UserProfileScreen());
                 },
               ),
-
               _tileCard(Icons.request_page_outlined, 'My Requests', () {
                 navigateTo(context, MyBloodRequestsScreen());
               }),
-
               _tileCard(Icons.tips_and_updates_outlined, 'Blood Tips', () {
                 navigateTo(context, BloodTipsScreen());
               }),
@@ -70,14 +70,9 @@ class ProfileSectionScreen extends StatelessWidget {
               _tileCard(Icons.share_outlined, 'Share App', () {
                 navigateTo(context, ShareAppScreen());
               }),
-
               _tileCard(Icons.rate_review_outlined, 'Rate Our App', () {
                 navigateTo(context, RateAppScreen());
               }),
-              _tileCard(Icons.wb_sunny_outlined, 'Theme Settings', () {
-                navigateTo(context, ThemeSelectionScreen());
-              }),
-
               _tileCard(Icons.logout_outlined, 'SignOut', () {
                 FirebaseAuth.instance.signOut();
                 Navigator.pushReplacement(context,
