@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -101,8 +102,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
         "${widget.location}",
         IconButton(
           onPressed: () {
-            _launchMaps(
-                widget.latitude.toString(), widget.longitude.toString());
+            _launchMaps(widget.latitude, widget.longitude);
           },
           icon: const Icon(Icons.arrow_forward_ios_outlined),
         ),
@@ -127,8 +127,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     IconData leadingIcon,
     String title,
     String subtitle,
-    Widget?
-        trailingWidget, // Change to accept Text('${widget.date}')able Widget
+    Widget trailingWidget, // Change to accept Text('${widget.date}')able Widget
   ) {
     return ListTile(
       leading: Icon(leadingIcon),
@@ -173,13 +172,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
     Share.share(message);
   }
 
-  void _launchMaps(String latitude, String longitude) async {
+  Future<void> _launchMaps(double latitude, double longitude) async {
     String mapsUrl =
         "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
     if (await canLaunch(mapsUrl)) {
       await launch(mapsUrl);
     } else {
-      throw 'Could not launch $mapsUrl';
+      throw Fluttertoast.showToast(msg: 'Could not launch');
     }
   }
 }

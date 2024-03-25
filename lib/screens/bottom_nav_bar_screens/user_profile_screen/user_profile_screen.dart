@@ -91,8 +91,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   style: ButtonStyle(
                       backgroundColor:
                           MaterialStateProperty.all<Color>(Colors.red)),
-                  child:
-                      const Text('SAVE', style: TextStyle(color: Colors.white)),
+                  child: const Text('Update/Save',
+                      style: TextStyle(color: Colors.white)),
                   onPressed: () {
                     _updateProfile(user.id);
                   },

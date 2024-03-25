@@ -55,7 +55,7 @@ class ShareAppScreen extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.red,
+                backgroundColor: Colors.red,
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),

@@ -113,9 +113,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Future<void> _getImage() async {
     final ImagePicker _picker = ImagePicker();
     final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(image!.path);
-    });
+
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+      });
+    } else {
+      Fluttertoast.showToast(msg: 'Image Not Picked');
+    }
   }
 
   @override

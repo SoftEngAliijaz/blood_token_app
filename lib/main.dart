@@ -18,8 +18,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late ThemeMode _themeMode =
-      ThemeMode.system; // Initialize with a default value
+  // Initialize with a default value
+  late ThemeMode _themeMode = ThemeMode.system;
 
   @override
   void initState() {
@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
         hintColor: Colors.blue,
         scaffoldBackgroundColor: Colors.black,
       ),
-      home: UserLandingScreen(drawerChangeTheme: _changeTheme),
+      home: UserLandingScreen(),
     );
   }
 }

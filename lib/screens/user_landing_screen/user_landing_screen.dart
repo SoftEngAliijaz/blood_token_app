@@ -4,10 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserLandingScreen extends StatelessWidget {
-  final void Function(ThemeMode) drawerChangeTheme;
+  final void Function(ThemeMode)? drawerChangeTheme;
 
-  const UserLandingScreen({Key? key, required this.drawerChangeTheme})
-      : super(key: key);
+  const UserLandingScreen({Key? key, this.drawerChangeTheme}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "862703148100",
-    "project_id": "blood-token-app",
-    "storage_bucket": "blood-token-app.appspot.com"
+    "project_number": "16436173693",
+    "project_id": "blood-token-app-85d4a",
+    "storage_bucket": "blood-token-app-85d4a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:862703148100:android:5de583787f8a9fb35c7011",
+        "mobilesdk_app_id": "1:16436173693:android:e780764657cff5a724ca14",
         "android_client_info": {
           "package_name": "com.example.blood_token_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC2jwwTVnI9OiT9kVBQptfsJPwfretUO0c"
+          "current_key": "AIzaSyD1nMRbDj1MD2kwUjMjzpTf97VGfh1-B9o"
         }
       ],
       "services": {
