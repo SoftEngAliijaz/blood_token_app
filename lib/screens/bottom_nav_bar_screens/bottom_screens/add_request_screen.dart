@@ -1,6 +1,7 @@
 import 'package:blood_token_app/models/services_model/blood_request_model.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -300,6 +301,9 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
       });
 
       BloodRequestModel bloodRequestObject = BloodRequestModel(
+        docId: '', // Empty docId to let Firestore generate one
+        uid: FirebaseAuth
+            .instance.currentUser!.uid, // Pass the UID of the current user
         requesterName: _requesterNameController.text,
         patientName: _patientNameController.text,
         bloodType: _bloodTypeController.text,
@@ -314,9 +318,17 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
       );
 
       try {
-        await FirebaseFirestore.instance
+        DocumentReference docRef = await FirebaseFirestore.instance
             .collection('blood_requests')
             .add(bloodRequestObject.toJson());
+
+        // Get the document ID assigned by Firestore and update the BloodRequestModel
+        String docId = docRef.id;
+        bloodRequestObject = bloodRequestObject.copyWith(docId: docId);
+
+        // Update the document with the assigned document ID
+        await docRef.update({'docId': docId});
+
         Fluttertoast.showToast(msg: 'Blood request submitted successfully');
         _resetForm();
       } catch (e) {

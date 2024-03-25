@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:intl/intl.dart';
 
 class BloodRequestModel {
+  final String? docId;
+  final String? uid; // Add uid field to store user's UID
   final String? requesterName;
   final String? bloodType;
   final String? quantityNeeded;
@@ -15,6 +17,8 @@ class BloodRequestModel {
   final double? longitude;
 
   BloodRequestModel({
+    this.docId,
+    this.uid, // Include uid in the constructor
     required this.requesterName,
     required this.bloodType,
     required this.quantityNeeded,
@@ -29,6 +33,8 @@ class BloodRequestModel {
   });
 
   BloodRequestModel copyWith({
+    String? docId,
+    String? uid,
     String? requesterName,
     String? bloodType,
     String? quantityNeeded,
@@ -42,6 +48,8 @@ class BloodRequestModel {
     double? longitude,
   }) =>
       BloodRequestModel(
+        docId: docId ?? this.docId,
+        uid: uid ?? this.uid,
         requesterName: requesterName ?? this.requesterName,
         bloodType: bloodType ?? this.bloodType,
         quantityNeeded: quantityNeeded ?? this.quantityNeeded,
@@ -63,6 +71,8 @@ class BloodRequestModel {
   factory BloodRequestModel.fromJson(Map<String, dynamic> json) {
     try {
       return BloodRequestModel(
+        docId: json["docId"],
+        uid: json["uid"],
         requesterName: json["requesterName"],
         bloodType: json["bloodType"],
         quantityNeeded: json["quantityNeeded"],
@@ -78,6 +88,8 @@ class BloodRequestModel {
     } catch (e) {
       print("Error parsing BloodRequestModel from JSON: $e");
       return BloodRequestModel(
+        docId: null,
+        uid: null,
         requesterName: null,
         bloodType: null,
         quantityNeeded: null,
@@ -94,6 +106,8 @@ class BloodRequestModel {
   }
 
   Map<String, dynamic> toJson() => {
+        "docId": docId,
+        "uid": uid,
         "requesterName": requesterName,
         "bloodType": bloodType,
         "quantityNeeded": quantityNeeded,
