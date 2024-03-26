@@ -1,9 +1,11 @@
 import 'dart:io';
+
 import 'package:blood_token_app/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -17,9 +19,9 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   File? _pickedImage;
   final TextEditingController _nameController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
@@ -36,65 +38,134 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data != null) {
-            var user = snapshot.data!;
             return Column(
               children: [
                 SizedBox(
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: CircleAvatar(
-                        radius: 100,
-                        backgroundColor: Colors.grey,
-                        child: InkWell(
-                          onTap: () => showModalBottomSheetSuggestions(context),
-                          child: Container(
-                            width: double.infinity,
-                            height: double.infinity,
-                            child: _pickedImage != null
-                                ? CircleAvatar(
-                                    radius: 100,
-                                    backgroundImage: FileImage(_pickedImage!),
-                                  )
-                                : user['photoURL'] != null
-                                    ? CircleAvatar(
-                                        radius: 100,
-                                        backgroundImage:
-                                            NetworkImage(user['photoURL']),
-                                      )
-                                    : const Icon(Icons.person, size: 80),
-                          ),
-                        ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      height: size.height * 0.80,
+                      width: size.width,
+                      child: StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(FirebaseAuth.instance.currentUser!.uid)
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else if (snapshot.hasData &&
+                              snapshot.data != null) {
+                            var user = snapshot.data!;
+
+                            return Card(
+                              color: Theme.of(context).scaffoldBackgroundColor,
+                              child: Container(
+                                width: size.width,
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Expanded(
+                                        child: InkWell(
+                                          onTap: () {
+                                            showModalBottomSheetSuggestions(
+                                                context);
+                                          },
+                                          child: Container(
+                                            height: size.height,
+                                            width: size.width,
+                                            child: _pickedImage != null
+                                                ? ClipRRect(
+                                                    borderRadius:
+                                                        BorderRadius.zero,
+                                                    child: Container(
+                                                      width: 200,
+                                                      height: 200,
+                                                      decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.zero,
+                                                        image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image: FileImage(
+                                                              _pickedImage!),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
+                                                : user['photoURL'] != null
+                                                    ? ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius.zero,
+                                                        child: Container(
+                                                          width: 200,
+                                                          height: 200,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .zero,
+                                                            image:
+                                                                DecorationImage(
+                                                              fit: BoxFit.cover,
+                                                              image: NetworkImage(
+                                                                  user[
+                                                                      'photoURL']),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : const Icon(Icons.person,
+                                                        size: 80),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Column(
+                                            children: [
+                                              profileCard('Name',
+                                                  '${user['displayName']}'),
+                                              profileCard(
+                                                  'Email', '${user['email']}'),
+                                              profileCard(
+                                                  'Age', '${user['age']}'),
+                                              profileCard('Blood Group',
+                                                  '${user['bloodGroup']}'),
+                                              profileCard('Phone',
+                                                  '+92${user['phoneNumber']}'),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          } else {
+                            return Center(child: Text('No user data found.'));
+                          }
+                        },
                       ),
                     ),
                   ),
                 ),
-
-                ///profile cards
-                AppUtils.profileCard(Icons.person_outline, 'Name',
-                    user['displayName'].toString()),
-
-                AppUtils.profileCard(
-                    Icons.email_outlined, "Email", user['email'].toString()),
-
-                AppUtils.profileCard(
-                    Icons.numbers_outlined, "Age", user['age'].toString()),
-
-                AppUtils.profileCard(Icons.bloodtype_outlined, "Blood Group",
-                    user['bloodGroup'].toString()),
-
-                AppUtils.profileCard(Icons.person_outline, "Phone",
-                    "+92${user['phoneNumber']}".toString()),
-
-                ///save button
                 ElevatedButton(
                   style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red)),
+                          MaterialStateProperty.all<Color>(AppUtils.redColor)),
                   child: const Text('Update/Save',
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(color: AppUtils.whiteColor)),
                   onPressed: () {
-                    _updateProfile(user.id);
+                    var user = snapshot.data;
+                    _updateProfile(user!.id);
                   },
                 ),
               ],
@@ -103,6 +174,28 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             return const Center(child: Text('No user data found.'));
           }
         },
+      ),
+    );
+  }
+
+  Widget profileCard(
+    String title,
+    String trailing,
+  ) {
+    return ListTile(
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 17.0,
+          fontWeight: FontWeight.normal,
+        ),
+      ),
+      trailing: Text(
+        trailing,
+        style: TextStyle(
+          fontSize: 17.0,
+          fontWeight: FontWeight.normal,
+        ),
       ),
     );
   }
@@ -174,7 +267,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       Reference storageRef = FirebaseStorage.instance
           .ref()
           .child('profile_images')
-          .child('user_id.jpg');
+          .child('user_profile_image.jpg');
       UploadTask uploadTask = storageRef.putFile(imageFile);
       TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
       String downloadURL = await taskSnapshot.ref.getDownloadURL();

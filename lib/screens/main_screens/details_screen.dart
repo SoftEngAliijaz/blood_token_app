@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -61,12 +62,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   onPressed: _shareBloodRequestDetails,
                   icon: Icon(
                     Icons.share_outlined,
-                    color: Colors.red,
+                    color: AppUtils.redColor,
                   ),
                   label: Text(
                     "Share Details",
                     style: TextStyle(
-                      color: Colors.red,
+                      color: AppUtils.redColor,
                     ),
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/bottom_screens/home_screen.dart';
 import 'package:blood_token_app/screens/credientals/signup_screen.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
@@ -84,7 +85,7 @@ class _LogInScreenState extends State<LogInScreen> {
           child: Container(
             height: size.height,
             width: size.width,
-            color: Colors.red,
+            color: AppUtils.redColor,
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Card(
@@ -93,7 +94,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   children: [
                     CircleAvatar(
                       radius: 100,
-                      backgroundColor: Colors.red,
+                      backgroundColor: AppUtils.redColor,
                       backgroundImage:
                           AssetImage("assets/images/blood_token_logo_00.png"),
                     ),
@@ -157,17 +158,19 @@ class _LogInScreenState extends State<LogInScreen> {
                               style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                        Colors.red),
+                                        AppUtils.redColor),
                               ),
                               onPressed: _isLoading ? null : _login,
                               child: _isLoading
                                   ? Text(
                                       'Logging in...',
-                                      style: TextStyle(color: Colors.white),
+                                      style:
+                                          TextStyle(color: AppUtils.whiteColor),
                                     )
                                   : const Text(
                                       'Log In',
-                                      style: TextStyle(color: Colors.white),
+                                      style:
+                                          TextStyle(color: AppUtils.whiteColor),
                                     ),
                             ),
                             Row(

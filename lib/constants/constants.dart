@@ -1,26 +1,16 @@
 import 'package:flutter/material.dart';
 
 class AppUtils {
+  static const Color whiteColor = Color(0xFFFFFFFF);
+  static const Color redColor = Color(0xFF880808);
+  static const Color blueColor = Color(0xFF0000FF);
+  // #880808
+  // 0000FF
+
   ///CircularProgressIndicator
   static Center customProgressIndicator() => const Center(
       child: CircularProgressIndicator(
-          color: Colors.red, backgroundColor: Colors.white));
-
-  ///profile screen info cards
-  ///where we show profile info
-  ///like name,email etc
-  static Card profileCard(
-    IconData leadingIcon,
-    String title,
-    String subtitle,
-  ) {
-    return Card(
-        child: ListTile(
-      leading: Icon(leadingIcon),
-      title: Text(title),
-      subtitle: Text(subtitle),
-    ));
-  }
+          color: AppUtils.redColor, backgroundColor: AppUtils.whiteColor));
 }
 
 enum ThemeModeOption {

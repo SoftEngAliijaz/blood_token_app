@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/models/services_model/blood_request_model.dart';
 import 'package:blood_token_app/screens/main_screens/details_screen.dart';
 import 'package:blood_token_app/widgets/custom_drawer.dart';
@@ -150,35 +151,36 @@ class _MainScreenState extends State<MainScreen> {
                                     ),
                                     height: size.height * 0.060,
                                     minWidth: size.width,
-                                    color: Colors.red,
+                                    color: AppUtils.redColor,
                                     onPressed: () {
                                       if (mounted) {
                                         setState(() {
                                           Navigator.push(context,
                                               MaterialPageRoute(builder: (_) {
                                             return DetailsScreen(
-                                              requesterName:
-                                                  value.requesterName,
-                                              bloodType: value.bloodType,
-                                              quantityNeeded:
-                                                  value.quantityNeeded,
-                                              urgencyLevel: value.urgencyLevel,
-                                              location: value.location,
-                                              contactNumber:
-                                                  value.contactNumber,
-                                              patientName: value.patientName,
-                                              date: value.formattedTimestamp(),
-                                              customLocation:
-                                                  value.customLocation,
-                                              latitude: double.parse(value
-                                                      .location!
-                                                      .split(', ')[
-                                                  0]), // Convert latitude string to double
-                                              longitude: double.parse(value
-                                                      .location!
-                                                      .split(', ')[
-                                                  1]), // Convert longitude string to double
-                                            );
+                                                requesterName:
+                                                    value.requesterName,
+                                                bloodType: value.bloodType,
+                                                quantityNeeded:
+                                                    value.quantityNeeded,
+                                                urgencyLevel:
+                                                    value.urgencyLevel,
+                                                location: value.location,
+                                                contactNumber:
+                                                    value.contactNumber,
+                                                patientName: value.patientName,
+                                                date:
+                                                    value.formattedTimestamp(),
+                                                customLocation:
+                                                    value.customLocation,
+                                                // Convert latitude string to double
+                                                latitude: double.parse(value
+                                                    .location!
+                                                    .split(', ')[0]),
+                                                // Convert longitude string to double
+                                                longitude: double.parse(value
+                                                    .location!
+                                                    .split(', ')[1]));
                                           }));
                                         });
                                       }
@@ -186,7 +188,7 @@ class _MainScreenState extends State<MainScreen> {
                                     child: Text(
                                       "Details",
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        color: AppUtils.whiteColor,
                                       ),
                                     ),
                                   ),

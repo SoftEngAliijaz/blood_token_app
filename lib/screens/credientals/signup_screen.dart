@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/models/services_model/user_model.dart';
 import 'package:blood_token_app/screens/credientals/login_screen.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
@@ -136,7 +137,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Container(
               height: size.height,
               width: size.width,
-              color: Colors.red,
+              color: AppUtils.redColor,
               child: Padding(
                 padding: const EdgeInsets.all(10.0),
                 child: Card(
@@ -163,12 +164,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 child: CircleAvatar(
                                   radius: 80,
                                   backgroundColor: _image == null
-                                      ? Colors.red
-                                      : Colors.blueGrey,
+                                      ? AppUtils.redColor
+                                      : AppUtils.blueColor,
                                   child: _image == null
                                       ? Center(
                                           child: Icon(Icons.camera_alt_outlined,
-                                              color: Colors.white))
+                                              color: AppUtils.whiteColor))
                                       : null,
                                   backgroundImage: _image != null
                                       ? FileImage(_image!)
@@ -316,7 +317,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 style: ButtonStyle(
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
-                                          Colors.red),
+                                          AppUtils.redColor),
                                 ),
                                 onPressed: _isLoading
                                     ? null
@@ -333,7 +334,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     ? const Text('Signing Up...')
                                     : const Text(
                                         'Sign Up',
-                                        style: TextStyle(color: Colors.white),
+                                        style: TextStyle(
+                                            color: AppUtils.whiteColor),
                                       ),
                               ),
 
@@ -348,8 +350,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       },
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            color:
-                                                Colors.white.withOpacity(0.2),
+                                            color: AppUtils.whiteColor
+                                                .withOpacity(0.2),
                                             borderRadius:
                                                 BorderRadius.circular(10)),
                                         child: Padding(

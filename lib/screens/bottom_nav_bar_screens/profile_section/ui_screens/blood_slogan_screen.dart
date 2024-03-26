@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/models/ui_models/slogan_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -18,7 +19,7 @@ class BloodSloganScreen extends StatelessWidget {
             child: ListTile(
               leading: Icon(
                 Icons.text_fields_outlined,
-                color: Colors.blue,
+                color: AppUtils.blueColor,
               ),
               title: Text(slogans[index].text),
               trailing: IconButton(
@@ -28,7 +29,7 @@ class BloodSloganScreen extends StatelessWidget {
                 },
                 icon: const Icon(
                   Icons.share_outlined,
-                  color: Colors.blue,
+                  color: AppUtils.blueColor,
                 ),
               ),
             ),

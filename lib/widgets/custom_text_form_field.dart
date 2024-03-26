@@ -62,7 +62,8 @@ Widget titleProgressIndicator(BuildContext context, String? title) {
         child: Text(
           title ?? "title",
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: size.height * 0.030, color: Colors.red),
+          style: TextStyle(
+              fontSize: size.height * 0.030, color: AppUtils.redColor),
         ),
       ),
       SizedBox(height: 20),

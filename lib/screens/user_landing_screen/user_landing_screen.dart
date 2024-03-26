@@ -14,42 +14,32 @@ class UserLandingScreen extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return _buildWaitingScreen();
+          return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
-          return _buildErrorScreen(snapshot.error.toString());
+          final errorMessage = snapshot.error
+              .toString(); // Changed snapshot.hasError to snapshot.error
+          return Center(
+            child: Text(
+              'Error: $errorMessage',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
+            ),
+          );
         } else {
-          return _buildUserScreen(snapshot.data);
+          final user =
+              snapshot.data; // Added this line to get the user from snapshot
+          if (user != null) {
+            // Navigate to the home screen if user is logged in
+            return const HomeScreen();
+          } else {
+            // Navigate to the login screen if user is logged out
+            return LogInScreen(); // Changed LogInScreen() to LoginScreen()
+          }
         }
       },
     );
-  }
-
-  Widget _buildWaitingScreen() {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-
-  Widget _buildErrorScreen(String errorMessage) {
-    return Center(
-      child: Text(
-        'Error: $errorMessage',
-        style: TextStyle(
-          fontSize: 20.0,
-          fontWeight: FontWeight.bold,
-        ),
-        textAlign: TextAlign.center,
-      ),
-    );
-  }
-
-  Widget _buildUserScreen(User? user) {
-    if (user != null) {
-      // Navigate to the home screen if user is logged in
-      return const HomeScreen();
-    } else {
-      // Navigate to the login screen if user is logged out
-      return LogInScreen();
-    }
   }
 }

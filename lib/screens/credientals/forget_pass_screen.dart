@@ -83,8 +83,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         // ElevatedButton for sending reset request
                         ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.all<Color>(Colors.red),
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                AppUtils.redColor),
                           ),
                           child: Text('Send Request'),
                           onPressed: () {

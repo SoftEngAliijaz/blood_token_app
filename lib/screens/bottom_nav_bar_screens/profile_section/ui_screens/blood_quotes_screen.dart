@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/models/ui_models/quote_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -19,7 +20,7 @@ class BloodQuotesScreen extends StatelessWidget {
             child: ListTile(
               leading: Icon(
                 Icons.text_fields_outlined,
-                color: Colors.blue,
+                color: AppUtils.blueColor,
               ),
               title: Text(quotesModel[index].text),
               trailing: IconButton(
@@ -29,7 +30,7 @@ class BloodQuotesScreen extends StatelessWidget {
                 },
                 icon: const Icon(
                   Icons.share_outlined,
-                  color: Colors.blue,
+                  color: AppUtils.blueColor,
                 ),
               ),
             ),

@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/models/ui_models/tips_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -17,14 +18,16 @@ class BloodTipsScreen extends StatelessWidget {
           return Card(
               color: Theme.of(context).scaffoldBackgroundColor,
               child: ListTile(
-                leading: Icon(Icons.text_fields_outlined, color: Colors.blue),
+                leading:
+                    Icon(Icons.text_fields_outlined, color: AppUtils.blueColor),
                 title: Text(tipsModel[index].text),
                 trailing: IconButton(
                   onPressed: () {
                     Share.share(tipsModel[index].text).then(
                         (value) => Fluttertoast.showToast(msg: 'Sharing...'));
                   },
-                  icon: const Icon(Icons.share_outlined, color: Colors.blue),
+                  icon: const Icon(Icons.share_outlined,
+                      color: AppUtils.blueColor),
                 ),
               ));
         },

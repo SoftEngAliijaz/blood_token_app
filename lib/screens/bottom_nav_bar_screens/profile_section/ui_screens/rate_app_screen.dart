@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -51,7 +52,7 @@ class _RateAppScreenState extends State<RateAppScreen> {
               itemSize: 40,
               itemBuilder: (context, _) => Icon(
                 Icons.star,
-                color: Colors.red,
+                color: AppUtils.redColor,
               ),
               onRatingUpdate: (rating) {
                 setState(() {
@@ -81,7 +82,7 @@ class _RateAppScreenState extends State<RateAppScreen> {
                 _logRating(_userRating);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: AppUtils.redColor,
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -89,7 +90,7 @@ class _RateAppScreenState extends State<RateAppScreen> {
               ),
               child: Text(
                 'Rate Now',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: TextStyle(fontSize: 20, color: AppUtils.whiteColor),
               ),
             ),
             SizedBox(height: 20),
@@ -99,7 +100,7 @@ class _RateAppScreenState extends State<RateAppScreen> {
               },
               child: Text(
                 'Maybe Later',
-                style: TextStyle(fontSize: 18, color: Colors.blue),
+                style: TextStyle(fontSize: 18, color: AppUtils.blueColor),
               ),
             ),
           ],

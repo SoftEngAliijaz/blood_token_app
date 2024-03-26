@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -23,7 +24,7 @@ class ShareAppScreen extends StatelessWidget {
                 child: Icon(
                   Icons.share,
                   size: 100,
-                  color: Colors.blue,
+                  color: AppUtils.blueColor,
                 ),
               ),
             ),
@@ -55,7 +56,7 @@ class ShareAppScreen extends StatelessWidget {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.red,
+                backgroundColor: AppUtils.redColor,
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -63,7 +64,7 @@ class ShareAppScreen extends StatelessWidget {
               ),
               child: Text(
                 'Share Now',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: TextStyle(fontSize: 20, color: AppUtils.whiteColor),
               ),
             ),
             SizedBox(height: 20),
@@ -73,7 +74,7 @@ class ShareAppScreen extends StatelessWidget {
               },
               child: Text(
                 'Maybe Later',
-                style: TextStyle(fontSize: 18, color: Colors.blue),
+                style: TextStyle(fontSize: 18, color: AppUtils.blueColor),
               ),
             ),
           ],

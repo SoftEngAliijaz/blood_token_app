@@ -50,7 +50,7 @@ class UserModel {
         bloodGroup: json["bloodGroup"] ?? '',
         phoneNumber: json["phoneNumber"] ?? 0,
         age: json["age"] ?? '',
-        photoUrl: json["photoURL"],
+        photoUrl: json["photoUrl"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -60,6 +60,6 @@ class UserModel {
         "bloodGroup": bloodGroup,
         "phoneNumber": phoneNumber,
         "age": age,
-        "photoURL": photoUrl,
+        "photoUrl": photoUrl,
       };
 }

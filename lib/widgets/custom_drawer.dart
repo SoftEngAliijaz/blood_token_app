@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -19,9 +20,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
         padding: EdgeInsets.all(0.0),
         children: [
           DrawerHeader(
-            decoration: BoxDecoration(color: Colors.red),
+            decoration: BoxDecoration(color: AppUtils.redColor),
             child: Container(
-              child: CircleAvatar(backgroundColor: Colors.blue),
+              child: CircleAvatar(backgroundColor: AppUtils.blueColor),
             ),
           ),
           ListTile(

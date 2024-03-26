@@ -1,8 +1,7 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class MyBloodRequestsScreen extends StatelessWidget {
@@ -11,7 +10,8 @@ class MyBloodRequestsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Get the current user
-    User? user = FirebaseAuth.instance.currentUser;
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    final currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
     return Scaffold(
       appBar: AppBar(
@@ -21,7 +21,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
         // Filter the collection based on the current user's UID
         stream: FirebaseFirestore.instance
             .collection("blood_requests")
-            .where("uid", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .where("uid", isEqualTo: currentUserId)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -46,7 +46,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
                   snapshot.data!.docs[index].data() as Map<String, dynamic>;
 
               // Ensure that the blood request belongs to the current user
-              if (requestData['uid'] == user!.uid) {
+              if (requestData['uid'] == currentUser!.uid) {
                 return buildBloodRequestCard(requestData, context);
               } else {
                 // If the blood request does not belong to the current user, return an empty SizedBox
@@ -105,12 +105,12 @@ class MyBloodRequestsScreen extends StatelessWidget {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.blue),
+                          MaterialStateProperty.all<Color>(AppUtils.blueColor),
                     ),
                     onPressed: () {},
                     child: Text(
                       "Update",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: AppUtils.whiteColor),
                     ),
                   ),
                 ),
@@ -118,7 +118,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red),
+                          MaterialStateProperty.all<Color>(AppUtils.redColor),
                     ),
                     onPressed: () {
                       showDialog(
@@ -176,7 +176,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
                     },
                     child: Text(
                       "Delete",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(color: AppUtils.whiteColor),
                     ),
                   ),
                 ),

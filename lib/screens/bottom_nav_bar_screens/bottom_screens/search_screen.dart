@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -11,9 +10,14 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   TextEditingController _searchController = TextEditingController();
   String _searchText = '';
+  List<String> _items = List.generate(50, (index) => 'Item $index');
 
   @override
   Widget build(BuildContext context) {
+    List<String> filteredItems = _items
+        .where((item) => item.toLowerCase().contains(_searchText.toLowerCase()))
+        .toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Search Screen'),
@@ -29,10 +33,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 suffixIcon: IconButton(
                   icon: Icon(Icons.clear),
                   onPressed: () {
-                    _searchController.clear();
-                    setState(() {
-                      _searchText = '';
-                    });
+                    _clearSearch();
                   },
                 ),
               ),
@@ -45,14 +46,9 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: 50, // Example number of items
+              itemCount: filteredItems.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text('Item $index'),
-                  onTap: () {
-                    // Handle item tap
-                  },
-                );
+                return _buildListItem(filteredItems[index]);
               },
             ),
           ),
@@ -61,15 +57,25 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
+  void _clearSearch() {
+    _searchController.clear();
+    setState(() {
+      _searchText = '';
+    });
+  }
+
+  Widget _buildListItem(String item) {
+    return ListTile(
+      title: Text(item),
+      onTap: () {
+        // Handle item tap
+      },
+    );
+  }
+
   @override
   void dispose() {
     _searchController.dispose();
     super.dispose();
-  }
-
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(StringProperty('_searchText', _searchText));
   }
 }

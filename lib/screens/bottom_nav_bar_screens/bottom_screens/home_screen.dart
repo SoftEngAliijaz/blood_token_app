@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/bottom_screens/add_request_screen.dart';
 import 'package:blood_token_app/screens/main_screens/main_screen.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/profile_section_screen.dart';
@@ -31,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
         unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.red,
+        selectedItemColor: AppUtils.redColor,
         showUnselectedLabels: true,
         backgroundColor: Colors.black,
         type: BottomNavigationBarType.shifting,

@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/models/services_model/blood_request_model.dart';
 import 'package:blood_token_app/widgets/custom_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -152,12 +153,12 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                           _getCurrentLocation();
                         },
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.red),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              AppUtils.redColor),
                         ),
                         child: Text(
                           'Get Current Location',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: AppUtils.whiteColor),
                         ),
                       ),
                       SizedBox(
@@ -168,12 +169,12 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                           _submitForm();
                         },
                         style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.red),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              AppUtils.redColor),
                         ),
                         child: Text(
                           _isLoading == false ? 'Submit' : 'Submitting...',
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: AppUtils.whiteColor),
                         ),
                       ),
                     ]),
@@ -301,9 +302,10 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
       });
 
       BloodRequestModel bloodRequestObject = BloodRequestModel(
-        docId: '', // Empty docId to let Firestore generate one
-        uid: FirebaseAuth
-            .instance.currentUser!.uid, // Pass the UID of the current user
+        // Empty docId to let Firestore generate one
+        docId: '',
+        // Pass the UID of the current user
+        uid: FirebaseAuth.instance.currentUser!.uid,
         requesterName: _requesterNameController.text,
         patientName: _patientNameController.text,
         bloodType: _bloodTypeController.text,
@@ -313,8 +315,8 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
         contactNumber: _contactNumberController.text,
         timestamp: DateTime.now(),
         customLocation: _customLocation.text,
-        latitude: _initialCameraPosition.latitude, // Store latitude value
-        longitude: _initialCameraPosition.longitude, // Store longitude value
+        latitude: _initialCameraPosition.latitude,
+        longitude: _initialCameraPosition.longitude,
       );
 
       try {
