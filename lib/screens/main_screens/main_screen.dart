@@ -74,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return CircularProgressIndicator();
+                        return AppUtils.customProgressIndicator();
                       }
                       if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');

@@ -34,7 +34,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return Center(child: AppUtils.customProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data != null) {
@@ -55,7 +55,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             AsyncSnapshot<DocumentSnapshot> snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return Center(
+                                child: AppUtils.customProgressIndicator());
                           } else if (snapshot.hasError) {
                             return Center(
                                 child: Text('Error: ${snapshot.error}'));

@@ -1,3 +1,4 @@
+import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/bottom_screens/home_screen.dart';
 import 'package:blood_token_app/screens/credientals/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,13 +15,11 @@ class UserLandingScreen extends StatelessWidget {
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return Center(child: AppUtils.customProgressIndicator());
         } else if (snapshot.hasError) {
-          final errorMessage = snapshot.error
-              .toString(); // Changed snapshot.hasError to snapshot.error
           return Center(
             child: Text(
-              'Error: $errorMessage',
+              'Error: ${snapshot.error.toString()}',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
@@ -29,8 +28,8 @@ class UserLandingScreen extends StatelessWidget {
             ),
           );
         } else {
-          final user =
-              snapshot.data; // Added this line to get the user from snapshot
+          // Added this line to get the user from snapshot
+          final user = snapshot.data;
           if (user != null) {
             // Navigate to the home screen if user is logged in
             return const HomeScreen();

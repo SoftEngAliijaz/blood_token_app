@@ -26,7 +26,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: AppUtils.customProgressIndicator(),
             );
           }
           if (snapshot.hasError) {
