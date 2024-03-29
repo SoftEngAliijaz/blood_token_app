@@ -11,9 +11,9 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  late TextEditingController _searchController;
-  late List<BloodRequestModel> _bloodRequests;
-  late List<BloodRequestModel> _filteredRequests;
+  TextEditingController? _searchController;
+  List<BloodRequestModel>? _bloodRequests;
+  List<BloodRequestModel>? _filteredRequests;
 
   @override
   void initState() {
@@ -26,7 +26,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void dispose() {
-    _searchController.dispose();
+    _searchController!.dispose();
     super.dispose();
   }
 
@@ -52,11 +52,30 @@ class _SearchScreenState extends State<SearchScreen> {
       if (searchText.isEmpty) {
         _filteredRequests = _bloodRequests;
       } else {
-        _filteredRequests = _bloodRequests
-            .where((request) => request.requesterName!
-                .toLowerCase()
-                .contains(searchText.toLowerCase()))
-            .toList();
+        _filteredRequests = _bloodRequests!.where((request) {
+          // Check if requester name, blood type, or city contains the search text
+          //lower case
+          return request.requesterName!
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
+              request.bloodType!
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
+              request.customLocation!
+                  .toLowerCase()
+                  .contains(searchText.toLowerCase()) ||
+
+              ///upper case
+              request.requesterName!
+                  .toUpperCase()
+                  .contains(searchText.toUpperCase()) ||
+              request.bloodType!
+                  .toUpperCase()
+                  .contains(searchText.toUpperCase()) ||
+              request.customLocation!
+                  .toUpperCase()
+                  .contains(searchText.toUpperCase());
+        }).toList();
       }
     });
   }
@@ -86,12 +105,12 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
           Expanded(
             child: ListView.builder(
-              itemCount: _filteredRequests.length,
+              itemCount: _filteredRequests!.length,
               itemBuilder: (context, index) {
-                BloodRequestModel request = _filteredRequests[index];
+                BloodRequestModel request = _filteredRequests![index];
                 return ListTile(
-                  title: Text("${request.requesterName}"), // Corrected
-                  subtitle: Text("${request.urgencyLevel}"), // Corrected
+                  title: Text("${request.requesterName}"),
+                  subtitle: Text("${request.urgencyLevel}"),
                   onTap: () {
                     Navigator.push(
                       context,
