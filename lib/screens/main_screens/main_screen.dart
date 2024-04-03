@@ -29,31 +29,33 @@ class _MainScreenState extends State<MainScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                child: Center(
-                  child: Card(
-                    color: Theme.of(context).scaffoldBackgroundColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SvgPicture.asset(
-                          "assets/logos/032-blood_bag.svg",
-                          height: size.height * 0.18,
-                        ),
-                        Text(
-                          "Donate Blood\n Save Lives",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: size.height * 0.030,
-                            color: Colors.black,
+              SizedBox(
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  child: Center(
+                    child: Card(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SvgPicture.asset(
+                            "assets/logos/032-blood_bag.svg",
+                            height: size.height * 0.18,
                           ),
-                        ),
-                      ],
+                          Text(
+                            "Donate Blood\n Save Lives",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: size.height * 0.030,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -154,35 +156,31 @@ class _MainScreenState extends State<MainScreen> {
                                     color: AppUtils.redColor,
                                     onPressed: () {
                                       if (mounted) {
-                                        setState(() {
-                                          Navigator.push(context,
-                                              MaterialPageRoute(builder: (_) {
-                                            return DetailsScreen(
-                                                requesterName:
-                                                    value.requesterName,
-                                                bloodType: value.bloodType,
-                                                quantityNeeded:
-                                                    value.quantityNeeded,
-                                                urgencyLevel:
-                                                    value.urgencyLevel,
-                                                location: value.location,
-                                                contactNumber:
-                                                    value.contactNumber,
-                                                patientName: value.patientName,
-                                                date:
-                                                    value.formattedTimestamp(),
-                                                customLocation:
-                                                    value.customLocation,
-                                                // Convert latitude string to double
-                                                latitude: double.parse(value
-                                                    .location!
-                                                    .split(', ')[0]),
-                                                // Convert longitude string to double
-                                                longitude: double.parse(value
-                                                    .location!
-                                                    .split(', ')[1]));
-                                          }));
-                                        });
+                                        Navigator.push(context,
+                                            MaterialPageRoute(builder: (_) {
+                                          return DetailsScreen(
+                                              requesterName:
+                                                  value.requesterName,
+                                              bloodType: value.bloodType,
+                                              quantityNeeded:
+                                                  value.quantityNeeded,
+                                              urgencyLevel: value.urgencyLevel,
+                                              location: value.location,
+                                              contactNumber:
+                                                  value.contactNumber,
+                                              patientName: value.patientName,
+                                              date: value.formattedTimestamp(),
+                                              customLocation:
+                                                  value.customLocation,
+                                              // Convert latitude string to double
+                                              latitude: double.parse(value
+                                                  .location!
+                                                  .split(', ')[0]),
+                                              // Convert longitude string to double
+                                              longitude: double.parse(value
+                                                  .location!
+                                                  .split(', ')[1]));
+                                        }));
                                       }
                                     },
                                     child: Text(

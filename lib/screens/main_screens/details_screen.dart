@@ -1,11 +1,8 @@
-import 'package:blood_token_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class DetailsScreen extends StatefulWidget {
+class DetailsScreen extends StatelessWidget {
   final String? requesterName;
   final String? date;
   final String? location;
@@ -15,8 +12,8 @@ class DetailsScreen extends StatefulWidget {
   final String? contactNumber;
   final String? patientName;
   final String? customLocation;
-  final double latitude; // Add latitude parameter
-  final double longitude; // Add longitude parameter
+  final double latitude;
+  final double longitude;
 
   const DetailsScreen({
     Key? key,
@@ -29,157 +26,81 @@ class DetailsScreen extends StatefulWidget {
     required this.contactNumber,
     required this.patientName,
     required this.customLocation,
-    required this.latitude, // Initialize latitude parameter
-    required this.longitude, // Initialize longitude parameter
+    required this.latitude,
+    required this.longitude,
   }) : super(key: key);
 
   @override
-  State<DetailsScreen> createState() => _DetailsScreenState();
-}
-
-class _DetailsScreenState extends State<DetailsScreen> {
-  @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.requesterName} Details'),
+        title: Text('${requesterName ?? "Details"} Details'),
       ),
-      body: Container(
-        height: size.height,
-        width: size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Column(
-                children: _buildListTiles(),
-              ),
-
-              ///share button to share data
-              Divider(thickness: 1),
-              Center(
-                child: TextButton.icon(
-                  onPressed: _shareBloodRequestDetails,
-                  icon: Icon(
-                    Icons.share_outlined,
-                    color: AppUtils.redColor,
-                  ),
-                  label: Text(
-                    "Share Details",
-                    style: TextStyle(
-                      color: AppUtils.redColor,
-                    ),
-                  ),
-                ),
-              ),
-              Divider(thickness: 1),
-            ],
+      body: ListView(
+        padding: EdgeInsets.all(16.0),
+        children: [
+          _buildListTile(
+              Icons.person_outline, "Requester Name", requesterName ?? ""),
+          _buildListTile(
+              Icons.emergency_outlined, "Urgency Level", urgencyLevel ?? ""),
+          _buildListTile(Icons.production_quantity_limits_outlined,
+              "Quantity Needed", quantityNeeded ?? ""),
+          _buildListTile(
+              Icons.bloodtype_outlined, "Blood Type", bloodType ?? ""),
+          _buildListTile(
+              Icons.person_2_outlined, "Patient Name", patientName ?? ""),
+          _buildListTile(Icons.location_city_outlined, "Custom Location",
+              customLocation ?? ""),
+          _buildListTile(
+              Icons.location_city_outlined, "Location", location ?? "", () {
+            _launchMaps(latitude, longitude);
+          }),
+          _buildListTile(Icons.phone_android_outlined, "Contact Number",
+              contactNumber ?? "", () {
+            FlutterPhoneDirectCaller.callNumber("+92$contactNumber");
+          }),
+          Divider(thickness: 1),
+          Center(
+            child: TextButton.icon(
+              onPressed: () async {
+                final uri = Uri.parse("sms:$contactNumber");
+                if (await canLaunch(uri.toString())) {
+                  launch(uri.toString());
+                } else {
+                  throw 'Could not launch SMS';
+                }
+              },
+              icon: Icon(Icons.message_outlined, color: Colors.red),
+              label: Text("Send SMS", style: TextStyle(color: Colors.red)),
+            ),
           ),
-        ),
+          Divider(thickness: 1),
+        ],
       ),
     );
   }
 
-  List<Widget> _buildListTiles() {
-    return [
-      _buildListTile(Icons.person_outline, "Requester Name",
-          "${widget.requesterName}", Text('${widget.date}')),
-      _buildListTile(Icons.emergency_outlined, "Urgency Level",
-          "${widget.urgencyLevel}", Text('${widget.date}')),
-      _buildListTile(
-          Icons.production_quantity_limits_outlined,
-          "Quantity Needed",
-          "${widget.quantityNeeded}",
-          Text('${widget.date}')),
-      _buildListTile(Icons.bloodtype_outlined, "Blood Type",
-          "${widget.bloodType}", Text('${widget.date}')),
-      _buildListTile(Icons.person_2_outlined, "Patient Name",
-          "${widget.patientName}", Text('${widget.date}')),
-      _buildListTile(Icons.location_city_outlined, "Custom Location",
-          "${widget.customLocation}", Text('${widget.date}')),
-      _buildListTile(
-        Icons.location_city_outlined,
-        "Location",
-        "${widget.location}",
-        IconButton(
-          onPressed: () {
-            _launchMaps(widget.latitude, widget.longitude);
-          },
-          icon: const Icon(Icons.arrow_forward_ios_outlined),
-        ),
-      ),
-      _buildListTile(
-        Icons.phone_android_outlined,
-        "Contact Number",
-        "${widget.contactNumber}",
-
-        ///direct caller
-        IconButton(
-          onPressed: () {
-            FlutterPhoneDirectCaller.callNumber("+92${widget.contactNumber}");
-          },
-          icon: const Icon(Icons.call_outlined),
-        ),
-      ),
-    ];
-  }
-
-  Widget _buildListTile(
-    IconData leadingIcon,
-    String title,
-    String subtitle,
-    Widget trailingWidget, // Change to accept Text('${widget.date}')able Widget
-  ) {
+  Widget _buildListTile(IconData leadingIcon, String title, String subtitle,
+      [VoidCallback? onTap]) {
     return ListTile(
       leading: Icon(leadingIcon),
       title: Text(title),
       subtitle: Text(subtitle),
-      trailing: trailingWidget, // Use the provided trailing widget directly
+      onTap: onTap,
     );
   }
 
-  void _shareBloodRequestDetails() {
-    String message = "🩸 **Blood Request Details** 🩸\n\n";
-
-    // Add only selected details to the message
-    if (widget.requesterName != null) {
-      message += "• *Requester Name:* ${widget.requesterName}\n\n";
-    }
-    if (widget.urgencyLevel != null) {
-      message += "• *Urgency Level:* ${widget.urgencyLevel}\n\n";
-    }
-    if (widget.quantityNeeded != null) {
-      message += "• *Quantity Needed:* ${widget.quantityNeeded}\n\n";
-    }
-    if (widget.bloodType != null) {
-      message += "• *Blood Type:* ${widget.bloodType}\n\n";
-    }
-    if (widget.patientName != null) {
-      message += "• *Patient Name:* ${widget.patientName}\n\n";
-    }
-    if (widget.location != null) {
-      message += "• *Location:* ${widget.location}\n\n";
-    }
-    if (widget.contactNumber != null) {
-      message += "• *Contact Number:* ${widget.contactNumber}\n\n";
-    }
-
-    // Add current time
-    String currentTime = DateTime.now().toString();
-    message += "• *Time:* $currentTime\n\n";
-
-    message += "Share this blood request with others to help save a life! 💉";
-
-    Share.share(message);
-  }
-
   Future<void> _launchMaps(double latitude, double longitude) async {
-    String mapsUrl =
-        "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude";
-    if (await canLaunch(mapsUrl)) {
-      await launch(mapsUrl);
+    final encodedLat = Uri.encodeComponent(latitude.toString());
+    final encodedLong = Uri.encodeComponent(longitude.toString());
+
+    final Uri mapUrl =
+        Uri.parse("https://www.google.com/maps/?q=$encodedLat,$encodedLong");
+
+    if (await canLaunch(mapUrl.toString())) {
+      await launch(mapUrl.toString());
     } else {
-      throw Fluttertoast.showToast(msg: 'Could not launch');
+      throw 'Could not launch Maps';
     }
   }
 }
