@@ -1,43 +1,50 @@
-import 'package:blood_token_app/constants/constants.dart';
+import 'package:blood_token_app/constants/constants.dart'; // Importing constants file
 import 'package:blood_token_app/screens/credientals/login_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart' as toast;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Importing FirebaseAuth
+import 'package:flutter/material.dart'; // Importing Flutter Material library
+import 'package:fluttertoast/fluttertoast.dart'
+    as toast; // Importing Fluttertoast for toast messages
+import 'package:shared_preferences/shared_preferences.dart'; // Importing SharedPreferences
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+  State<ForgetPasswordScreen> createState() =>
+      _ForgetPasswordScreenState(); // Create state for ForgetPasswordScreen
 }
 
 class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _isLoading = false;
+  final TextEditingController emailController =
+      TextEditingController(); // Controller for email input
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(); // Form key for validation
+  bool _isLoading = false; // Flag to track loading state
 
+  // Function to reset password
   Future<void> resetPassword(BuildContext context, String email) async {
     try {
       setState(() {
-        _isLoading = true;
+        _isLoading = true; // Set loading state to true
       });
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: email); // Send password reset email
       toast.Fluttertoast.showToast(
-          msg: 'Password reset email sent successfully.');
+          msg: 'Password reset email sent successfully.'); // Show toast message
 
       // Save email to shared preferences for autofill in login screen
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('lastResetEmail', email);
 
       Navigator.push(context, MaterialPageRoute(builder: (_) {
-        return LogInScreen();
+        return LogInScreen(); // Navigate to login screen
       }));
     } catch (e) {
-      toast.Fluttertoast.showToast(msg: e.toString());
+      toast.Fluttertoast.showToast(
+          msg: e.toString()); // Show error toast message
     } finally {
       setState(() {
-        _isLoading = false;
+        _isLoading = false; // Set loading state to false
       });
     }
   }
@@ -46,7 +53,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _isLoading
-          ? Center(child: AppUtils.customProgressIndicator())
+          ? Center(
+              child: AppUtils
+                  .customProgressIndicator()) // Show custom progress indicator if loading
           : SafeArea(
               child: SizedBox(
                 height: MediaQuery.of(context).size.height,
@@ -84,13 +93,15 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
-                                AppUtils.redColor),
+                                AppUtils
+                                    .redColor), // Set button background color
                           ),
-                          child: Text('Send Request'),
+                          child: Text('Send Request'), // Button text
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               String email = emailController.text.trim();
-                              resetPassword(context, email);
+                              resetPassword(context,
+                                  email); // Call reset password function
                             }
                           },
                         ),

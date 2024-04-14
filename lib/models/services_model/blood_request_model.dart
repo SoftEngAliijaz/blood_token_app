@@ -5,7 +5,7 @@ class BloodRequestModel {
   // Add uid field to store Document ID
   final String? docId;
   // Add uid field to store user's UID
-  final String? uid; 
+  final String? uid;
   final String? requesterName;
   final String? bloodType;
   final String? quantityNeeded;
@@ -20,7 +20,7 @@ class BloodRequestModel {
 
   BloodRequestModel({
     this.docId,
-    this.uid, 
+    this.uid,
     required this.requesterName,
     required this.bloodType,
     required this.quantityNeeded,
@@ -122,8 +122,9 @@ class BloodRequestModel {
         "latitude": latitude,
         "longitude": longitude,
       };
-/// formatted Time Stamp
+
+  /// formatted Time Stamp
   String formattedTimestamp() {
-    return DateFormat.yMMMMd('en_US').add_jm().format(timestamp!.toLocal());
+    return DateFormat.yMMMMd('en_US').add_Hm().format(timestamp!.toLocal());
   }
 }

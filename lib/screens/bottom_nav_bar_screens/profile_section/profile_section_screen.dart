@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class ProfileSectionScreen extends StatefulWidget {
-  const ProfileSectionScreen({Key? key}) : super(key: key);
+  const ProfileSectionScreen({super.key});
 
   @override
   _ProfileSectionScreenState createState() => _ProfileSectionScreenState();

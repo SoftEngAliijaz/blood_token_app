@@ -9,10 +9,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class AddRequestScreen extends StatefulWidget {
-  const AddRequestScreen({Key? key}) : super(key: key);
+  const AddRequestScreen({super.key});
 
   @override
-  _AddRequestScreenState createState() => _AddRequestScreenState();
+  _AddRequestScreenState createState() {
+    return _AddRequestScreenState();
+  }
 }
 
 class _AddRequestScreenState extends State<AddRequestScreen> {

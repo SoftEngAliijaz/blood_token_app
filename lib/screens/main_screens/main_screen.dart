@@ -1,7 +1,6 @@
 import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/models/services_model/blood_request_model.dart';
 import 'package:blood_token_app/screens/main_screens/details_screen.dart';
-import 'package:blood_token_app/widgets/custom_drawer.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -22,7 +21,6 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: Text('Blood Token'),
       ),
-      drawer: CustomDrawer(),
       body: Container(
         height: size.height,
         width: size.width,

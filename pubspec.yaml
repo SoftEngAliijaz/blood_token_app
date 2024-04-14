@@ -73,8 +73,10 @@ dependencies:
   firebase_database: ^10.4.10
 # Permission Handler: A Flutter plugin for handling permissions on Android and iOS.
   permission_handler: ^11.3.0
+  mailer: ^6.1.0
 
 dev_dependencies:
+  flutter_lints: ^3.0.2
   flutter_test:
     sdk: flutter
 

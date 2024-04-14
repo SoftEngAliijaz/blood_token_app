@@ -1,4 +1,3 @@
-import 'package:blood_token_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -17,20 +16,32 @@ class ShareAppScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 100,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            Container(
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                    offset: Offset(0, 3), // changes position of shadow
+                  ),
+                ],
+              ),
               child: Center(
                 child: Icon(
                   Icons.share,
                   size: 100,
-                  color: AppUtils.blueColor,
+                  color: Colors.blue,
                 ),
               ),
             ),
             SizedBox(height: 20),
             Text(
-              'Share our app with others!',
+              'Share Our App',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
@@ -45,36 +56,41 @@ class ShareAppScreen extends StatelessWidget {
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                ///dummy link
                 final String appLink =
                     'https://your-app-store-link.com/blood-token.playstore';
-
-                ///sharing link and sending link of playstore
                 Share.share(
                   'Check out this amazing app! $appLink',
                   subject: 'Check out this app!',
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppUtils.redColor,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                backgroundColor: Colors.red,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
               child: Text(
                 'Share Now',
-                style: TextStyle(fontSize: 20, color: AppUtils.whiteColor),
+                style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
             SizedBox(height: 20),
-            TextButton(
+            OutlinedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.blue,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                side: BorderSide(color: Colors.blue, width: 2),
+                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              ),
               child: Text(
                 'Maybe Later',
-                style: TextStyle(fontSize: 18, color: AppUtils.blueColor),
+                style: TextStyle(fontSize: 18, color: Colors.blue),
               ),
             ),
           ],

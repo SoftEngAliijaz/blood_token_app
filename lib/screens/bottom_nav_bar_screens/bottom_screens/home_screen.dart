@@ -20,9 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       /*
-        1. By wrapping each screen with a PageStorage widget and providing a unique PageStorageBucket,
-        2. the state of each screen will be stored and maintained when navigating between them
-        3. using the bottom navigation bar.
+        * By wrapping each screen with a PageStorage widget and providing a unique PageStorageBucket,
+        the state of each screen will be stored and maintained when navigating between them
+        using the bottom navigation bar.
       */
       body: PageStorage(
         bucket: bucket,
@@ -67,7 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildScreen(int index) {
     switch (index) {
       case 0:
-        return MainScreen();
+        return const MainScreen();
       case 1:
         return const SearchScreen();
       case 2:
@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
       case 3:
         return const ProfileSectionScreen();
       default:
-        return MainScreen();
+        return const MainScreen();
     }
   }
 }
