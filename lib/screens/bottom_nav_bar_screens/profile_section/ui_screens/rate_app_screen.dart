@@ -29,8 +29,8 @@ class _RateAppScreenState extends State<RateAppScreen> {
       await _firestore.collection('ratings').add({
         'rating': rating,
         'timestamp': formattedDateTime,
-        'userId':
-            widget.currentUser!.uid, // Associate rating with current user ID
+        // Associate rating with current user ID
+        'userId': widget.currentUser!.uid,
       });
 
       // Get the user's email

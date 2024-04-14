@@ -3,6 +3,7 @@ import 'package:blood_token_app/models/services_model/blood_request_model.dart';
 import 'package:blood_token_app/screens/main_screens/details_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 
 class MainScreen extends StatefulWidget {
@@ -59,7 +60,6 @@ class _MainScreenState extends State<MainScreen> {
                 ),
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
                     title: Text(
@@ -68,133 +68,163 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                     trailing: Text('See all'),
                   ),
-                  StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('blood_requests')
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return AppUtils.customProgressIndicator();
-                      }
-                      if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      }
-                      final List<BloodRequestModel> bloodRequests = snapshot
-                          .data!.docs
-                          .map((doc) => BloodRequestModel.fromJson(
-                              doc.data() as Map<String, dynamic>))
-                          .toList();
+                  Expanded(
+                    child: StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('blood_requests')
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return AppUtils.customProgressIndicator();
+                        }
+                        if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        }
+                        final List<BloodRequestModel> bloodRequests = snapshot
+                            .data!.docs
+                            .map((doc) => BloodRequestModel.fromJson(
+                                doc.data() as Map<String, dynamic>))
+                            .toList();
 
-                      return Column(
-                        children: bloodRequests.map((value) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 10),
-                            child: Card(
-                              color: Theme.of(context).scaffoldBackgroundColor,
-                              elevation: 10,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
-                                ),
-                              ),
-                              child: Column(
-                                children: [
-                                  ListTile(
-                                    title: Text(
-                                      "Requester Name",
-                                      textAlign: TextAlign.left,
-                                      overflow: TextOverflow.ellipsis,
+                        return Container(
+                          width: MediaQuery.of(context)
+                              .size
+                              .width, // Ensure finite width
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: bloodRequests.map((value) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10, vertical: 10),
+                                  child: Container(
+                                    width:
+                                        300, // Set a finite width as per your design
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.grey.withOpacity(0.5),
+                                          spreadRadius: 5,
+                                          blurRadius: 7,
+                                          offset: Offset(0, 3),
+                                        ),
+                                      ],
+                                      color: Theme.of(context)
+                                          .scaffoldBackgroundColor,
+                                      borderRadius: BorderRadius.circular(20.0),
+                                      border: Border.all(
+                                        color: Colors.grey.shade100,
+                                        width: 0.0,
+                                      ),
                                     ),
-                                    subtitle: Text(
-                                      "${value.requesterName}",
-                                      textAlign: TextAlign.left,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    trailing: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
-                                        Text("Urgency Level"),
-                                        Text(
-                                          "${value.urgencyLevel}",
-                                          textAlign: TextAlign.left,
-                                          overflow: TextOverflow.ellipsis,
+                                        ListTile(
+                                          title: Text(
+                                            "Requester Name",
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          subtitle: Text(
+                                            "${value.requesterName}",
+                                            textAlign: TextAlign.left,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text("Urgency Level"),
+                                              Text(
+                                                "${value.urgencyLevel}",
+                                                textAlign: TextAlign.left,
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        ListTile(
+                                          title: Text("Location"),
+                                          subtitle:
+                                              Text("${value.customLocation}"),
+                                          trailing: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text("Blood Type"),
+                                              Text("${value.bloodType}"),
+                                            ],
+                                          ),
+                                        ),
+                                        ListTile(
+                                          leading: Icon(Icons.watch_outlined),
+                                          title: Text(
+                                              "${value.formattedTimestamp()}"),
+                                        ),
+                                        MaterialButton(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(20),
+                                              bottomRight: Radius.circular(20),
+                                            ),
+                                          ),
+                                          height: size.height * 0.060,
+                                          minWidth: size.width,
+                                          color: AppUtils.redColor,
+                                          onPressed: () {
+                                            if (mounted) {
+                                              Navigator.push(context,
+                                                  MaterialPageRoute(
+                                                      builder: (_) {
+                                                return DetailsScreen(
+                                                    requesterName:
+                                                        value.requesterName,
+                                                    bloodType: value.bloodType,
+                                                    quantityNeeded:
+                                                        value.quantityNeeded,
+                                                    urgencyLevel:
+                                                        value.urgencyLevel,
+                                                    location: value.location,
+                                                    contactNumber:
+                                                        value.contactNumber,
+                                                    patientName:
+                                                        value.patientName,
+                                                    date: value
+                                                        .formattedTimestamp(),
+                                                    customLocation:
+                                                        value.customLocation,
+                                                    // Convert latitude string to double
+                                                    latitude: double.parse(value
+                                                        .location!
+                                                        .split(', ')[0]),
+                                                    // Convert longitude string to double
+                                                    longitude: double.parse(
+                                                        value.location!
+                                                            .split(', ')[1]));
+                                              }));
+                                            }
+                                          },
+                                          child: Text(
+                                            "Details",
+                                            style: TextStyle(
+                                              color: AppUtils.whiteColor,
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  ListTile(
-                                    title: Text("Location"),
-                                    subtitle: Text("${value.customLocation}"),
-                                    trailing: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text("Blood Type"),
-                                        Text("${value.bloodType}"),
-                                      ],
-                                    ),
-                                  ),
-                                  ListTile(
-                                    leading: Icon(Icons.watch_outlined),
-                                    title:
-                                        Text("${value.formattedTimestamp()}"),
-                                  ),
-                                  MaterialButton(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20),
-                                      ),
-                                    ),
-                                    height: size.height * 0.060,
-                                    minWidth: size.width,
-                                    color: AppUtils.redColor,
-                                    onPressed: () {
-                                      if (mounted) {
-                                        Navigator.push(context,
-                                            MaterialPageRoute(builder: (_) {
-                                          return DetailsScreen(
-                                              requesterName:
-                                                  value.requesterName,
-                                              bloodType: value.bloodType,
-                                              quantityNeeded:
-                                                  value.quantityNeeded,
-                                              urgencyLevel: value.urgencyLevel,
-                                              location: value.location,
-                                              contactNumber:
-                                                  value.contactNumber,
-                                              patientName: value.patientName,
-                                              date: value.formattedTimestamp(),
-                                              customLocation:
-                                                  value.customLocation,
-                                              // Convert latitude string to double
-                                              latitude: double.parse(value
-                                                  .location!
-                                                  .split(', ')[0]),
-                                              // Convert longitude string to double
-                                              longitude: double.parse(value
-                                                  .location!
-                                                  .split(', ')[1]));
-                                        }));
-                                      }
-                                    },
-                                    child: Text(
-                                      "Details",
-                                      style: TextStyle(
-                                        color: AppUtils.whiteColor,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                );
+                              }).toList(),
                             ),
-                          );
-                        }).toList(),
-                      );
-                    },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ],
               ),
