@@ -14,6 +14,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? prefixText; // Text displayed before input
   final TextInputAction?
       textInputAction; // Action to take when input is submitted
+  final void Function(String)? onChanged;
 
   const CustomTextFormField({
     this.controller,
@@ -26,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
     this.onSaved,
     this.prefixText,
     this.textInputAction,
+    this.onChanged,
     Key? key,
   }) : super(key: key);
 
@@ -40,6 +42,7 @@ class CustomTextFormField extends StatelessWidget {
         keyboardType: keyboardType, // Set keyboard type
         controller: controller, // Set controller
         onSaved: onSaved, // Set function to call when form is saved
+        onChanged: onChanged,
         decoration: InputDecoration(
           prefixIcon: Icon(prefixIcon), // Set prefix icon
           labelText: labelText, // Set label text

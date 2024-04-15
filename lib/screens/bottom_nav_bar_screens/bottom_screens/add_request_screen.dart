@@ -63,6 +63,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                       ),
                       CustomTextFormField(
                         controller: _requesterNameController,
+                        keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter requester name';
@@ -74,6 +75,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                       ),
                       CustomTextFormField(
                         controller: _patientNameController,
+                        keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter patient name';
@@ -85,6 +87,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                       ),
                       CustomTextFormField(
                         controller: _bloodTypeController,
+                        keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter blood type';
@@ -96,6 +99,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                       ),
                       CustomTextFormField(
                         controller: _quantityNeededController,
+                        keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter quantity needed';
@@ -107,6 +111,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                       ),
                       CustomTextFormField(
                         controller: _urgencyLevelController,
+                        keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter urgency level';
@@ -118,28 +123,20 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                       ),
                       CustomTextFormField(
                         controller: _customLocation,
+                        keyboardType: TextInputType.name,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter Custom location';
+                            return 'Please Enter Address';
                           }
                           return null;
                         },
                         prefixIcon: Icons.location_city_outlined,
-                        labelText: 'Custom Location',
+                        labelText: 'Address',
                       ),
-                      CustomTextFormField(
-                        controller: _locationController,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter location';
-                          }
-                          return null;
-                        },
-                        prefixIcon: Icons.location_city_outlined,
-                        labelText: 'Location',
-                      ),
+
                       CustomTextFormField(
                         controller: _contactNumberController,
+                        keyboardType: TextInputType.phone,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter contact number';
@@ -175,7 +172,9 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                               AppUtils.redColor),
                         ),
                         child: Text(
-                          _isLoading == false ? 'Submit' : 'Submitting...',
+                          _isLoading == false
+                              ? 'Submit Data'
+                              : 'Submitting Data, Please Wait...',
                           style: TextStyle(color: AppUtils.whiteColor),
                         ),
                       ),
@@ -191,30 +190,59 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
   Widget _buildGoogleMapLocationDiv() {
     final Size size = MediaQuery.of(context).size;
 
-    return Padding(
-      padding: const EdgeInsets.all(5.0),
-      child: Container(
-        height: 300,
-        width: size.width,
-        decoration: BoxDecoration(
-            border: Border.all(), borderRadius: BorderRadius.circular(10)),
-        child: GoogleMap(
-          myLocationEnabled: true,
-          myLocationButtonEnabled: true,
-          mapType: MapType.normal,
-          initialCameraPosition: CameraPosition(
-            target: _initialCameraPosition,
-            zoom: 15,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Container(
+            height: size.height * 0.50,
+            width: size.width,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade100),
+                borderRadius: BorderRadius.circular(10)),
+            child: Column(
+              children: [
+                Container(
+                    child: ListTile(
+                        title: Text(
+                  _locationController.text.toString().isNotEmpty
+                      ? "Location: ${_locationController.text.toString()}"
+                      : 'Press on Get Current Location Button',
+                ))),
+                // CustomTextFormField(
+                //   controller: _locationController,
+                //   validator: (value) {
+                //     if (value == null || value.isEmpty) {
+                //       return 'Please enter location';
+                //     }
+                //     return null;
+                //   },
+                //   prefixIcon: Icons.location_city_outlined,
+                //   labelText: 'Location',
+                // ),
+                Expanded(
+                  child: GoogleMap(
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    mapType: MapType.normal,
+                    initialCameraPosition: CameraPosition(
+                      target: _initialCameraPosition,
+                      zoom: 15,
+                    ),
+                    onMapCreated: (controller) {
+                      _mapController = controller;
+                    },
+                    markers: _markers,
+                    onTap: (position) {
+                      _addMarker(position);
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
-          onMapCreated: (controller) {
-            _mapController = controller;
-          },
-          markers: _markers,
-          onTap: (position) {
-            _addMarker(position);
-          },
         ),
-      ),
+      ],
     );
   }
 

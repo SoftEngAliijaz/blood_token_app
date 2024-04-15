@@ -5,7 +5,7 @@ import 'package:flutter/material.dart'; // Importing Flutter Material library
 import 'package:intl/intl.dart'; // Importing Intl for date formatting
 
 class MyBloodRequestsScreen extends StatelessWidget {
-  const MyBloodRequestsScreen({Key? key}) : super(key: key);
+  const MyBloodRequestsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +15,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Blood Requests'), // Set app bar title
+        title: const Text('My Blood Requests'), // Set app bar title
       ),
       body: StreamBuilder<QuerySnapshot>(
         // Filter the collection based on the current user's UID
@@ -37,7 +37,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
             );
           }
           if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
-            return Center(
+            return const Center(
               child: Text(
                   'No blood requests found.'), // Show message if no blood requests found
             );
@@ -54,7 +54,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
                     requestData, context); // Build blood request card
               } else {
                 // If the blood request does not belong to the current user, return an empty SizedBox
-                return SizedBox.shrink();
+                return const SizedBox.shrink();
               }
             },
           );
@@ -67,23 +67,23 @@ class MyBloodRequestsScreen extends StatelessWidget {
       Map<String, dynamic> requestData, BuildContext context) {
     return Card(
       elevation: 3,
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               "Requester Name: ${requestData['requesterName']}", // Display requester name
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -105,10 +105,12 @@ class MyBloodRequestsScreen extends StatelessWidget {
                     formatDate(requestData['timestamp'])), // Display timestamp
               ],
             ),
-            SizedBox(height: 5), // Add spacing between the text and buttons
+            const SizedBox(
+                height: 5), // Add spacing between the text and buttons
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                ///update data button
                 Expanded(
                   child: ElevatedButton(
                     style: ButtonStyle(
@@ -116,13 +118,15 @@ class MyBloodRequestsScreen extends StatelessWidget {
                           AppUtils.blueColor), // Set button background color
                     ),
                     onPressed: () {},
-                    child: Text(
+                    child: const Text(
                       "Update", // Set button text
                       style: TextStyle(
                           color: AppUtils.whiteColor), // Set button text color
                     ),
                   ),
                 ),
+
+                ///delete data button
                 Expanded(
                   child: ElevatedButton(
                     style: ButtonStyle(
@@ -134,8 +138,8 @@ class MyBloodRequestsScreen extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text("Confirm Delete"), // Dialog title
-                            content: Text(
+                            title: const Text("Confirm Delete"), // Dialog title
+                            content: const Text(
                                 "Are you sure you want to delete this blood request?"), // Dialog content
                             actions: [
                               TextButton(
@@ -143,7 +147,8 @@ class MyBloodRequestsScreen extends StatelessWidget {
                                   Navigator.of(context)
                                       .pop(); // Close the dialog without deleting
                                 },
-                                child: Text("Cancel"), // Cancel button text
+                                child:
+                                    const Text("Cancel"), // Cancel button text
                               ),
                               TextButton(
                                 onPressed: () async {
@@ -159,7 +164,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
 
                                     // Delete successful, show a success message or perform any additional actions
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
+                                      const SnackBar(
                                         content: Text(
                                             'Blood request deleted successfully'), // Show success message
                                       ),
@@ -167,7 +172,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
                                   } catch (e) {
                                     // Handle any errors that occur during deletion
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
+                                      const SnackBar(
                                         content: Text(
                                             'Failed to delete blood request'), // Show error message
                                       ),
@@ -177,14 +182,15 @@ class MyBloodRequestsScreen extends StatelessWidget {
                                   Navigator.of(context)
                                       .pop(); // Close the dialog
                                 },
-                                child: Text("Delete"), // Delete button text
+                                child:
+                                    const Text("Delete"), // Delete button text
                               ),
                             ],
                           );
                         },
                       );
                     },
-                    child: Text(
+                    child: const Text(
                       "Delete", // Set button text
                       style: TextStyle(
                           color: AppUtils.whiteColor), // Set button text color
@@ -202,7 +208,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
   Widget buildSubtitleText(String label, dynamic value) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
-      child: Text('$label: ${value ?? 'N/A'}'), // Display subtitle text
+      child: Text('$label: ${value ?? 'N/A'}'),
     );
   }
 

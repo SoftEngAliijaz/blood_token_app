@@ -1,22 +1,22 @@
 import 'dart:convert';
 
 class UserModel {
-  final String uid;
-  final String email;
-  final String displayName;
-  final String bloodGroup;
-  final int phoneNumber;
-  final int age;
+  final String? uid;
+  final String? email;
+  final String? displayName;
+  final String? bloodGroup;
+  final int? phoneNumber;
+  final int? age;
   final dynamic photoUrl;
 
   UserModel({
-    required this.uid,
-    required this.email,
-    required this.displayName,
-    required this.bloodGroup,
-    required this.phoneNumber,
-    required this.age,
-    required this.photoUrl,
+    this.uid,
+    this.email,
+    this.displayName,
+    this.bloodGroup,
+    this.phoneNumber,
+    this.age,
+    this.photoUrl,
   });
 
   UserModel copyWith({

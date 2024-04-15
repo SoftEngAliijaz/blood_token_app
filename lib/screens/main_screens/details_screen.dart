@@ -1,9 +1,9 @@
+import 'package:blood_token_app/constants/constants.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsScreen extends StatelessWidget {
-  // Constructor to initialize details of the request
   const DetailsScreen({
     Key? key,
     required this.requesterName,
@@ -19,7 +19,6 @@ class DetailsScreen extends StatelessWidget {
     required this.longitude,
   }) : super(key: key);
 
-  // Variables to hold details of the request
   final String? requesterName;
   final String? date;
   final String? location;
@@ -36,82 +35,118 @@ class DetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-            '${requesterName ?? "Details"} Details'), // Displaying the requester's name or default if not available
+        title: Text('${requesterName ?? "Details"} Details'),
       ),
       body: ListView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         children: [
-          // List of details displayed as ListTile
-          _buildListTile(Icons.person_outline, "Requester Name",
-              requesterName ?? "N/A"), // Display requester's name
-          _buildListTile(Icons.emergency_outlined, "Urgency Level",
-              urgencyLevel ?? "N/A"), // Display urgency level
-          _buildListTile(
-              Icons.production_quantity_limits_outlined,
-              "Quantity Needed",
-              quantityNeeded ?? "N/A"), // Display quantity of blood needed
-          _buildListTile(Icons.bloodtype_outlined, "Blood Type",
-              bloodType ?? "N/A"), // Display required blood type
-          _buildListTile(Icons.person_2_outlined, "Patient Name",
-              patientName ?? "N/A"), // Display patient's name
-          _buildListTile(Icons.location_city_outlined, "Custom Location",
-              customLocation ?? "N/A"), // Display custom location
-          _buildListTile(
-              Icons.location_city_outlined, "Location", location ?? "N/A", () {
-            _launchMaps(latitude!,
-                longitude!); // Launch maps with latitude and longitude on tap
-          }),
-          _buildListTile(Icons.phone_android_outlined, "Contact Number",
-              contactNumber ?? "N/A", () {
-            FlutterPhoneDirectCaller.callNumber(
-                "+92$contactNumber"); // Direct call to contact number
-          }),
-          Divider(thickness: 1),
-          // Button to send SMS
-          Center(
-            child: TextButton.icon(
-              onPressed: () async {
-                final uri = Uri.parse("sms:$contactNumber"); // Prepare SMS URI
-                if (await canLaunch(uri.toString())) {
-                  launch(uri.toString()); // Launch SMS app if available
-                } else {
-                  throw 'Could not launch SMS';
-                }
-              },
-              icon: Icon(Icons.message_outlined, color: Colors.red),
-              label: Text("Send SMS", style: TextStyle(color: Colors.red)),
-            ),
+          ListTile(
+            leading: const Icon(Icons.person_2_outlined),
+            title: const Text("Patient Name"),
+            subtitle: Text(patientName ?? "N/A"),
           ),
-          Divider(thickness: 1),
+          ListTile(
+            leading: const Icon(Icons.bloodtype_outlined),
+            title: const Text("Blood Type"),
+            subtitle: Text(bloodType ?? "N/A"),
+          ),
+          ListTile(
+            leading: const Icon(Icons.emergency_outlined),
+            title: const Text("Urgency Level"),
+            subtitle: Text(urgencyLevel ?? "N/A"),
+          ),
+          ListTile(
+            leading: const Icon(Icons.production_quantity_limits_outlined),
+            title: const Text("Quantity Needed"),
+            subtitle: Text(quantityNeeded ?? "N/A"),
+          ),
+          ListTile(
+            leading: const Icon(Icons.person_outline),
+            title: const Text("Requester Name"),
+            subtitle: Text(requesterName ?? "N/A"),
+          ),
+          ListTile(
+            leading: const Icon(Icons.location_city_outlined),
+            title: const Text("Custom Location"),
+            subtitle: Text(customLocation ?? "N/A"),
+            onTap: () {
+              _launchMaps(latitude!, longitude!);
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.location_city_outlined),
+            title: const Text("Location"),
+            subtitle: Text(location ?? "N/A"),
+            trailing: IconButton.filledTonal(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.location_on_outlined,
+                  color: AppUtils.redColor,
+                )),
+          ),
+          ListTile(
+            leading: const Icon(Icons.phone_android_outlined),
+            title: const Text("Contact Number"),
+            subtitle: Text(contactNumber ?? "N/A"),
+          ),
+
+          ///
+          const Divider(thickness: 1),
+
+          ///Call Button & SMS Button
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ///sms button
+              Expanded(
+                child: Center(
+                  child: TextButton.icon(
+                    onPressed: () async {
+                      final uri = Uri.parse("sms:$contactNumber");
+                      if (await canLaunch(uri.toString())) {
+                        launch(uri.toString());
+                      } else {
+                        throw 'Could not launch SMS';
+                      }
+                    },
+                    icon: const Icon(Icons.message_outlined, color: Colors.red),
+                    label: Text("Send SMS to $requesterName",
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(color: Colors.red)),
+                  ),
+                ),
+              ),
+
+              ///call button
+              Expanded(
+                child: Center(
+                  child: TextButton.icon(
+                    onPressed: () async {},
+                    icon: const Icon(Icons.message_outlined, color: Colors.red),
+                    label: Text("Call $requesterName",
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(color: Colors.red)),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const Divider(thickness: 1),
         ],
       ),
     );
   }
 
-  // Widget to build ListTile
-  Widget _buildListTile(IconData leadingIcon, String title, String subtitle,
-      [VoidCallback? onTap]) {
-    return ListTile(
-      leading: Icon(leadingIcon),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      onTap: onTap,
-    );
-  }
-
-  // Function to launch maps with latitude and longitude
+  ///-launch maps
   Future<void> _launchMaps(double latitude, double longitude) async {
-    final encodedLat =
-        Uri.encodeComponent(latitude.toString()); // Encode latitude
-    final encodedLong =
-        Uri.encodeComponent(longitude.toString()); // Encode longitude
+    final encodedLat = Uri.encodeComponent(latitude.toString());
+    final encodedLong = Uri.encodeComponent(longitude.toString());
 
-    final Uri mapUrl = Uri.parse(
-        "https://www.google.com/maps/?q=$encodedLat,$encodedLong"); // Prepare maps URL with encoded latitude and longitude
+    final Uri mapUrl =
+        Uri.parse("https://www.google.com/maps/?q=$encodedLat,$encodedLong");
 
     if (await canLaunch(mapUrl.toString())) {
-      await launch(mapUrl.toString()); // Launch maps with prepared URL
+      await launch(mapUrl.toString());
     } else {
       throw 'Could not launch Maps';
     }

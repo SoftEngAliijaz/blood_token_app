@@ -7,7 +7,7 @@ void main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure Flutter bindings are initialized
   await Firebase.initializeApp(); // Initialize Firebase
-  runApp(MyApp()); // Run the application
+  runApp(const MyApp()); // Run the application
 }
 
 class MyApp extends StatefulWidget {
@@ -24,7 +24,8 @@ class _MyAppState extends State<MyApp> {
       title: 'Blood Token', // Set app title
       debugShowCheckedModeBanner: false, // Hide debug banner
       theme: ThemeData(
-        appBarTheme: AppBarTheme(
+        cardColor: AppUtils.whiteColor,
+        appBarTheme: const AppBarTheme(
           backgroundColor: AppUtils.redColor, // Set app bar background color
           titleTextStyle: TextStyle(
               color: AppUtils.whiteColor,
@@ -38,14 +39,14 @@ class _MyAppState extends State<MyApp> {
             AppUtils.whiteColor, // Set scaffold background color
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
-              textStyle: MaterialStateProperty.all<TextStyle>(TextStyle(
+              textStyle: MaterialStateProperty.all<TextStyle>(const TextStyle(
                   color:
                       AppUtils.whiteColor)), // Set elevated button text color
               backgroundColor: MaterialStateProperty.all<Color>(
                   AppUtils.redColor)), // Set elevated button background color
         ),
       ),
-      home: UserLandingScreen(), // Set home screen to UserLandingScreen
+      home: const UserLandingScreen(), // Set home screen to UserLandingScreen
     );
   }
 }

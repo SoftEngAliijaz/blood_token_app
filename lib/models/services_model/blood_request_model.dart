@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BloodRequestModel {
@@ -88,7 +89,7 @@ class BloodRequestModel {
         longitude: json["longitude"],
       );
     } catch (e) {
-      print("Error parsing BloodRequestModel from JSON: $e");
+      debugPrint("Error parsing BloodRequestModel from JSON: $e");
       return BloodRequestModel(
         docId: null,
         uid: null,
@@ -125,6 +126,6 @@ class BloodRequestModel {
 
   /// formatted Time Stamp
   String formattedTimestamp() {
-    return DateFormat.yMMMMd('en_US').add_Hm().format(timestamp!.toLocal());
+    return DateFormat('MMMM, dd yyyy h:mm a').format(timestamp!.toLocal());
   }
 }

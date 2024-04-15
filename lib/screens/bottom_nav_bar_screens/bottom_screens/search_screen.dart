@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:blood_token_app/models/services_model/blood_request_model.dart';
 import 'package:blood_token_app/screens/main_screens/details_screen.dart';
+import 'package:blood_token_app/widgets/custom_text_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -14,6 +16,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController? _searchController;
   List<BloodRequestModel>? _bloodRequests;
   List<BloodRequestModel>? _filteredRequests;
+  Timer? _debounceTimer;
 
   @override
   void initState() {
@@ -48,35 +51,44 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _filterRequests(String searchText) {
-    setState(() {
-      if (searchText.isEmpty) {
-        _filteredRequests = _bloodRequests;
-      } else {
-        _filteredRequests = _bloodRequests!.where((request) {
-          // Check if requester name, blood type, or city contains the search text
-          //lower case
-          return request.requesterName!
-                  .toLowerCase()
-                  .contains(searchText.toLowerCase()) ||
-              request.bloodType!
-                  .toLowerCase()
-                  .contains(searchText.toLowerCase()) ||
-              request.customLocation!
-                  .toLowerCase()
-                  .contains(searchText.toLowerCase()) ||
+    if (_debounceTimer != null && _debounceTimer!.isActive) {
+      _debounceTimer!.cancel();
+    }
+    _debounceTimer = Timer(const Duration(milliseconds: 300), () {
+      setState(() {
+        if (searchText.isEmpty) {
+          _filteredRequests = _bloodRequests;
+        } else {
+          _filteredRequests = _bloodRequests!
+              .where((request) =>
+                  request.requesterName!
+                      .toLowerCase()
+                      .contains(searchText.toLowerCase()) ||
+                  request.bloodType!
+                      .toLowerCase()
+                      .contains(searchText.toLowerCase()) ||
+                  request.customLocation!
+                      .toLowerCase()
+                      .contains(searchText.toLowerCase()) ||
+                  request.requesterName!
+                      .toUpperCase()
+                      .contains(searchText.toUpperCase()) ||
+                  request.bloodType!
+                      .toUpperCase()
+                      .contains(searchText.toUpperCase()) ||
+                  request.customLocation!
+                      .toUpperCase()
+                      .contains(searchText.toUpperCase()))
+              .toList();
+        }
+      });
+    });
+  }
 
-              ///upper case
-              request.requesterName!
-                  .toUpperCase()
-                  .contains(searchText.toUpperCase()) ||
-              request.bloodType!
-                  .toUpperCase()
-                  .contains(searchText.toUpperCase()) ||
-              request.customLocation!
-                  .toUpperCase()
-                  .contains(searchText.toUpperCase());
-        }).toList();
-      }
+  void _clearSearch() {
+    setState(() {
+      _searchController!.clear();
+      _filterRequests('');
     });
   }
 
@@ -84,23 +96,25 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Search'),
+        title: const Text('Search'),
       ),
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              onChanged: (value) {
-                _filterRequests(value);
-              },
-              decoration: InputDecoration(
-                labelText: 'Search',
-                hintText: 'Search for requester name',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(),
-              ),
+            padding: const EdgeInsets.all(5.0),
+            child: Stack(
+              alignment: Alignment.centerRight,
+              children: [
+                CustomTextFormField(
+                    controller: _searchController,
+                    labelText: 'Search...',
+                    prefixIcon: Icons.search_outlined,
+                    onChanged: _filterRequests),
+                IconButton(
+                  icon: const Icon(Icons.close),
+                  onPressed: _clearSearch,
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -111,6 +125,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 return ListTile(
                   title: Text("${request.requesterName}"),
                   subtitle: Text("${request.urgencyLevel}"),
+                  trailing: Text("${request.customLocation}"),
                   onTap: () {
                     Navigator.push(
                       context,
