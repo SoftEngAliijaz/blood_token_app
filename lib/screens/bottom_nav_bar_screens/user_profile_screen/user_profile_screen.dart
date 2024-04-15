@@ -108,7 +108,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                       ),
                                                     ),
                                                   )
-                                                : user['photoURL'] != null
+                                                : user['photoUrl'] != null
                                                     ? ClipRRect(
                                                         borderRadius:
                                                             BorderRadius.zero,
@@ -125,7 +125,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                               fit: BoxFit.cover,
                                                               image: NetworkImage(
                                                                   user[
-                                                                      'photoURL']),
+                                                                      'photoUrl']),
                                                             ),
                                                           ),
                                                         ),
@@ -326,7 +326,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             _pickedImage!); // Upload profile image if selected
 
         if (downloadURL != null) {
-          userData['photoURL'] = downloadURL; // Update photo URL in user data
+          userData['photoUrl'] = downloadURL; // Update photo URL in user data
           setState(() {
             _pickedImage = _pickedImage; // Update picked image in state
           });

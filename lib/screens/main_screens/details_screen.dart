@@ -1,11 +1,12 @@
+// ignore_for_file: deprecated_member_use
 import 'package:blood_token_app/constants/constants.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({
-    Key? key,
+    super.key,
     required this.requesterName,
     required this.date,
     required this.location,
@@ -17,7 +18,7 @@ class DetailsScreen extends StatelessWidget {
     required this.customLocation,
     required this.latitude,
     required this.longitude,
-  }) : super(key: key);
+  });
 
   final String? requesterName;
   final String? date;
@@ -69,16 +70,16 @@ class DetailsScreen extends StatelessWidget {
             leading: const Icon(Icons.location_city_outlined),
             title: const Text("Custom Location"),
             subtitle: Text(customLocation ?? "N/A"),
-            onTap: () {
-              _launchMaps(latitude!, longitude!);
-            },
+            onTap: () {},
           ),
           ListTile(
             leading: const Icon(Icons.location_city_outlined),
             title: const Text("Location"),
             subtitle: Text(location ?? "N/A"),
             trailing: IconButton.filledTonal(
-                onPressed: () {},
+                onPressed: () {
+                  _launchMaps(latitude!, longitude!);
+                },
                 icon: const Icon(
                   Icons.location_on_outlined,
                   color: AppUtils.redColor,
@@ -121,8 +122,10 @@ class DetailsScreen extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: TextButton.icon(
-                    onPressed: () async {},
-                    icon: const Icon(Icons.message_outlined, color: Colors.red),
+                    onPressed: () async {
+                      FlutterPhoneDirectCaller.callNumber("+92$contactNumber");
+                    },
+                    icon: const Icon(Icons.call_outlined, color: Colors.red),
                     label: Text("Call $requesterName",
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(color: Colors.red)),
@@ -139,14 +142,11 @@ class DetailsScreen extends StatelessWidget {
 
   ///-launch maps
   Future<void> _launchMaps(double latitude, double longitude) async {
-    final encodedLat = Uri.encodeComponent(latitude.toString());
-    final encodedLong = Uri.encodeComponent(longitude.toString());
+    final String googleMapsUrl =
+        "https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude";
 
-    final Uri mapUrl =
-        Uri.parse("https://www.google.com/maps/?q=$encodedLat,$encodedLong");
-
-    if (await canLaunch(mapUrl.toString())) {
-      await launch(mapUrl.toString());
+    if (await canLaunch(googleMapsUrl)) {
+      await launch(googleMapsUrl);
     } else {
       throw 'Could not launch Maps';
     }
