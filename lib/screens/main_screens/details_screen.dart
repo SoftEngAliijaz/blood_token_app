@@ -103,12 +103,7 @@ class DetailsScreen extends StatelessWidget {
                 child: Center(
                   child: TextButton.icon(
                     onPressed: () async {
-                      final uri = Uri.parse("sms:$contactNumber");
-                      if (await canLaunch(uri.toString())) {
-                        launch(uri.toString());
-                      } else {
-                        throw 'Could not launch SMS';
-                      }
+                      await sendSMS("$contactNumber");
                     },
                     icon: const Icon(Icons.message_outlined, color: Colors.red),
                     label: Text("Send SMS to $requesterName",
@@ -123,7 +118,7 @@ class DetailsScreen extends StatelessWidget {
                 child: Center(
                   child: TextButton.icon(
                     onPressed: () async {
-                      FlutterPhoneDirectCaller.callNumber("+92$contactNumber");
+                      await callNumber("+92$contactNumber");
                     },
                     icon: const Icon(Icons.call_outlined, color: Colors.red),
                     label: Text("Call $requesterName",
@@ -149,6 +144,19 @@ class DetailsScreen extends StatelessWidget {
       await launch(googleMapsUrl);
     } else {
       throw 'Could not launch Maps';
+    }
+  }
+
+  Future<void> callNumber(String phoneNumber) async {
+    FlutterPhoneDirectCaller.callNumber(phoneNumber);
+  }
+
+  Future<void> sendSMS(String contactNumber) async {
+    final Uri uri = Uri.parse("sms:$contactNumber");
+    if (await canLaunch(uri.toString())) {
+      await launch(uri.toString());
+    } else {
+      throw 'Could not launch SMS';
     }
   }
 }

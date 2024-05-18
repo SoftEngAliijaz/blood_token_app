@@ -364,7 +364,9 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
         Fluttertoast.showToast(msg: 'Blood request submitted successfully');
         _resetForm();
       } catch (e) {
-        Fluttertoast.showToast(msg: 'Failed to submit blood request');
+        print('Error submitting blood request: $e');
+        Fluttertoast.showToast(
+            msg: 'Failed to submit blood request. Error: $e');
       } finally {
         setState(() {
           _isLoading = false; // Stop loading regardless of success or failure

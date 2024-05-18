@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BloodRequestModel {
-  // Add uid field to store Document ID
+  // uid field to store Document ID
   final String? docId;
-  // Add uid field to store user's UID
+  // uid field to store user's UID
   final String? uid;
   final String? requesterName;
   final String? bloodType;
@@ -126,6 +126,6 @@ class BloodRequestModel {
 
   /// formatted Time Stamp
   String formattedTimestamp() {
-    return DateFormat('MMMM, dd yyyy h:mm a').format(timestamp!.toLocal());
+    return DateFormat('dd, MMMM yyyy h:mm a').format(timestamp!.toLocal());
   }
 }

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/bottom_screens/home_screen.dart';
 import 'package:blood_token_app/screens/credientals/signup_screen.dart';
@@ -8,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LogInScreen extends StatefulWidget {
-  const LogInScreen({Key? key}) : super(key: key);
+  const LogInScreen({super.key});
 
   @override
   _LogInScreenState createState() => _LogInScreenState();
@@ -43,12 +45,12 @@ class _LogInScreenState extends State<LogInScreen> {
         if (userDoc.exists) {
           // User exists in Firestore, navigate to HomeScreen
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
-            return HomeScreen();
+            return const HomeScreen();
           }));
         } else {
           // User doesn't exist in Firestore, display a message to create an account
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content:
                   Text("User not found in Database. Please create an account."),
             ),
@@ -92,7 +94,7 @@ class _LogInScreenState extends State<LogInScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 100,
                       backgroundColor: AppUtils.redColor,
                       backgroundImage:
@@ -107,7 +109,7 @@ class _LogInScreenState extends State<LogInScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Container(
-                              child: Text(
+                              child: const Text(
                                 'Welcome to Blood Token\nPlease Log In to Your Account',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 20.0),
@@ -162,7 +164,7 @@ class _LogInScreenState extends State<LogInScreen> {
                               ),
                               onPressed: _isLoading ? null : _login,
                               child: _isLoading
-                                  ? Text(
+                                  ? const Text(
                                       'Logging in...',
                                       style:
                                           TextStyle(color: AppUtils.whiteColor),
@@ -176,15 +178,15 @@ class _LogInScreenState extends State<LogInScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Don't have an account?"),
+                                const Text("Don't have an account?"),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.push(context,
                                         MaterialPageRoute(builder: (_) {
-                                      return SignUpScreen();
+                                      return const SignUpScreen();
                                     }));
                                   },
-                                  child: Text(
+                                  child: const Text(
                                     "Sign Up",
                                   ),
                                 ),
