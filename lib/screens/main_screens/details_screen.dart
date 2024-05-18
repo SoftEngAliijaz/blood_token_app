@@ -32,11 +32,28 @@ class DetailsScreen extends StatelessWidget {
   final double? latitude;
   final double? longitude;
 
+  _shareDetails() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('${requesterName ?? "Details"} Details'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              AppUtils.shareBloodRequestDetails(
+                  requesterName: requesterName,
+                  urgencyLevel: urgencyLevel,
+                  quantityNeeded: quantityNeeded,
+                  bloodType: bloodType,
+                  patientName: patientName,
+                  location: location,
+                  contactNumber: contactNumber);
+            },
+            icon: const Icon(Icons.share_outlined),
+          ),
+        ],
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),

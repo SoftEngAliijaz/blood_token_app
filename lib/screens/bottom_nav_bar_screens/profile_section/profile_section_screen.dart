@@ -22,7 +22,7 @@ class _ProfileSectionScreenState extends State<ProfileSectionScreen> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile Section'),
+        title: const Text('Profile Section'),
       ),
       body: Container(
         height: size.height,
@@ -35,8 +35,8 @@ class _ProfileSectionScreenState extends State<ProfileSectionScreen> {
                   padding: const EdgeInsets.all(5.0),
                   child: Container(
                     decoration: BoxDecoration(color: Colors.grey.shade200),
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                    child: const Padding(
+                      padding: EdgeInsets.all(10.0),
                       child: Center(
                         child: CircleAvatar(
                           radius: 100,
@@ -52,32 +52,32 @@ class _ProfileSectionScreenState extends State<ProfileSectionScreen> {
                 Icons.person_outline,
                 'My Profile',
                 () {
-                  navigateTo(context, UserProfileScreen());
+                  navigateTo(context, const UserProfileScreen());
                 },
               ),
               _tileCard(Icons.request_page_outlined, 'My Requests', () {
-                navigateTo(context, MyBloodRequestsScreen());
+                navigateTo(context, const MyBloodRequestsScreen());
               }),
               _tileCard(Icons.tips_and_updates_outlined, 'Blood Tips', () {
-                navigateTo(context, BloodTipsScreen());
+                navigateTo(context, const BloodTipsScreen());
               }),
               _tileCard(Icons.quora_outlined, 'Blood Quotes', () {
-                navigateTo(context, BloodQuotesScreen());
+                navigateTo(context, const BloodQuotesScreen());
               }),
               _tileCard(Icons.speaker_outlined, 'Slogans', () {
-                navigateTo(context, BloodSloganScreen());
+                navigateTo(context, const BloodSloganScreen());
               }),
               _tileCard(Icons.share_outlined, 'Share App', () {
-                navigateTo(context, ShareAppScreen());
+                navigateTo(context, const ShareAppScreen());
               }),
               _tileCard(Icons.rate_review_outlined, 'Rate Our App', () {
-                navigateTo(context, RateAppScreen());
+                navigateTo(context, const RateAppScreen());
               }),
               _tileCard(Icons.logout_outlined, 'SignOut', () {
                 FirebaseAuth.instance.signOut();
                 Navigator.pushReplacement(context,
                     MaterialPageRoute(builder: (_) {
-                  return LogInScreen();
+                  return const LogInScreen();
                 }));
               }),
             ],
@@ -95,7 +95,7 @@ class _ProfileSectionScreenState extends State<ProfileSectionScreen> {
     return ListTile(
         leading: Icon(leadingIcon),
         title: Text(title),
-        trailing: Icon(Icons.arrow_forward_outlined),
+        trailing: const Icon(Icons.arrow_forward_outlined),
         onTap: onTap);
   }
 
