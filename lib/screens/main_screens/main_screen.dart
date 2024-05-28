@@ -51,7 +51,14 @@ class _MainScreenState extends State<MainScreen> {
                 ),
                 trailing: Text('See all'),
               ),
+
+              ///my requests
               currentUserStreamBuilder(size, currentUserUID),
+
+              ///banner
+              Container(child: Card()),
+
+              ///
               const ListTile(
                 title: Text(
                   'Current Requests',
