@@ -1,0 +1,1 @@
+/// i need code to make my mobile app responsive for web and mobile both

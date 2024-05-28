@@ -209,17 +209,6 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                       ? "Location: ${_locationController.text.toString()}"
                       : 'Press on Get Current Location Button',
                 ))),
-                // CustomTextFormField(
-                //   controller: _locationController,
-                //   validator: (value) {
-                //     if (value == null || value.isEmpty) {
-                //       return 'Please enter location';
-                //     }
-                //     return null;
-                //   },
-                //   prefixIcon: Icons.location_city_outlined,
-                //   labelText: 'Location',
-                // ),
                 Expanded(
                   child: GoogleMap(
                     myLocationEnabled: true,
