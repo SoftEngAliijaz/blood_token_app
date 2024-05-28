@@ -6,7 +6,7 @@ import 'package:blood_token_app/screens/bottom_nav_bar_screens/bottom_screens/se
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

@@ -37,9 +37,18 @@ class MyBloodRequestsScreen extends StatelessWidget {
             );
           }
           if (snapshot.data == null || snapshot.data!.docs.isEmpty) {
-            return const Center(
-              child: Text(
-                  'No blood requests found.'), // Show message if no blood requests found
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'No Requestes Found.',
+                    style: TextStyle(fontSize: 17.0),
+                  ),
+                  SizedBox(height: 10),
+                  AppUtils.customProgressIndicator()
+                ],
+              ),
             );
           }
           return ListView.builder(

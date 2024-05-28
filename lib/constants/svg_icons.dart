@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SVGIcons extends StatelessWidget {
-  const SVGIcons({Key? key}) : super(key: key);
+  const SVGIcons({super.key});
 
   Widget _buildSvgWithDivider(String assetName, int index) {
     return Column(

@@ -2,6 +2,7 @@
 import 'package:blood_token_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsScreen extends StatelessWidget {
@@ -32,8 +33,6 @@ class DetailsScreen extends StatelessWidget {
   final double? latitude;
   final double? longitude;
 
-  _shareDetails() {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,14 +41,7 @@ class DetailsScreen extends StatelessWidget {
         actions: [
           IconButton(
             onPressed: () {
-              AppUtils.shareBloodRequestDetails(
-                  requesterName: requesterName,
-                  urgencyLevel: urgencyLevel,
-                  quantityNeeded: quantityNeeded,
-                  bloodType: bloodType,
-                  patientName: patientName,
-                  location: location,
-                  contactNumber: contactNumber);
+              _shareDetails();
             },
             icon: const Icon(Icons.share_outlined),
           ),
@@ -102,6 +94,20 @@ class DetailsScreen extends StatelessWidget {
                   color: AppUtils.redColor,
                 )),
           ),
+
+          // ListTile(
+          //   leading: const Icon(Icons.location_city_outlined),
+          //   title: const Text("Location"),
+          //   subtitle: Text(location ?? "N/A"),
+          //   trailing: IconButton.filledTonal(
+          //       onPressed: () {
+          //         _launchMaps(latitude!, longitude!);
+          //       },
+          //       icon: const Icon(
+          //         Icons.location_on_outlined,
+          //         color: AppUtils.redColor,
+          //       )),
+          // ),
           ListTile(
             leading: const Icon(Icons.phone_android_outlined),
             title: const Text("Contact Number"),
@@ -175,5 +181,31 @@ class DetailsScreen extends StatelessWidget {
     } else {
       throw 'Could not launch SMS';
     }
+  }
+
+  void _shareDetails() {
+    final String details = '''
+🩸 *Blood Request Details* 🩸
+
+* Requester Name: ${requesterName ?? "N/A"}
+
+* Urgency Level: ${urgencyLevel ?? "N/A"}
+
+* Quantity Needed: ${quantityNeeded ?? "N/A"}
+
+* Blood Type: ${bloodType ?? "N/A"}
+
+* Patient Name: ${patientName ?? "N/A"}
+
+* Location: ${customLocation ?? "N/A"}
+
+* Contact Number: ${contactNumber ?? "N/A"}
+
+* Time: ${date ?? "N/A"}
+
+Share this blood request with others to help save a life! 💉
+    ''';
+
+    Share.share(details);
   }
 }

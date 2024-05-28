@@ -43,15 +43,19 @@ class UserModel {
 
   String toRawJson() => json.encode(toJson());
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        uid: json["uid"] ?? '',
-        email: json["email"] ?? '',
-        displayName: json["displayName"] ?? '',
-        bloodGroup: json["bloodGroup"] ?? '',
-        phoneNumber: json["phoneNumber"] ?? 0,
-        age: json["age"] ?? '',
-        photoUrl: json["photoUrl"],
-      );
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      uid: json["uid"] as String?,
+      email: json["email"] as String?,
+      displayName: json["displayName"] as String?,
+      bloodGroup: json["bloodGroup"] as String?,
+      phoneNumber: json["phoneNumber"] != null
+          ? int.tryParse(json["phoneNumber"].toString())
+          : null,
+      age: json["age"] != null ? int.tryParse(json["age"].toString()) : null,
+      photoUrl: json["photoUrl"],
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "uid": uid,

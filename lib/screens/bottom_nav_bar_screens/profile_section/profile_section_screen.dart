@@ -1,6 +1,5 @@
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/crud/my_blood_requests.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/ui_screens/blood_quotes_screen.dart';
-import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/ui_screens/blood_slogan_screen.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/ui_screens/blood_tips_screen.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/ui_screens/rate_app_screen.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/ui_screens/share_app_screen.dart';
@@ -63,9 +62,6 @@ class _ProfileSectionScreenState extends State<ProfileSectionScreen> {
               }),
               _tileCard(Icons.quora_outlined, 'Blood Quotes', () {
                 navigateTo(context, const BloodQuotesScreen());
-              }),
-              _tileCard(Icons.speaker_outlined, 'Slogans', () {
-                navigateTo(context, const BloodSloganScreen());
               }),
               _tileCard(Icons.share_outlined, 'Share App', () {
                 navigateTo(context, const ShareAppScreen());

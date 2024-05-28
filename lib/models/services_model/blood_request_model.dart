@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class BloodRequestModel {
-  // uid field to store Document ID
   final String? docId;
-  // uid field to store user's UID
   final String? uid;
   final String? requesterName;
   final String? bloodType;
@@ -84,27 +82,15 @@ class BloodRequestModel {
         contactNumber: json["contactNumber"],
         customLocation: json["customLocation"],
         patientName: json["patientName"],
-        timestamp: DateTime.parse(json["timestamp"]),
-        latitude: json["latitude"],
-        longitude: json["longitude"],
+        timestamp: json["timestamp"] != null
+            ? DateTime.parse(json["timestamp"])
+            : null,
+        latitude: json["latitude"]?.toDouble(),
+        longitude: json["longitude"]?.toDouble(),
       );
     } catch (e) {
       debugPrint("Error parsing BloodRequestModel from JSON: $e");
-      return BloodRequestModel(
-        docId: null,
-        uid: null,
-        requesterName: null,
-        bloodType: null,
-        quantityNeeded: null,
-        urgencyLevel: null,
-        location: null,
-        contactNumber: null,
-        customLocation: null,
-        patientName: null,
-        timestamp: null,
-        latitude: null,
-        longitude: null,
-      );
+      throw Exception("Failed to parse BloodRequestModel");
     }
   }
 
@@ -119,13 +105,15 @@ class BloodRequestModel {
         "contactNumber": contactNumber,
         "customLocation": customLocation,
         "patientName": patientName,
-        "timestamp": timestamp!.toIso8601String(),
+        "timestamp": timestamp?.toIso8601String(),
         "latitude": latitude,
         "longitude": longitude,
       };
 
   /// formatted Time Stamp
   String formattedTimestamp() {
-    return DateFormat('dd, MMMM yyyy h:mm a').format(timestamp!.toLocal());
+    return timestamp != null
+        ? DateFormat('dd, MMMM yyyy h:mm a').format(timestamp!.toLocal())
+        : 'N/A';
   }
 }
