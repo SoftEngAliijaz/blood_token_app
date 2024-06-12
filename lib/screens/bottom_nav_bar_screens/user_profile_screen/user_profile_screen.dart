@@ -174,74 +174,75 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (snapshot.hasData && snapshot.data != null) {
             var user = snapshot.data!;
-
             return Column(
               children: [
-                SizedBox(
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                      height: size.height * 0.80,
-                      width: size.width,
-                      child: Card(
-                        color: Theme.of(context).scaffoldBackgroundColor,
-                        child: Container(
-                          width: size.width,
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: InkWell(
-                                    onTap: () {
-                                      showModalBottomSheetSuggestions(context);
-                                    },
-                                    child: Container(
-                                      height: size.height,
-                                      width: size.width,
-                                      child: _pickedImage != null
-                                          ? ClipRRect(
-                                              borderRadius: BorderRadius.zero,
-                                              child: Image.file(
-                                                _pickedImage!,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            )
-                                          : (user['photoUrl'] != null
-                                              ? ClipRRect(
-                                                  borderRadius:
-                                                      BorderRadius.zero,
-                                                  child: Image.network(
-                                                    user['photoUrl'],
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                )
-                                              : const Icon(Icons.person,
-                                                  size: 80)),
-                                    ),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Container(
+                    height:
+                        size.height * 0.80, // Set the height of the container
+                    width: size.width,
+                    child: Card(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      child: Container(
+                        width: size.width,
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height *
+                                    0.5, // Set the height of the profile image container
+                                child: InkWell(
+                                  onTap: () {
+                                    showModalBottomSheetSuggestions(context);
+                                  },
+                                  child: Container(
+                                    width: size
+                                        .width, // Set the width of the container
+                                    child: _pickedImage != null
+                                        ? ClipRRect(
+                                            borderRadius: BorderRadius.zero,
+                                            child: Image.file(
+                                              _pickedImage!,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          )
+                                        : (user['photoUrl'] != null
+                                            ? ClipRRect(
+                                                borderRadius: BorderRadius.zero,
+                                                child: Image.network(
+                                                  user['photoUrl'],
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )
+                                            : const Icon(Icons.person,
+                                                size: 80)),
                                   ),
                                 ),
-                                SizedBox(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Column(
-                                      children: [
-                                        profileCard('Name',
-                                            '${user['displayName'] ?? ''}'),
-                                        profileCard(
-                                            'Email', '${user['email'] ?? ''}'),
-                                        profileCard(
-                                            'Age', '${user['age'] ?? ''}'),
-                                        profileCard('Blood Group',
-                                            '${user['bloodGroup'] ?? ''}'),
-                                        profileCard('Phone',
-                                            '+92${user['phoneNumber'] ?? ''}'),
-                                      ],
-                                    ),
+                              ),
+                              SizedBox(
+                                height: size.height *
+                                    0.3, // Set the height of the profile details container
+                                child: Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Column(
+                                    children: [
+                                      profileCard('Name',
+                                          '${user['displayName'] ?? ''}'),
+                                      profileCard(
+                                          'Email', '${user['email'] ?? ''}'),
+                                      profileCard(
+                                          'Age', '${user['age'] ?? ''}'),
+                                      profileCard('Blood Group',
+                                          '${user['bloodGroup'] ?? ''}'),
+                                      profileCard('Phone',
+                                          '+92${user['phoneNumber'] ?? ''}'),
+                                    ],
                                   ),
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
@@ -250,8 +251,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                      backgroundColor:
-                          WidgetStateProperty.all<Color>(AppUtils.redColor)),
+                    backgroundColor:
+                        WidgetStateProperty.all<Color>(AppUtils.redColor),
+                  ),
                   child: const Text('Update/Save',
                       style: TextStyle(color: AppUtils.whiteColor)),
                   onPressed: () {
