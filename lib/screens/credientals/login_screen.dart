@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:blood_token_app/constants/constants.dart';
 import 'package:blood_token_app/screens/bottom_nav_bar_screens/bottom_screens/home_screen.dart';
 import 'package:blood_token_app/screens/credientals/signup_screen.dart';
@@ -18,12 +16,26 @@ class LogInScreen extends StatefulWidget {
 
 class _LogInScreenState extends State<LogInScreen> {
   final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   bool _isObscurePassword = true;
-  final TextEditingController _passwordController = TextEditingController();
 
-  void _login() async {
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedEmail();
+  }
+
+  Future<void> _loadSavedEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? savedEmail = prefs.getString('lastResetEmail');
+    if (savedEmail != null && savedEmail.isNotEmpty) {
+      _emailController.text = savedEmail;
+    }
+  }
+
+  Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
         _isLoading = true;
@@ -43,12 +55,14 @@ class _LogInScreenState extends State<LogInScreen> {
             .get();
 
         if (userDoc.exists) {
+          if (!mounted) return; // Ensure context is still valid
           // User exists in Firestore, navigate to HomeScreen
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) {
             return const HomeScreen();
           }));
         } else {
           // User doesn't exist in Firestore, display a message to create an account
+          if (!mounted) return; // Ensure context is still valid
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content:
@@ -58,6 +72,7 @@ class _LogInScreenState extends State<LogInScreen> {
         }
       } on FirebaseAuthException catch (e) {
         // Handle Firebase Authentication errors
+        if (!mounted) return; // Ensure context is still valid
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Error: ${e.message}"),
@@ -65,15 +80,18 @@ class _LogInScreenState extends State<LogInScreen> {
         );
       } on FirebaseException catch (e) {
         // Handle Firestore errors
+        if (!mounted) return; // Ensure context is still valid
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text("Firestore Error: ${e.message}"),
           ),
         );
       } finally {
-        setState(() {
-          _isLoading = false;
-        });
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       }
     }
   }
@@ -108,12 +126,10 @@ class _LogInScreenState extends State<LogInScreen> {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Container(
-                              child: const Text(
-                                'Welcome to Blood Token\nPlease Log In to Your Account',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(fontSize: 20.0),
-                              ),
+                            const Text(
+                              'Welcome to Blood Token\nPlease Log In to Your Account',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 20.0),
                             ),
                             CustomTextFormField(
                               controller: _emailController,
@@ -186,9 +202,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                       return const SignUpScreen();
                                     }));
                                   },
-                                  child: const Text(
-                                    "Sign Up",
-                                  ),
+                                  child: const Text("Sign Up"),
                                 ),
                               ],
                             ),
@@ -204,19 +218,5 @@ class _LogInScreenState extends State<LogInScreen> {
         ),
       ),
     );
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _loadSavedEmail();
-  }
-
-  void _loadSavedEmail() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? savedEmail = prefs.getString('lastResetEmail');
-    if (savedEmail != null && savedEmail.isNotEmpty) {
-      _emailController.text = savedEmail;
-    }
   }
 }

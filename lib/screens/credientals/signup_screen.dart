@@ -33,82 +33,84 @@ class _SignUpScreenState extends State<SignUpScreen> {
   File? _image;
 
   _signUpCredentials() async {
-    if (_formKey.currentState!.validate()) {
-      setState(() {
-        _isLoading = true;
-      });
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
 
-      if (_passwordController.text != _rePasswordController.text) {
-        Fluttertoast.showToast(msg: 'Password and RePassword are not Matched!');
-      } else {
-        try {
-          UserCredential userCredential =
-              await FirebaseAuth.instance.createUserWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-          );
-
-          String? photoUrl;
-          if (_image != null) {
-            photoUrl = await _uploadImage();
-          }
-
-          // Create a UserModel instance
-          UserModel userModel = UserModel(
-            uid: userCredential.user!.uid,
-            email: _emailController.text,
-            displayName: _nameController.text,
-            // Assign value from blood group controller
-            bloodGroup: _bloodGroupController.text,
-            // Convert text to int
-            phoneNumber: int.parse(_phoneNumberController.text),
-            // Assign value from age controller
-            age: int.parse(_ageController.text),
-            photoUrl: photoUrl,
-          );
-
-          // Convert the UserModel instance to a map and save it to Firestore
-          await FirebaseFirestore.instance
-              .collection("users")
-              .doc(userCredential.user!.uid)
-              .set(userModel.toJson());
-
-          // Save user email to shared preferences for autofill in login screen
-          SharedPreferences prefs = await SharedPreferences.getInstance();
-          await prefs.setString('lastUserEmail', _emailController.text);
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("Sign-up successful!"),
-            ),
-          );
-
-          Navigator.push(context, MaterialPageRoute(builder: (_) {
-            return LogInScreen();
-          }));
-        } on FirebaseAuthException catch (e) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text("Error: ${e.message}"),
-            ),
-          );
-        } finally {
-          setState(() {
-            _isLoading = false;
-          });
-        }
+      String? photoUrl;
+      if (_image != null) {
+        photoUrl = await _uploadImage();
       }
+
+      // Create a UserModel instance
+      UserModel userModel = UserModel(
+        uid: userCredential.user!.uid,
+        email: _emailController.text,
+        displayName: _nameController.text,
+        bloodGroup: _bloodGroupController.text,
+        phoneNumber: int.parse(_phoneNumberController.text),
+        age: int.parse(_ageController.text),
+        photoUrl: photoUrl,
+      );
+
+      // Convert the UserModel instance to a map and save it to Firestore
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(userCredential.user!.uid)
+          .set(userModel.toJson());
+
+      // Save user email to shared preferences for autofill in login screen
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('lastUserEmail', _emailController.text);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Sign-up successful!"),
+        ),
+      );
+
+      Navigator.push(context, MaterialPageRoute(builder: (_) {
+        return LogInScreen();
+      }));
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Error: ${e.message}"),
+        ),
+      );
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 
   Future<String?> _uploadImage() async {
-    Reference ref = FirebaseStorage.instance
-        .ref()
-        .child('user_profile_pictures')
-        .child('${_emailController.text}_profile_picture.jpg');
-    UploadTask uploadTask = ref.putFile(_image!);
-    await uploadTask.whenComplete(() => null);
-    return ref.getDownloadURL();
+    try {
+      // Create a reference to the location where the image will be uploaded
+      Reference ref = FirebaseStorage.instance
+          .ref()
+          .child('user_profile_pictures')
+          .child('${_emailController.text}_profile_picture.jpg');
+
+      // Upload the file to Firebase Storage
+      UploadTask uploadTask = ref.putFile(_image!);
+
+      // Wait until the upload completes
+      await uploadTask.whenComplete(() => null);
+
+      // Get the download URL of the uploaded file
+      String downloadUrl = await ref.getDownloadURL();
+
+      return downloadUrl;
+    } catch (e) {
+      // Handle any errors during upload
+      print("Error uploading image: $e");
+      return null;
+    }
   }
 
   Future<void> _getImage() async {

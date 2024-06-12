@@ -2,6 +2,7 @@
 import 'package:blood_token_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -125,11 +126,14 @@ class DetailsScreen extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: TextButton.icon(
+                    onLongPress: () {
+                      Fluttertoast.showToast(msg: "$contactNumber");
+                    },
                     onPressed: () async {
                       await sendSMS("$contactNumber");
                     },
                     icon: const Icon(Icons.message_outlined, color: Colors.red),
-                    label: Text("Send SMS to $requesterName",
+                    label: Text("Send SMS to $contactNumber",
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(color: Colors.red)),
                   ),
@@ -140,11 +144,14 @@ class DetailsScreen extends StatelessWidget {
               Expanded(
                 child: Center(
                   child: TextButton.icon(
+                    onLongPress: () {
+                      Fluttertoast.showToast(msg: "$contactNumber");
+                    },
                     onPressed: () async {
                       await callNumber("+92$contactNumber");
                     },
                     icon: const Icon(Icons.call_outlined, color: Colors.red),
-                    label: Text("Call $requesterName",
+                    label: Text("Call $contactNumber",
                         overflow: TextOverflow.ellipsis,
                         style: const TextStyle(color: Colors.red)),
                   ),

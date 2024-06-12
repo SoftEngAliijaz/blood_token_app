@@ -353,7 +353,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
         Fluttertoast.showToast(msg: 'Blood request submitted successfully');
         _resetForm();
       } catch (e) {
-        print('Error submitting blood request: $e');
+        print('Error submitting blood request. Error: $e');
         Fluttertoast.showToast(
             msg: 'Failed to submit blood request. Error: $e');
       } finally {

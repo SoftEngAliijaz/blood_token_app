@@ -1,4 +1,5 @@
 import 'package:blood_token_app/constants/constants.dart'; // Importing constants file
+import 'package:blood_token_app/screens/bottom_nav_bar_screens/profile_section/crud/update_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Importing Cloud Firestore
 import 'package:firebase_auth/firebase_auth.dart'; // Importing FirebaseAuth
 import 'package:flutter/material.dart'; // Importing Flutter Material library
@@ -126,7 +127,15 @@ class MyBloodRequestsScreen extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.all<Color>(
                           AppUtils.blueColor), // Set button background color
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => UpdateBloodRequestScreen(
+                              requestData: requestData),
+                        ),
+                      );
+                    },
                     child: const Text(
                       "Update", // Set button text
                       style: TextStyle(
