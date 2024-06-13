@@ -4,8 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UpdateBloodRequestScreen extends StatefulWidget {
   final Map<String, dynamic> requestData;
 
-  const UpdateBloodRequestScreen({Key? key, required this.requestData})
-      : super(key: key);
+  const UpdateBloodRequestScreen({super.key, required this.requestData});
 
   @override
   _UpdateBloodRequestScreenState createState() =>

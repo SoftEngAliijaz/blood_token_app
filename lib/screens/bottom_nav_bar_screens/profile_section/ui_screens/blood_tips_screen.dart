@@ -10,7 +10,7 @@ class BloodTipsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Blood Tips'),
+        title: const Text('Blood Tips'),
       ),
       body: ListView.builder(
         itemCount: tipsModel.length,
@@ -18,8 +18,8 @@ class BloodTipsScreen extends StatelessWidget {
           return Card(
               color: Theme.of(context).scaffoldBackgroundColor,
               child: ListTile(
-                leading:
-                    Icon(Icons.text_fields_outlined, color: AppUtils.blueColor),
+                leading: const Icon(Icons.text_fields_outlined,
+                    color: AppUtils.blueColor),
                 title: Text(tipsModel[index].text),
                 trailing: IconButton(
                   onPressed: () {

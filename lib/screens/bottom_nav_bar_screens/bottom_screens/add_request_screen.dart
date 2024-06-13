@@ -32,7 +32,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
   final TextEditingController _patientNameController = TextEditingController();
   final TextEditingController _customLocation = TextEditingController();
 
-  LatLng _initialCameraPosition = LatLng(0.0, 0.0);
+  LatLng _initialCameraPosition = const LatLng(0.0, 0.0);
   GoogleMapController? _mapController;
   Set<Marker> _markers = {};
   bool _isLoading = false;
@@ -42,7 +42,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Blood Request'),
+        title: const Text('Add Blood Request'),
       ),
       body: Container(
         height: size.height,
@@ -56,7 +56,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 100,
                         backgroundImage:
                             AssetImage("assets/images/blood_token_logo_01.png"),
@@ -146,21 +146,21 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                         prefixIcon: Icons.phone_android_outlined,
                         labelText: 'Contact Number',
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () {
                           _getCurrentLocation();
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              AppUtils.redColor),
+                          backgroundColor:
+                              WidgetStateProperty.all<Color>(AppUtils.redColor),
                         ),
-                        child: Text(
+                        child: const Text(
                           'Get Current Location',
                           style: TextStyle(color: AppUtils.whiteColor),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                           height: 10), // Add spacing between button and map
                       _buildGoogleMapLocationDiv(),
                       ElevatedButton(
@@ -168,14 +168,14 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                           _submitForm();
                         },
                         style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(
-                              AppUtils.redColor),
+                          backgroundColor:
+                              WidgetStateProperty.all<Color>(AppUtils.redColor),
                         ),
                         child: Text(
                           _isLoading == false
                               ? 'Submit Data'
                               : 'Submitting Data, Please Wait...',
-                          style: TextStyle(color: AppUtils.whiteColor),
+                          style: const TextStyle(color: AppUtils.whiteColor),
                         ),
                       ),
                     ]),
@@ -202,13 +202,12 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
                 borderRadius: BorderRadius.circular(10)),
             child: Column(
               children: [
-                Container(
-                    child: ListTile(
-                        title: Text(
+                ListTile(
+                    title: Text(
                   _locationController.text.toString().isNotEmpty
                       ? "Location: ${_locationController.text.toString()}"
                       : 'Press on Get Current Location Button',
-                ))),
+                )),
                 Expanded(
                   child: GoogleMap(
                     myLocationEnabled: true,
@@ -240,7 +239,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
       _markers.clear();
       _markers.add(
         Marker(
-          markerId: MarkerId('user-location'),
+          markerId: const MarkerId('user-location'),
           position: position,
         ),
       );
@@ -263,15 +262,15 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
   Future<void> _getCurrentLocation() async {
     Location location = Location();
 
-    bool _serviceEnabled;
-    PermissionStatus _permissionGranted;
-    LocationData _locationData;
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
+    LocationData locationData;
 
-    _serviceEnabled = await location.serviceEnabled();
-    if (!_serviceEnabled) {
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
       Fluttertoast.showToast(msg: 'Location service is disabled');
-      _serviceEnabled = await location.requestService();
-      if (!_serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
         Fluttertoast.showToast(msg: 'Failed to enable location service');
         return; // Exit function if service couldn't be enabled
       }
@@ -280,22 +279,22 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
       Fluttertoast.showToast(msg: 'Location service is enabled');
     }
 
-    _permissionGranted = await location.hasPermission();
-    if (_permissionGranted == PermissionStatus.denied) {
-      _permissionGranted = await location.requestPermission();
-      if (_permissionGranted != PermissionStatus.granted) {
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
         Fluttertoast.showToast(msg: 'Location permission denied');
         return; // Exit function if permission couldn't be granted
       }
       Fluttertoast.showToast(msg: 'Location permission granted');
-    } else if (_permissionGranted == PermissionStatus.granted) {
+    } else if (permissionGranted == PermissionStatus.granted) {
       Fluttertoast.showToast(msg: 'Location permission already granted');
     }
 
-    _locationData = await location.getLocation();
+    locationData = await location.getLocation();
     setState(() {
       _initialCameraPosition =
-          LatLng(_locationData.latitude!, _locationData.longitude!);
+          LatLng(locationData.latitude!, locationData.longitude!);
       _mapController?.animateCamera(CameraUpdate.newCameraPosition(
         CameraPosition(
           target: _initialCameraPosition,
@@ -303,11 +302,11 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
         ),
       ));
       _locationController.text =
-          "${_locationData.latitude}, ${_locationData.longitude}";
+          "${locationData.latitude}, ${locationData.longitude}";
       _markers.clear();
       _markers.add(
         Marker(
-          markerId: MarkerId('user-location'),
+          markerId: const MarkerId('user-location'),
           position: _initialCameraPosition,
         ),
       );
@@ -358,7 +357,7 @@ class _AddRequestScreenState extends State<AddRequestScreen> {
             msg: 'Failed to submit blood request. Error: $e');
       } finally {
         setState(() {
-          _isLoading = false; // Stop loading regardless of success or failure
+          _isLoading = false;
         });
       }
     }

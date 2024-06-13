@@ -24,7 +24,7 @@ class UserLandingScreen extends StatelessWidget {
           return Center(
             child: Text(
               'Error: ${snapshot.error.toString()}', // Displaying error message if there's an error
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
               ),
@@ -39,7 +39,7 @@ class UserLandingScreen extends StatelessWidget {
             return const HomeScreen();
           } else {
             // Navigate to login screen if user is logged out
-            return LogInScreen(); // Corrected the class name to LoginScreen
+            return const LogInScreen(); // Corrected the class name to LoginScreen
           }
         }
       },

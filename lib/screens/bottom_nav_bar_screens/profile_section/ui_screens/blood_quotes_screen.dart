@@ -10,7 +10,7 @@ class BloodQuotesScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Quotes'),
+        title: const Text('Quotes'),
       ),
       body: ListView.builder(
         itemCount: quotesModel.length,
@@ -18,7 +18,7 @@ class BloodQuotesScreen extends StatelessWidget {
           return Card(
             color: Theme.of(context).scaffoldBackgroundColor,
             child: ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.text_fields_outlined,
                 color: AppUtils.blueColor,
               ),

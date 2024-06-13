@@ -120,7 +120,7 @@ class _LogInScreenState extends State<LogInScreen> {
                     ),
                     Form(
                       key: _formKey,
-                      child: Container(
+                      child: SizedBox(
                         height: size.height * 0.40,
                         width: size.width,
                         child: Column(
@@ -174,9 +174,8 @@ class _LogInScreenState extends State<LogInScreen> {
                             ),
                             ElevatedButton(
                               style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        AppUtils.redColor),
+                                backgroundColor: WidgetStateProperty.all<Color>(
+                                    AppUtils.redColor),
                               ),
                               onPressed: _isLoading ? null : _login,
                               child: _isLoading

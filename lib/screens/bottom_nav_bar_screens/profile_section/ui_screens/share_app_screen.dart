@@ -8,7 +8,7 @@ class ShareAppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Share This App'),
+        title: const Text('Share This App'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -27,11 +27,11 @@ class ShareAppScreen extends StatelessWidget {
                     color: Colors.grey.withOpacity(0.5),
                     spreadRadius: 5,
                     blurRadius: 7,
-                    offset: Offset(0, 3), // changes position of shadow
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
-              child: Center(
+              child: const Center(
                 child: Icon(
                   Icons.share,
                   size: 100,
@@ -39,24 +39,24 @@ class ShareAppScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Text(
+            const SizedBox(height: 20),
+            const Text(
               'Share Our App',
               style: TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 10),
-            Text(
+            const SizedBox(height: 10),
+            const Text(
               'Help us grow by sharing the app with your friends and family.',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 18),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () {
-                final String appLink =
+                const String appLink =
                     'https://your-app-store-link.com/blood-token.playstore';
                 Share.share(
                   'Check out this amazing app! $appLink',
@@ -68,14 +68,15 @@ class ShareAppScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
-              child: Text(
+              child: const Text(
                 'Share Now',
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             OutlinedButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -85,10 +86,11 @@ class ShareAppScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
                 ),
-                side: BorderSide(color: Colors.blue, width: 2),
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                side: const BorderSide(color: Colors.blue, width: 2),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
               ),
-              child: Text(
+              child: const Text(
                 'Maybe Later',
                 style: TextStyle(fontSize: 18, color: Colors.blue),
               ),

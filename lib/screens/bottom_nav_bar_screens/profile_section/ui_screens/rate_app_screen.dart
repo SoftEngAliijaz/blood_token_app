@@ -10,16 +10,15 @@ class RateAppScreen extends StatefulWidget {
     super.key,
   });
 
-  /*
-  UserModel userModel = UserModel(
-  uid: uid, 
-  email: email, 
-  displayName: displayName,
-  bloodGroup: bloodGroup,
-  phoneNumber: phoneNumber, 
-  age: age, 
-  photoUrl: photoUrl)
-*/
+//   UserModel userModel = UserModel(
+//   uid: uid,
+//   email: email,
+//   displayName: displayName,
+//   bloodGroup: bloodGroup,
+//   phoneNumber: phoneNumber,
+//   age: age,
+//   photoUrl: photoUrl)
+//
 
   @override
   State<RateAppScreen> createState() => _RateAppScreenState();

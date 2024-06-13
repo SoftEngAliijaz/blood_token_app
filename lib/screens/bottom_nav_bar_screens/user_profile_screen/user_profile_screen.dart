@@ -19,19 +19,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   File? _pickedImage;
 
   Widget profileCard(String title, String trailing) {
-    return ListTile(
-      title: Text(
-        title,
-        style: TextStyle(
-          fontSize: 17.0,
-          fontWeight: FontWeight.normal,
+    return Expanded(
+      child: ListTile(
+        title: Text(
+          title,
+          style: TextStyle(
+            fontSize: 17.0,
+            fontWeight: FontWeight.normal,
+          ),
         ),
-      ),
-      trailing: Text(
-        trailing,
-        style: TextStyle(
-          fontSize: 17.0,
-          fontWeight: FontWeight.normal,
+        trailing: Text(
+          trailing,
+          style: TextStyle(
+            fontSize: 17.0,
+            fontWeight: FontWeight.normal,
+          ),
         ),
       ),
     );
@@ -179,8 +181,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 Padding(
                   padding: const EdgeInsets.all(5.0),
                   child: Container(
-                    height:
-                        size.height * 0.80, // Set the height of the container
+                    height: size.height * 0.80,
                     width: size.width,
                     child: Card(
                       color: Theme.of(context).scaffoldBackgroundColor,
@@ -191,15 +192,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               SizedBox(
-                                height: size.height *
-                                    0.5, // Set the height of the profile image container
+                                height: size.height * 0.5,
                                 child: InkWell(
                                   onTap: () {
                                     showModalBottomSheetSuggestions(context);
                                   },
                                   child: Container(
-                                    width: size
-                                        .width, // Set the width of the container
+                                    width: size.width,
                                     child: _pickedImage != null
                                         ? ClipRRect(
                                             borderRadius: BorderRadius.zero,
@@ -216,29 +215,35 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                                   fit: BoxFit.cover,
                                                 ),
                                               )
-                                            : const Icon(Icons.person,
-                                                size: 80)),
+                                            : ClipRRect(
+                                                borderRadius: BorderRadius.zero,
+                                                child: Image.network(
+                                                  AppUtils.photoUrl,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              )),
                                   ),
                                 ),
                               ),
-                              SizedBox(
-                                height: size.height *
-                                    0.3, // Set the height of the profile details container
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Column(
-                                    children: [
-                                      profileCard('Name',
-                                          '${user['displayName'] ?? ''}'),
-                                      profileCard(
-                                          'Email', '${user['email'] ?? ''}'),
-                                      profileCard(
-                                          'Age', '${user['age'] ?? ''}'),
-                                      profileCard('Blood Group',
-                                          '${user['bloodGroup'] ?? ''}'),
-                                      profileCard('Phone',
-                                          '+92${user['phoneNumber'] ?? ''}'),
-                                    ],
+                              Expanded(
+                                child: SizedBox(
+                                  height: size.height * 0.3,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: Column(
+                                      children: [
+                                        profileCard('Name',
+                                            '${user['displayName'] ?? ''}'),
+                                        profileCard(
+                                            'Email', '${user['email'] ?? ''}'),
+                                        profileCard(
+                                            'Age', '${user['age'] ?? ''}'),
+                                        profileCard('Blood Group',
+                                            '${user['bloodGroup'] ?? ''}'),
+                                        profileCard('Phone',
+                                            '+92${user['phoneNumber'] ?? ''}'),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),

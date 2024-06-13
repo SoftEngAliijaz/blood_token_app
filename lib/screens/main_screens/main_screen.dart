@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen> {
                   : currentUserStreamBuilder(size, currentUserUID),
 
               // Banner
-              Container(child: Card()),
+              Container(child: const Card()),
 
               // Current Requests
               const ListTile(
@@ -136,7 +136,7 @@ class _MainScreenState extends State<MainScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text("Urgency Level"),
+                                          const Text("Urgency Level"),
                                           Text("${value.urgencyLevel}",
                                               textAlign: TextAlign.left,
                                               overflow: TextOverflow.ellipsis),
@@ -152,7 +152,7 @@ class _MainScreenState extends State<MainScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                          Text("Blood Type"),
+                                          const Text("Blood Type"),
                                           Text("${value.bloodType}"),
                                         ],
                                       ),
@@ -203,7 +203,7 @@ class _MainScreenState extends State<MainScreen> {
                                           } catch (e) {
                                             // Handle parsing errors
                                             ScaffoldMessenger.of(context)
-                                                .showSnackBar(SnackBar(
+                                                .showSnackBar(const SnackBar(
                                               content: Text(
                                                   'Invalid location format'),
                                             ));
@@ -288,11 +288,11 @@ class _MainScreenState extends State<MainScreen> {
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
           return Column(
             children: [
-              Text(
+              const Text(
                 'No Requests Found.',
                 style: TextStyle(fontSize: 17.0),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               AppUtils.customProgressIndicator(),
             ],
           );
@@ -349,7 +349,7 @@ class _MainScreenState extends State<MainScreen> {
                             trailing: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Urgency Level"),
+                                const Text("Urgency Level"),
                                 Text("${value.urgencyLevel}",
                                     textAlign: TextAlign.left,
                                     overflow: TextOverflow.ellipsis),
@@ -364,7 +364,7 @@ class _MainScreenState extends State<MainScreen> {
                             trailing: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text("Blood Type"),
+                                const Text("Blood Type"),
                                 Text("${value.bloodType}"),
                               ],
                             ),

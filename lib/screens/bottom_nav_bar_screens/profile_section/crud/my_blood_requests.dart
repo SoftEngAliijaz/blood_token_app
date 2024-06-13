@@ -42,11 +42,11 @@ class MyBloodRequestsScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'No Requestes Found.',
                     style: TextStyle(fontSize: 17.0),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   AppUtils.customProgressIndicator()
                 ],
               ),
@@ -124,7 +124,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
+                      backgroundColor: WidgetStateProperty.all<Color>(
                           AppUtils.blueColor), // Set button background color
                     ),
                     onPressed: () {
@@ -148,7 +148,7 @@ class MyBloodRequestsScreen extends StatelessWidget {
                 Expanded(
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
+                      backgroundColor: WidgetStateProperty.all<Color>(
                           AppUtils.redColor), // Set button background color
                     ),
                     onPressed: () {

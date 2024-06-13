@@ -51,7 +51,7 @@ class _ProfileSectionScreenState extends State<ProfileSectionScreen> {
                 Icons.person_outline,
                 'My Profile',
                 () {
-                  navigateTo(context, const UserProfileScreen());
+                  navigateTo(context, UserProfileScreen());
                 },
               ),
               _tileCard(Icons.request_page_outlined, 'My Requests', () {
