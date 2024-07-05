@@ -1,5 +1,5 @@
 import 'package:blood_token_app/constants/constants.dart';
-import 'package:blood_token_app/screens/user_landing_screen/user_landing_screen.dart';
+import 'package:blood_token_app/rating_ui.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +40,7 @@ class _MyAppState extends State<MyApp> {
                   MaterialStateProperty.all<Color>(AppUtils.redColor)),
         ),
       ),
-      home: const UserLandingScreen(),
+      home: UserRatingUIScreen(),
     );
   }
 }
